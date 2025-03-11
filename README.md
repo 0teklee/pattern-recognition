@@ -15,6 +15,9 @@ IS TO LEARN PATTERNS OF
 1. [DEV_PLAN](docs/DEV_PLAN.md) - 개발 전 계획과 요구사항
 2. [REVIEW](docs/REVIEW.md) - 개발 후 남긴 노트
 
+### Progress
+1. **PR-1** : [Project Settings & Tech Spec](https://github.com/0teklee/pattern-recognition/pull/1)
+
 ## VERSIONS
 
 - 1.0.0 (current)
