@@ -1,4 +1,14 @@
 {
+  "scripts": {
+    "dev": "astro dev --config config/astro/base.config.mjs",
+    "build": "npm run build:algorithms && npm run build:uiux",
+    "preview": "astro preview",
+    "dev:algorithms": "astro dev --config config/astro/algorithms.config.mjs",
+    "dev:uiux": "astro dev --config config/astro/uiux.cofing.mjs",
+    "build:algorithms": "astro build --config config/astro/algorithms.cofing.mjs",
+    "build:uiux": "astro build --config config/astro/uiux.cofing.mjs",
+    "type-check": "tsc --noEmit"
+  },
   "dependencies": {
     "mdx": "^0.3.1"
   },
