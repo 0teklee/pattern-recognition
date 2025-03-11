@@ -1,0 +1,117 @@
+# Linked List - LeetCode 2. Add Two Numbers
+
+[문제 링크](https://leetcode.com/problems/add-two-numbers/)
+
+# Topics
+
+- Linked List
+- Math
+- Recursion
+
+# 문제 포인트
+
+1. 연결 리스트의 현재, 다음 포인터 연결
+2. **반복문**에서 다음 포인터 연결 로직
+
+- `count[i]`랑 현재 탐색 노드(`board[r][c]`)가 일치하지 않을 때 탐색 중단
+
+3. 방문 업데이트 시점의 중요성 (경로 탐색의 경우, 인접 노드 모두 방문한 이후)
+
+## 정답
+
+```js
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+
+/**
+ * @param {ListNode} l1
+ * @param {ListNode} l2
+ * @return {ListNode}
+ */
+var addTwoNumbers = function (l1, l2) {
+  let dummyHead = new ListNode(0);
+  let current = dummyHead;
+  let carry = 0;
+
+  while (l1 !== null || l2 !== null || carry > 0) {
+    let sum = (l1?.val || 0) + (l2?.val || 0) + carry;
+    carry = Math.floor(sum / 10); // 10을 넘으면 올림값 저장
+
+    current.next = new ListNode(sum % 10); // 현재 노드 추가
+    current = current.next; // 포인터 이동
+
+    l1 = l1?.next || null;
+    l2 = l2?.next || null;
+  }
+
+  return dummyHead.next; // 실제 리스트 시작점 반환
+};
+```
+
+## 오답 사고 과정
+
+### 접근 문제점
+
+1. 새로운 연결 리스트 생성 오류
+
+returnList를 리스트로 변환하려 했으나 next 추가 방식이 틀림.
+올바른 방식은 새로운 ListNode를 생성하고 current.next로 연결해야 함.
+반복문에서 next 추가 방법 문제
+
+returnList(start, next)는 올바르지 않음.
+dummyHead 노드를 두고 current 포인터를 활용하여 next로 연결해야 함.
+
+2. 리스트 숫자 변환 오류 (getAllNum 함수)
+
+```
+while (li?.val) → while (li !== null)
+nums.unshift(li.val) 대신 nums.push(li.val)
+join("") * 1 대신 Number(join("")) 또는 BigInt(join("")) 사용해야 큰 숫자 처리 가능.
+
+```
+
+```js
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} l1
+ * @param {ListNode} l2
+ * @return {ListNode}
+ */
+var addTwoNumbers = function (l1, l2) {
+  // 두 리스트에서 합을 구함
+  function getAllNum(list) {
+    let nums = [];
+    let li = list;
+    while (li?.val) {
+      nums.unshift(li.val);
+      li = li.next;
+    }
+    return nums.join("") * 1;
+  }
+
+  let sum = getAllNum(l1) + getAllNum(l2);
+  let result = String(sum)
+    .split("")
+    .map((char) => char * 1);
+
+  console.log(result);
+  const returnList = new ListNode();
+
+  // 반복문에서 지금 링크 리스트에 추가, next를 어떻게 추가해야 할 지 모르겠음
+  while (result.length > 0) {
+    const start = result.pop();
+    returnList(start, next);
+  }
+};
+```

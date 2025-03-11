@@ -1,0 +1,95 @@
+class Queue {
+  constructor() {
+    this.items = [];
+    this.front = 0;
+    this.rear = 0;
+  }
+
+  push(data) {
+    this.items.push(data);
+    this.rear++;
+  }
+  pop() {
+    return this.items[this.front++];
+  }
+
+  isEmpty() {
+    return this.front === this.rear;
+  }
+}
+
+function getCord(maps, target) {
+  let tRow = maps.findIndex((col) => col.includes(target));
+  let tCol = maps[tRow].split("").findIndex((col) => col === target);
+  return [tRow, tCol];
+}
+
+function bfs(maps, start, target) {
+  let direction = [
+    [1, 0],
+    [0, 1],
+    [-1, 0],
+    [0, -1],
+  ];
+  let rows = maps.length;
+  let cols = maps[0].length;
+  let visited = Array.from({ length: rows }, () => Array(cols).fill(false));
+  let [sRow, sCol] = getCord(maps, start);
+
+  let Q = new Queue();
+  console.log(`
+  sRow : ${sRow}
+  sCol : ${sCol}
+  `);
+
+  Q.push([sRow, sCol, 0]);
+
+  while (!Q.isEmpty()) {
+    const [r, c, dist] = Q.pop();
+
+    console.log(`
+    r : ${r}
+    c : ${c}
+    maps[r][c] : ${maps[r][c]}
+    `);
+
+    if (maps[r][c] === target) {
+      return dist;
+    }
+
+    for (const [dr, dc] of direction) {
+      let nr = r + dr;
+      let nc = c + dc;
+      let updateCondition =
+        nr >= 0 &&
+        nc >= 0 &&
+        nr < rows &&
+        nc < cols &&
+        maps[nr][nc] !== "X" &&
+        !visited[nr][nc];
+      if (updateCondition) {
+        visited[nr][nc] = true;
+        Q.push([nr, nc, dist + 1]);
+      }
+    }
+  }
+
+  return -1;
+}
+
+function solution(maps) {
+  let toLeverDist = bfs(maps, "S", "L");
+  let toEndDist = bfs(maps, "L", "E");
+  console.log(`----
+  toLeverDist ${toLeverDist}
+  toEndDist : ${toEndDist}
+  --------
+  `);
+  let answer = toLeverDist > 0 && toEndDist > 0 ? toLeverDist + toEndDist : -1;
+  return answer;
+}
+let test1A = ["SOOOL", "XXXXO", "OOOOO", "OXXXX", "OOOOE"];
+let test1B = ["LOOXS", "OOOOX", "OOOOO", "OOOOO", "EOOOO"];
+
+// console.log(`result : /n`, solution(test1A));
+console.log(`result : /n`, solution(test1B));

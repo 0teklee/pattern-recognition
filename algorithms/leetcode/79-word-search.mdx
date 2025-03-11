@@ -1,0 +1,110 @@
+# DFS - LeetCode 79. Word Search
+
+# 문제 포인트
+
+1. 탐색 결과가 **방문 순서에 영향을 받음**
+2. **백트래킹**이 필요함
+   - `count[i]`랑 현재 탐색 노드(`board[r][c]`)가 일치하지 않을 때 탐색 중단
+3. 방문 업데이트 시점의 중요성 (경로 탐색의 경우, 인접 노드 모두 방문한 이후)
+
+[이전 글](https://blog.leetekwoo.com/blog/63#3-3-backtracking)에서 살핀 백트레킹을 활용하는 문제이다. visited를 인접 행렬로 관리한다.
+
+## 정답
+
+```js
+/**
+ * @description 문제 : 인접 행렬에서 word를 만들 수 있는 여부 true/false
+ *   방향은 상관없다. (왼<->오, 위 <->아래)
+ * @param {character[][]} board
+ * @param {string} word
+ * @return {boolean}
+ */
+var exist = function (board, word) {
+  const rSize = board.length;
+  const cSize = board[0].length;
+  const visited = Array.from({ length: rSize }, () => Array(cSize).fill(false));
+  const offset = [
+    [1, 0],
+    [0, 1],
+    [-1, 0],
+    [0, -1],
+  ];
+
+  function dfs(r, c, count = 0) {
+    if (word.length === count) return true; // 기저 조건. 재귀 함수 전체 중단 조건
+    /** @note 여기서 방문 처리 X **/
+    // visited[r][c] = true; //
+    if (
+      // 조건 해당 시
+      r >= 0 &&
+      c >= 0 &&
+      r < rSize &&
+      c < cSize &&
+      !visited[r][c] &&
+      board[r][c] === word[count]
+    ) {
+      /** @note 방문 처리를 여기서 해야함. **/
+      visited[r][c] = true; // 방문 처리를 여기서 해야함
+      for (let [or, oc] of offset) {
+        if (dfs(r + or, c + oc, count + 1)) return true;
+      }
+      /** @note 백트레킹 : 경로마다 다른 결과가 나올 수 있어 해주어야함. **/
+      visited[r][c] = false;
+    }
+
+    return false;
+  }
+
+  for (let r = 0; r < rSize; r++) {
+    for (let c = 0; c < cSize; c++) {
+      if (dfs(r, c, 0)) return true;
+    }
+  }
+
+  return false;
+};
+```
+
+## 오답 사고 과정
+
+```js
+var exist = function (board, word) {
+  const n = board.length;
+  const visited = Array.from({ length: n }, () => Array(n).fill(false));
+  const offset = [
+    [1, 0],
+    [0, 1],
+    [-1, 0],
+    [0, -1],
+  ];
+
+  function dfs([r, c], word, visited, count = 0) {
+    if (visited[r][c]) return count;
+    visited[r][c] = true;
+    if (word[count] === board[r][c]) {
+      // count를 어떻게 처리해야 될 지 몰랐다.
+      // 인접노드 방문 현재 글자가 word[count]랑 같을 때만 재귀 호출
+
+      for (let [or, oc] of offset) {
+        const [nr, nc] = [r + or, c + oc];
+        if (
+          nr < n &&
+          nc < n &&
+          nr >= 0 &&
+          nc >= 0 &&
+          !visited[nr][nc] &&
+          board[nr][nc] === word[count + 1]
+        ) {
+          count += dfs([nr, nc], word, visited, count + 1);
+        }
+      }
+    } else {
+      return count;
+    }
+  }
+  // 문제 조건이 O(n^2)으로 2중 포문으로 푸는 것이 더 적절했음
+  // count가 조건에 맞으면 바로 리턴만 하면됨. 누적할 필요는 없었음.
+  const result = dfs([0, 0], word, visited, 0);
+  return result === word.length;
+};
+```

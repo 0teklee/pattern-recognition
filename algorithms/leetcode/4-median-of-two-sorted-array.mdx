@@ -1,0 +1,55 @@
+# LeetCode 4. Median of Two Sorted Array
+
+[문제 링크](https://leetcode.com/problems/median-of-two-sorted-arrays/)
+
+# Topics
+
+- Array
+- Binary Search
+- Divide and Conquer
+
+# 문제 포인트
+
+1. 연결 리스트의 현재, 다음 포인터 연결
+2. **반복문**에서 다음 포인터 연결 로직
+
+- `count[i]`랑 현재 탐색 노드(`board[r][c]`)가 일치하지 않을 때 탐색 중단
+
+3. 방문 업데이트 시점의 중요성 (경로 탐색의 경우, 인접 노드 모두 방문한 이후)
+
+사실 이진 탐색으로 풀어야하는 문제인데,
+
+## 정답
+
+```js
+/**
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number}
+ */
+var findMedianSortedArrays = function (nums1, nums2) {
+  let merged = [...nums1, ...nums2].sort((a, b) => a - b);
+  let size = merged.length,
+    isEven = size % 2 === 0;
+  let pointer = isEven ? Math.floor(size / 2) - 1 : Math.floor(size / 2);
+
+  if (isEven) {
+    return (merged[pointer] + merged[pointer + 1]) / 2;
+  } else {
+    return merged[pointer];
+  }
+};
+```
+
+## 사고 과정
+
+처음에 set으로 시도하려 했으나, 테스트 케이스 44번에 중복 숫자 허용이 껴있어서 수정함.
+
+1. Median 정의
+   - 숫자 총합의 중간 값인지, 말 그대로 배열의 가장 중앙을 뜻하는 지 확인. 후자.
+   - 병합된 두 배열의 길이가 홀수 일 때는 Math.floor(length / 2)의 인덱스 값
+   - 짝수일 때는 Math.floor(length / 2)와 +1의 요소를 더한 뒤 / 2
+2. 두 배열을 합한 뒤 sort = merged - 중간 값의 탐색 대상
+3. 1번에서 중간 값이 배열 길이에 따라 달라짐을 확인함. 그대로 반환값 계산함
+
+- 중복 요소 허용, 비허용에 대한 힌트가 없어 테스트 케이스에서 찾아냄.

@@ -1,0 +1,85 @@
+# LeetCode 3. Longest Substring - Sliding Windows
+
+[문제 링크](https://leetcode.com/problems/longest-palindromic-substring/)
+
+# Topics
+
+- String
+- Two Pointers
+- Dynamic Programming
+
+# 문제 포인트
+
+1. 연결 리스트의 현재, 다음 포인터 연결
+2. **반복문**에서 다음 포인터 연결 로직
+
+- `count[i]`랑 현재 탐색 노드(`board[r][c]`)가 일치하지 않을 때 탐색 중단
+
+3. 방문 업데이트 시점의 중요성 (경로 탐색의 경우, 인접 노드 모두 방문한 이후)
+
+## 정답
+
+```js
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var lengthOfLongestSubstring = function (s) {
+  let set = new Set();
+  let start = 0;
+  let longest = 0;
+
+  for (let end = 0; end < s.length; end++) {
+    let char = s[end];
+
+    // 중복 문자가 존재하면 앞에서 제거하면서 윈도우 이동
+    /**@note 이 부분에서 s[start]로 start를 움직이고, set에서 제거함
+     * @note Sliding Window의 가변 크기가 구현됨
+     * **/
+    while (set.has(char)) {
+      set.delete(s[start]);
+      start++;
+    }
+
+    set.add(char); // 새로운 문자 추가
+    /** @note 업데이트 시점은 set의 변경 이후에 실행함 **/
+    longest = Math.max(longest, end - start + 1); // 길이 갱신
+  }
+
+  return longest;
+};
+```
+
+## 오답 사고 과정
+
+### 접근 문제점
+
+1. 성능 최적화. reverse로 비교하는 비용이 너무 크다
+2. 예외처리: 한글자, 같은 두글자일때 등. 좀 더 추상적인 로직으로 개별 예외처리 안할 수도 있을텐데.
+
+```js
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var longestPalindrome = function (s) {
+  if (s.length === 1) return s;
+  let longest = 0,
+    start = 0,
+    n = s.length,
+    result = "";
+  while (start < n - 1) {
+    for (let end = start + 1; end < n; end++) {
+      let slice = s.slice(start, end + 1); // + 1 ?
+      let reverse = slice.split("").reverse().join("");
+      if (slice === reverse && slice.length >= longest) {
+        result = slice;
+        longest = slice.length;
+      }
+    }
+    start++;
+  }
+
+  return result || s[0];
+};
+```

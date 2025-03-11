@@ -1,0 +1,150 @@
+# LeetCode 3. Longest Substring - Sliding Windows
+
+[문제 링크](https://leetcode.com/problems/surrounded-regions)
+
+# Topics
+
+- Array
+- Depth-First Search
+- Breadth-First Search
+- Union Find
+- Matrix
+
+# 문제 포인트
+
+## 정답
+
+```js
+/**
+ * @param {character[][]} board
+ * @return {void} Do not return anything, modify board in-place instead.
+ */
+var solve = function (board) {
+  if (!board.length || !board[0].length) return;
+
+  let rSize = board.length,
+    cSize = board[0].length;
+  let directions = [
+    [1, 0],
+    [0, 1],
+    [-1, 0],
+    [0, -1],
+  ];
+
+  // 가장자리에 연결된 'O'를 찾고 'S'로 변경 (보존 처리)
+  function dfs(r, c) {
+    if (r < 0 || c < 0 || r >= rSize || c >= cSize || board[r][c] !== "O") {
+      return;
+    }
+    board[r][c] = "S"; // 가장자리에 연결된 'O'는 보존
+    for (let [dr, dc] of directions) {
+      dfs(r + dr, c + dc);
+    }
+  }
+
+  // 1. 가장자리에서 DFS 탐색하여 'O' → 'S' 변경 (보존)
+  for (let r = 0; r < rSize; r++) {
+    dfs(r, 0);
+    dfs(r, cSize - 1);
+  }
+
+  for (let c = 0; c < cSize; c++) {
+    dfs(0, c);
+    dfs(rSize - 1, c);
+  }
+
+  // 2. 보드를 업데이트
+  for (let r = 0; r < rSize; r++) {
+    for (let c = 0; c < cSize; c++) {
+      if (board[r][c] === "O") {
+        board[r][c] = "X"; // 감싸진 'O' → 'X'
+      } else if (board[r][c] === "S") {
+        board[r][c] = "O"; // 보존된 'S' → 원래대로 'O'
+      }
+    }
+  }
+};
+```
+
+## 오답 사고 과정
+
+### 접근 문제점
+
+1. DFS 방문 로직 오류 (dfs 내부 조건 오류)
+
+- if (visited[r][c]) return false → 이미 방문한 곳을 다시 방문하지 않도록 하는 것은 맞지만, dfs가 참/거짓을 반환해야 하는 이유가 불분명함.
+- isChange = dfs([nr, nc]) 부분에서 true를 반환하면 board[r][c] = "X"로 변경하는데, 모든 경로를 탐색한 후 변환 여부를 결정해야 함.
+- 즉, 인접한 모든 'O'를 방문한 후 변경 여부를 판단해야 함.
+
+2. 경계 조건 처리 오류 (isCurrentEdge 활용 문제)
+
+- isCurrentEdge가 true면 즉시 false를 반환하는 것은 틀림.
+- 가장자리에 있는 'O'를 발견하면 해당 영역 전체를 보존해야 함.
+- false를 반환해도 인접 노드가 영향을 받지 않음 → 가장자리에 연결된 모든 'O'를 변경하지 않도록 표기하는 것이 핵심.
+
+3. 보드 업데이트 타이밍 문제 (board[r][c] = "X")
+
+- DFS 도중 바로 "X"로 변환하면 안 됨.
+- 탐색 중인 'O'가 실제로 감싸져 있는지 확정되지 않은 상태에서 변경되면 오답 가능성 증가.
+- 모든 DFS가 완료된 후, 감싸진 'O'를 'X'로 변환해야 함.
+
+```js
+/**
+ * @param {character[][]} board
+ * @return {void} Do not return anything, modify board in-place instead.
+ */
+var solve = function (board) {
+  let rSize = board.length,
+    cSize = board[0].length;
+  let visited = Array.from({ length: rSize }, () => Array(cSize).fill(false));
+  let offset = [
+    [1, 0],
+    [0, 1],
+    [-1, 0],
+    [0, -1],
+  ];
+
+  // dfs t/f 반환. t면 X로 바꾼다, f면 바꾸지 않는다.
+  function dfs([r, c]) {
+    if (visited[r][c]) return false;
+    visited[r][c] = true;
+
+    const isCurrentEdge =
+      r === 0 || c === 0 || r === rSize - 1 || c === cSize - 1;
+
+    // 인접이 X인 경우, 연결된 모든 O가 X라면 바꿔야함
+    if (board[r][c] === "X") return true;
+    // 또는 O가 가장 자리에 있다면 X로 바꿀 수 없음
+    if (board[r][c] === "O" && isCurrentEdge) return false;
+
+    // 현재 노드 = "O" 인접 노드에 따라 자기 자신이 바뀜
+    // 1. 인접 노드를 모두 방문하고,
+    // 2. 자기 자신의 바꾸는 여지를 정함.
+
+    // 인접 노드 방문 전에 현재 O를 X로 바꾸는 로직이 필요하다
+    // O
+
+    /**
+        목적: dfs가 tf를 반환하여 인접 노드 방문한 결과값이 t/f를 반환하게 한다.
+        조건:
+        - 모든 인접이 X이면? 현재 노드를 X로 바꾼다
+        - 모든 인접이 X가 아니면? O인 노드로 이동한다
+        - 현재 노드의 r, c가 0이나 r,cSize-1이면? 변환하지 않는다 - 위에서 false 변환
+         **/
+
+    for (let [or, oc] of offset) {
+      let [nr, nc] = [r + or, c + oc];
+      let isChange = false;
+      if (nr >= 0 && nc >= 0 && nr < rSize && c < cSize && !visited[nr][nc]) {
+        isChange = dfs([nr, nc]);
+        if (isChange) {
+          board[r][c] = "X";
+        }
+      }
+    }
+    return isCurrentEdge;
+  }
+  // board 자체를 dfs 내부에서 변환한 뒤 리턴.
+  return board;
+};
+```

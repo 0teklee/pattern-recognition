@@ -1,0 +1,97 @@
+# LeetCode 94. Binary Tree Inorder Traverse
+
+[문제 링크](https://leetcode.com/problems/binary-tree-inorder-traversal/)
+
+# Topics
+
+- Stack
+- Tree
+- Depth-First Search
+- Binary Tree
+
+# 문제 포인트
+
+1. 연결 리스트의 현재, 다음 포인터 연결
+2. **반복문**에서 다음 포인터 연결 로직
+
+- `count[i]`랑 현재 탐색 노드(`board[r][c]`)가 일치하지 않을 때 탐색 중단
+
+3. 방문 업데이트 시점의 중요성 (경로 탐색의 경우, 인접 노드 모두 방문한 이후)
+
+## 정답
+
+```js
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var longestPalindrome = function (s) {
+  if (s.length < 2) return s; // 한 글자면 그대로 반환
+
+  let start = 0,
+    maxLength = 1;
+
+  function expandAroundCenter(left, right) {
+    while (left >= 0 && right < s.length && s[left] === s[right]) {
+      left--;
+      right++;
+    }
+    return [left + 1, right - 1]; // 팰린드롬의 시작과 끝 인덱스 반환
+  }
+
+  for (let i = 0; i < s.length; i++) {
+    // 홀수 길이 팰린드롬
+    let [l1, r1] = expandAroundCenter(i, i);
+    // 짝수 길이 팰린드롬
+    let [l2, r2] = expandAroundCenter(i, i + 1);
+
+    if (r1 - l1 + 1 > maxLength) {
+      start = l1;
+      maxLength = r1 - l1 + 1;
+    }
+    if (r2 - l2 + 1 > maxLength) {
+      start = l2;
+      maxLength = r2 - l2 + 1;
+    }
+  }
+
+  return s.slice(start, start + maxLength);
+};
+```
+
+## 오답 사고 과정
+
+### 접근 문제점
+
+1. visited가 불필요한데 사용했음
+2. param으로 들어오는 root의 값처리를 제대로 못함
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+var inorderTraversal = function (root) {
+  let output = [];
+  let visited = new Set();
+  function dfs(root, cur) {
+    if (visited.has(cur) || !root?.val) return;
+    visited.add(cur);
+    output.push(root.val);
+
+    // 인접 노드 방문 중위 순회는 왼 -> 루트 -> 오
+    dfs(root, root?.left);
+    dfs(root, root?.right);
+  }
+  dfs(root, root?.val);
+  return output;
+};
+```

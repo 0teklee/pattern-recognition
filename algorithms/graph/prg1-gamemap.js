@@ -1,0 +1,79 @@
+class Queue {
+  constructor() {
+    this.items = [];
+    this.front = 0;
+    this.rear = 0;
+  }
+  push(data) {
+    this.items.push(data);
+    this.rear++;
+  }
+  pop() {
+    return this.items[this.front++];
+  }
+
+  isEmpty() {
+    return this.front === this.rear;
+  }
+}
+
+function bfs(map, start, target) {
+  let rows = map.length;
+  let cols = map[0].length;
+  let visited = Array.from({ length: rows }, () => Array(cols).fill(false));
+  let [tR, tC] = target;
+  const Q = new Queue();
+  const direction = [
+    [1, 0],
+    [0, 1],
+    [-1, 0],
+    [0, -1],
+  ];
+  Q.push([start, 0]);
+
+  while (!Q.isEmpty()) {
+    const [[prevR, prevC], dist] = Q.pop();
+
+    if (prevR == tR && prevC == tC) {
+      return dist;
+    }
+
+    for (let [r, c] of direction) {
+      let nextR = prevR + r;
+      let nextC = prevC + c;
+      if (
+        nextR < rows &&
+        nextC < cols &&
+        nextR >= 0 &&
+        nextC >= 0 &&
+        map[nextR][nextC] != 0 &&
+        !visited[nextR][nextC]
+      ) {
+        visited[nextR][nextC] = true;
+        Q.push([[nextR, nextC], dist + 1]);
+      }
+    }
+  }
+
+  return -1;
+}
+
+function solution(maps) {
+  let start = [0, 0];
+  let target = [maps.length - 1, maps[0].length - 1];
+
+  let dist = bfs(maps, start, target);
+
+  return dist;
+}
+
+console.log(
+  "result : ",
+  solution([
+    [1, 0, 1, 1, 1],
+    [1, 0, 1, 0, 1],
+    [1, 0, 1, 1, 1],
+    [1, 1, 1, 0, 1],
+    [0, 0, 0, 0, 1],
+  ]),
+);
