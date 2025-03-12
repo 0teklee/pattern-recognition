@@ -1,7 +1,7 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
-    "baseUrl": "../..",
+    "baseUrl": "./",
     "paths": {
       "@algorithms/*": ["algorithms/*"],
       "@uiux/*": ["uiux/*"],
@@ -15,13 +15,12 @@
     "jsxImportSource": "react"
   },
   "include": [
-    "algorithms/site/**/*",
-    "uiux/site/**/*",
-    "config/**/*"
+    "site/**/*",
   ],
   "exclude": [
     "node_modules",
-    "algorithms/content/*",
+    ".astro",
+    "algorithms/*",
     "dist"
   ]
 }
