@@ -2,10 +2,7 @@ import type { Config } from "tailwindcss";
 
 export default {
   darkMode: "class",
-  content: [
-    "../../algorithms/site/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}",
-    "../../uiux/site/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}",
-  ],
+  content: ["../**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   theme: {
     extend: {
       screens: {
