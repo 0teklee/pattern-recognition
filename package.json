@@ -1,19 +1,17 @@
 {
   "scripts": {
-    "dev": "astro dev --config config/astro/base.config.mjs",
-    "build": "npm run build:algorithms && npm run build:uiux",
+    "dev": "astro dev --config site/config/base.config.mjs",
+    "build": "npm run build",
+    "build:sub": "npm run build:algorithms && npm run build:uiux",
+    "build:algorithms": "astro build --config site/config/astro/algorithms.cofing.mjs",
+    "build:uiux": "astro build --config site/config/astro/uiux.cofing.mjs",
     "preview": "astro preview",
-    "dev:algorithms": "astro dev --config config/astro/algorithms.config.mjs",
-    "dev:uiux": "astro dev --config config/astro/uiux.cofing.mjs",
-    "build:algorithms": "astro build --config config/astro/algorithms.cofing.mjs",
-    "build:uiux": "astro build --config config/astro/uiux.cofing.mjs",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.1.1",
     "@astrojs/react": "^4.2.1",
     "@astrojs/tailwind": "^6.0.0",
-    "@astrojs/vue": "^5.0.7",
     "astro": "^5.4.3",
     "astro-embed": "^0.9.0",
     "astro-seo": "^0.8.4",
