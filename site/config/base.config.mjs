@@ -1,6 +1,6 @@
 import mdx from "@astrojs/mdx";
-import tailwind from "@astrojs/tailwind";
 import { defineConfig } from "astro/config";
+import tailwindcss from "@tailwindcss/vite";
 
 /**
  * @description 루트 경로 포함 사이트 전체 설정.
@@ -18,20 +18,15 @@ import { defineConfig } from "astro/config";
 export const baseConfig = {
   site: "https://patterns.leetekwoo.com",
   srcDir: "./site",
-  outputDir: "../dist",
-  integrations: [
-    mdx(),
-    tailwind({
-      configFile: "./site/config/tailwind/tailwind.config.ts",
-      postcssConfig: "./site/config/tailwind/postcss.config.ts",
-    }),
-  ],
+  outputDir: "../../dist",
+  integrations: [mdx()],
   vite: {
     resolve: {
       alias: {
-        node_modules: "../node_modules",
+        node_modules: "../../node_modules",
       },
     },
+    plugins: [tailwindcss()],
   },
 };
 
