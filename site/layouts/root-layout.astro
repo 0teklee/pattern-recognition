@@ -1,0 +1,41 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+import Footer from "site/components/footer.astro";
+import Sidebar from "site/components/sidebar.astro";
+import Header from "site/components/header.astro";
+const { title, description } = Astro.props as Props;
+const titleString = `Pattern Recognition${title ? ` - ${title}` : ""}`;
+const descriptionString = description ? `${description}` : "";
+---
+
+<!doctype html>
+<html lang="kr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/site/global.css" />
+    <title>{titleString} Pattern Recognition</title>
+    <meta name="description" content={descriptionString} />
+  </head>
+  <body
+    class="bg-background text-primary flex min-h-dvh flex-col overflow-hidden"
+  >
+    <Header />
+    <div class="bg container flex max-h-[80dvh] grow">
+      <!-- info Side Nav -->
+      <Sidebar />
+      <!-- info 페이지 컨텐츠 컨테이너 -->
+      <main class="flex-1 p-4 sm:p-6">
+        <!-- info
+         {algo | uiux}.template injection
+         개별 페이지: 동적 컨텐츠 주입 -->
+        <slot />
+      </main>
+    </div>
+    <Footer />
+  </body>
+</html>

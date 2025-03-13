@@ -1,0 +1,40 @@
+<header
+  class="bg-primary-bg text-primary border-border sticky top-0 w-full border-b"
+>
+  <div class="flex items-center justify-between px-4 py-4 lg:px-8">
+    <a href="/" class="text-lg font-bold break-words sm:text-2xl"
+      >PATTERN RECOGNITION</a
+    >
+
+    <!-- info Mobile Toggle Menu -->
+    <details class="group relative md:hidden">
+      <summary class="text-primary hover:text-theme cursor-pointer">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="30"
+          viewBox="0 0 30 30"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </summary>
+      <nav
+        class={`
+        absolute top-0 right-0 -translate-x-1/2 z-10
+        flex w-fit flex-col gap-4 p-4 
+        group-open:opacity-100 opacity-0
+        transition-opacity duration-300 
+        bg-background border-primary text-primary 
+        rounded-sm border shadow-md`}
+      >
+        <a href="/" class="hover:text-theme">Home</a>
+        <a href="/algorithms" class="hover:text-theme">Algorithms</a>
+        <a href="/uiux" class="hover:text-theme">UI/UX</a>
+      </nav>
+    </details>
+  </div>
+</header>
