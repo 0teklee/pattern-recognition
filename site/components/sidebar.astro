@@ -1,0 +1,42 @@
+<aside
+  class="bg-primary-bg text-primary border-border hidden h-screen w-64 border-r p-4 md:block"
+>
+  <nav class="flex flex-col gap-2">
+    <!-- TODO Dynamic contents injection from {@/{algorithms | uiux}}-->
+    <!-- Home -->
+    <a href="/" class="hover:text-secondary font-semibold">🏠 Home</a>
+
+    <!--  Algorithms (폴더) -->
+    <details class="group">
+      <summary
+        class="hover:text-secondary flex cursor-pointer items-center justify-between font-semibold"
+      >
+        📂 Algorithms
+        <span class="group-open:rotate-90">▶</span>
+      </summary>
+      <div class="mt-2 ml-4 flex flex-col gap-1">
+        <a href="/algorithms/sorting" class="hover:text-secondary">📄 Sorting</a
+        >
+        <a href="/algorithms/graph" class="hover:text-secondary">📄 Graph</a>
+        <a href="/algorithms/dp" class="hover:text-secondary"
+          >📄 Dynamic Programming</a
+        >
+      </div>
+    </details>
+
+    <!-- UI/UX (폴더) -->
+    <details class="group">
+      <summary
+        class="hover:text-secondary flex cursor-pointer items-center justify-between font-semibold"
+      >
+        🎨 UI/UX
+        <span class="group-open:rotate-90">▶</span>
+      </summary>
+      <div class="mt-2 ml-4 flex flex-col gap-1">
+        <a href="/uiux/buttons" class="hover:text-secondary">📄 Buttons</a>
+        <a href="/uiux/forms" class="hover:text-secondary">📄 Forms</a>
+        <a href="/uiux/grids" class="hover:text-secondary">📄 Grid Layouts</a>
+      </div>
+    </details>
+  </nav>
+</aside>
