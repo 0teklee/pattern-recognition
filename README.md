@@ -18,6 +18,7 @@ IS TO LEARN PATTERNS OF
 ### Progress
 1. **PR-1** : [Project Settings & Tech Spec](https://github.com/0teklee/pattern-recognition/pull/1)
 2. **PR-2** : [Astro Optimized Structure](https://github.com/0teklee/pattern-recognition/pull/2)
+3. **PR-3** : [Migration & Configuration Fix](https://github.com/0teklee/pattern-recognition/pull/3)
 
 ## VERSIONS
 
