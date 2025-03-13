@@ -1,26 +1,24 @@
 {
-  "extends": "astro/tsconfigs/strict",
+  "extends": "astro/tsconfigs/base",
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@algorithms/*": ["algorithms/*"],
-      "@uiux/*": ["uiux/*"],
-      "@config/*": ["config/*"]
+      "@algorithms/*": ["site/algorithms/*"],
+      "@uiux/*": ["site/uiux/*"],
+      "@config/*": ["site/config/*"]
     },
     "allowJs": true,
     "moduleResolution": "bundler",
     "module": "ESNext",
     "types": ["astro/client"],
     "jsx": "preserve",
-    "jsxImportSource": "react"
+    "jsxImportSource": "react",
+    "plugins": [
+      {
+        "name": "@astrojs/ts-plugin"
+      }
+    ]
   },
-  "include": [
-    "site/**/*",
-  ],
-  "exclude": [
-    "node_modules",
-    ".astro",
-    "algorithms/*",
-    "dist"
-  ]
+  "include": ["site/**/*"],
+  "exclude": ["node_modules", "algorithms/*", "dist"]
 }
