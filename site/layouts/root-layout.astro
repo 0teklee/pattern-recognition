@@ -1,13 +1,13 @@
 ---
-interface Props {
-  title?: string;
-  description?: string;
-}
+import type { MetaTagProps } from "@site-types/props";
 
-import Footer from "site/components/footer.astro";
-import Sidebar from "site/components/sidebar.astro";
-import Header from "site/components/header.astro";
-const { title, description } = Astro.props as Props;
+import Footer from "@site-ui/footer.astro";
+import Sidebar from "@site-ui/sidebar.astro";
+import Header from "@site-ui/header.astro";
+
+interface Props extends MetaTagProps {}
+
+const { title, description } = Astro.props;
 const titleString = `Pattern Recognition${title ? ` - ${title}` : ""}`;
 const descriptionString = description ? `${description}` : "";
 ---
