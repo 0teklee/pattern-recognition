@@ -20,6 +20,7 @@ IS TO LEARN PATTERNS OF
 2. **PR-2** : [Astro Optimized Structure](https://github.com/0teklee/pattern-recognition/pull/2)
 3. **PR-3** : [Migration & Configuration Fix](https://github.com/0teklee/pattern-recognition/pull/3)
 4. **PR-4** : [Common Static UI: Layouts & Components](https://github.com/0teklee/pattern-recognition/pull/4)
+5. **PR-5** : [Refactoring TS config + Creating Astro types with comments](https://github.com/0teklee/pattern-recognition/pull/5)
 
 ## VERSIONS
 
