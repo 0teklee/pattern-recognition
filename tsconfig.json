@@ -1,11 +1,22 @@
 {
   "extends": "astro/tsconfigs/base",
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
-      "@algorithms/*": ["site/algorithms/*"],
-      "@uiux/*": ["site/uiux/*"],
-      "@config/*": ["site/config/*"]
+      /** INFO @ as project root - global configs, build-deploy scripts **/
+      "@/*": ["*"],
+      "@scripts/*": [".github"],
+      "@settings/*": ["*.json", "*.mjs", "*.ts"],
+      "@doc/*": ["doc/*"],
+      /** Info @content is dynamic contents **/
+      "@content/*": ["algorithms/*", "uiux/*"],
+      /** Info @site is Astro related path
+      @site-{ config | types | ui } includes common modules
+      **/
+      "@site/*": ["site/*"],
+      "@site-config/*": ["site/config/*"],
+      "@site-types/*": ["site/types/*"],
+      "@site-ui/*": ["site/layouts/*", "site/components/*"]
     },
     "allowJs": true,
     "moduleResolution": "bundler",
@@ -17,8 +28,9 @@
       {
         "name": "@astrojs/ts-plugin"
       }
-    ]
+    ],
+    "verbatimModuleSyntax": true
   },
-  "include": ["site/**/*"],
-  "exclude": ["node_modules", "algorithms/*", "dist"]
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["node_modules", ".astro", "dist"]
 }
