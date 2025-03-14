@@ -1,10 +1,10 @@
 <section class="flex flex-col items-start gap-y-12 px-4 lg:px-6">
-  <header class="border-border border-b pb-6">
+  <header class="border-border border-b px-6 pb-6 lg:px-8">
     <h1 class="text-primary text-2xl font-bold text-pretty sm:text-3xl">
       <slot name="title" />
     </h1>
   </header>
-  <div class="container flex grow flex-col items-start gap-y-4">
-    <slot name="list" />
-  </div>
+  <article class="container flex grow flex-col items-start gap-y-4">
+    <slot name="content" />
+  </article>
 </section>
