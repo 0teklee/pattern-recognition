@@ -8,15 +8,18 @@
       "@scripts/*": [".github"],
       "@settings/*": ["*.json", "*.mjs", "*.ts"],
       "@doc/*": ["doc/*"],
-      /** Info @content is dynamic contents **/
-      "@content/*": ["algorithms/*", "uiux/*"],
+
       /** Info @site is Astro related path
       @site-{ config | types | ui } includes common modules
       **/
       "@site/*": ["site/*"],
       "@site-config/*": ["site/config/*"],
       "@site-types/*": ["site/types/*"],
-      "@site-ui/*": ["site/layouts/*", "site/components/*"]
+      "@site-ui/*": ["site/layouts/*", "site/components/*"],
+      /** Info @content is dynamic contents **/
+      "@content/*": ["site/content/*"],
+      "@content:algorithms": ["site/content/algorithms"],
+      "@content:uiux": ["site/content/uiux"]
     },
     "allowJs": true,
     "moduleResolution": "bundler",
