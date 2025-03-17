@@ -1,10 +1,11 @@
+import type { SearchParam } from "@site/types/query.ts";
 import type { RouteKeys } from "@site/types/routes.ts";
 
 /**@type {BaseSchema}**/
-interface BaseContentSchema<T extends RouteKeys> {
+interface BaseContentSchema<T extends RouteKeys = "index"> {
   title: string;
   createdAt: string;
-  tags: string[];
+  tags: SearchParam<T>;
   description?: string;
   path: [T, ...string[]];
 }
