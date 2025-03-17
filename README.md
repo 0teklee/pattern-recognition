@@ -22,6 +22,7 @@ IS TO LEARN PATTERNS OF
 4. **PR-4** : [Common Static UI: Layouts & Components](https://github.com/0teklee/pattern-recognition/pull/4)
 5. **PR-5** : [Refactoring TS config + Creating Astro types with comments](https://github.com/0teklee/pattern-recognition/pull/5)
 6. **PR-6** : [Common Statuc UI : Dynamic Contents Layouts](https://github.com/0teklee/pattern-recognition/pull/6)
+7. **PR-7** " [Content Schema & Type definition](https://github.com/0teklee/pattern-recognition/pull/7)
 
 ## VERSIONS
 
