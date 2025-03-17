@@ -18,7 +18,7 @@ const AlgorithmsZodSchema = baseSchema.extend({
 /** @see UISchema **/
 const UIUXZodSchema = baseSchema.extend({
   path: z.tuple([z.literal("uiux")]).rest(z.string()),
-  tags: z.object({}),
+  tags: z.record(z.unknown()),
 });
 
 /** @see AlgorithmContentSchema **/
