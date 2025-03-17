@@ -1,8 +1,8 @@
+import type { SearchParam } from "@site-types/query";
 import type { HTMLAttributes } from "astro/types";
-import type { SearchParam } from "./search-params.ts";
-import type { Domains, SubRoot } from "./domains";
+import type { RouteKeys, RouteType, SubRoutes } from "site/types/routes.ts";
 
-// Inject meta title/description in @site/pages/*
+// Inject meta title/description in @site/pages
 export interface MetaTagProps extends Omit<HTMLAttributes<"meta">, "dir"> {
   title?: string;
   description?: string;
@@ -11,13 +11,16 @@ export interface MetaTagProps extends Omit<HTMLAttributes<"meta">, "dir"> {
 /** Inject & Rendering {title | desc | searchParam}
  *  in @site/pages/{algo | uiux}/index.astro **/
 export interface ContentListProps extends MetaTagProps {
-  dir: SubRoot;
-  searchParam?: SearchParam<SubRoot> | null;
+  path: SubRoutes;
+  searchParam?: SearchParam<SubRoutes> | null;
 }
 
-export interface ContentMetaDataProps {
+/** Inject & Rendering {title | desc | searchParam}
+ *  in @site/pages/{algo | uiux}/{path}/index.astro
+ *  **/
+export interface ContentMetaDataProps<T extends RouteKeys> {
   title: string;
   createdAt: string;
   tags: string[];
-  dir: [Domains, ...string[]];
+  path: [RouteType[T], ...string[]];
 }
