@@ -1,0 +1,21 @@
+---
+import Tags from "site/components/tags.astro";
+import { SearchParam } from "site/types/query";
+interface Props {
+  title: string;
+  createdAt: string;
+  tags: SearchParam<"index">;
+}
+
+const { title, createdAt, tags, path } = Astro.props;
+---
+
+<header class="border-border w-full border-b pb-6">
+  <h1 class="text-primary w-full text-2xl font-bold text-pretty sm:text-3xl">
+    {title}
+  </h1>
+  <div class="mt-1 space-y-4">
+    <p class="text-secondary text-sm">{createdAt}</p>
+    <Tags path={path[0]} tags={tags} size="base" />
+  </div>
+</header>

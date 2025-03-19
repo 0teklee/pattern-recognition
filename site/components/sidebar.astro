@@ -1,13 +1,56 @@
+---
+import { getCollection } from "astro:content";
+import { Routes } from "site/types/routes";
+
+const currentPathname = Astro.url.pathname;
+
+// 알고리즘 콘텐츠 가져오기
+const algorithmPosts =
+  process.env.ALGO_BUILD === "true" ? await getCollection("algorithms") : [];
+
+// UI/UX 콘텐츠 가져오기 - 스크립트 분기
+const uiuxPosts =
+  process.env.ALGO_BUILD === "false" ? [] : await getCollection("uiux");
+
+function groupContentByFolder(posts) {
+  if (posts.length === 0) {
+    return [];
+  }
+  // 폴더별 게시물 그룹화
+  const folderGroups = {};
+
+  posts.forEach((post) => {
+    const pathParts = post.id.split("/");
+    if (pathParts.length > 1) {
+      const folder = pathParts[0]; // 첫 번째 부분은 폴더 이름
+
+      if (!folderGroups[folder]) {
+        folderGroups[folder] = [];
+      }
+
+      folderGroups[folder].push({
+        id: post.id,
+        title: post.data.title || post.id,
+      });
+    }
+  });
+
+  return Object.entries(folderGroups);
+}
+
+const algoFolders = groupContentByFolder(algorithmPosts);
+const uiuxFolders = groupContentByFolder(uiuxPosts);
+---
+
 <aside
-  class="bg-primary-bg text-primary border-border hidden h-screen w-64 border-r p-4 md:block"
+  class="bg-primary-bg text-primary border-border hidden max-w-64 grow border-r p-4 md:block"
 >
   <nav class="flex flex-col gap-2">
-    <!-- TODO Dynamic contents injection from {@/{algorithms | uiux}}-->
     <!-- Home -->
     <a href="/" class="hover:text-secondary font-semibold">🏠 Home</a>
 
-    <!--  Algorithms (폴더) -->
-    <details class="group">
+    <!-- Algorithms 섹션 -->
+    <details class="group" open>
       <summary
         class="hover:text-secondary flex cursor-pointer items-center justify-between font-semibold"
       >
@@ -15,16 +58,33 @@
         <span class="group-open:rotate-90">▶</span>
       </summary>
       <div class="mt-2 ml-4 flex flex-col gap-1">
-        <a href="/algorithms/sorting" class="hover:text-secondary">📄 Sorting</a
+        <a href={Routes.algorithms} class="hover:text-secondary font-semibold"
+          >Index</a
         >
-        <a href="/algorithms/graph" class="hover:text-secondary">📄 Graph</a>
-        <a href="/algorithms/dp" class="hover:text-secondary"
-          >📄 Dynamic Programming</a
-        >
+        {
+          algoFolders.map(([folder, files]) => (
+            <details class="group" open>
+              <summary class="hover:text-secondary flex cursor-pointer items-center justify-between">
+                📁 {folder}
+                <span class="group-open:rotate-90">▶</span>
+              </summary>
+              <div class="mt-1 ml-4 flex flex-col gap-1">
+                {files.map((file) => (
+                  <a
+                    href={`/algorithms/${file.id}`}
+                    class={`hover:text-secondary text-sm ${`/algorithms/${file.id}` === currentPathname ? "text-theme" : ""} `}
+                  >
+                    📄 {file.title}
+                  </a>
+                ))}
+              </div>
+            </details>
+          ))
+        }
       </div>
     </details>
 
-    <!-- UI/UX (폴더) -->
+    <!-- UI/UX 섹션 -->
     <details class="group">
       <summary
         class="hover:text-secondary flex cursor-pointer items-center justify-between font-semibold"
@@ -33,9 +93,29 @@
         <span class="group-open:rotate-90">▶</span>
       </summary>
       <div class="mt-2 ml-4 flex flex-col gap-1">
-        <a href="/uiux/buttons" class="hover:text-secondary">📄 Buttons</a>
-        <a href="/uiux/forms" class="hover:text-secondary">📄 Forms</a>
-        <a href="/uiux/grids" class="hover:text-secondary">📄 Grid Layouts</a>
+        <a href={Routes.uiux} class="hover:text-secondary font-semibold"
+          >Index</a
+        >
+        {
+          uiuxFolders.map(([folder, files]) => (
+            <details class="group">
+              <summary class="hover:text-secondary flex cursor-pointer items-center justify-between">
+                📁 {folder}
+                <span class="group-open:rotate-90">▶</span>
+              </summary>
+              <div class="mt-1 ml-4 flex flex-col gap-1">
+                {files.map((file) => (
+                  <a
+                    href={`/uiux/${file.id}`}
+                    class="hover:text-secondary text-sm"
+                  >
+                    📄 {file.id}
+                  </a>
+                ))}
+              </div>
+            </details>
+          ))
+        }
       </div>
     </details>
   </nav>

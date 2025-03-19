@@ -1,0 +1,52 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Tags from "site/components/tags.astro";
+import { SubRoutes } from "site/types/routes";
+
+interface Props {
+  items: Array<CollectionEntry<SubRoutes>>;
+}
+
+const { items } = Astro.props;
+const subRoute: SubRoutes = items[0]?.data.path[0];
+---
+
+<ol class="flex w-full flex-col gap-4 sm:gap-6">
+  {
+    items?.map((item) => {
+      // 태그 데이터 추출
+      const itemTags = item.data.tags || {};
+
+      const itemTagsValues = Object.values(item.data.tags || {})
+        .filter((tag) => tag && typeof tag === "string")
+        .join(",");
+
+      // 경로 데이터 추출 (필터링용)
+      const itemCategory = item.data.tags.category;
+
+      const itemDataAttr = Object.entries(itemTags).reduce(
+        (attrs, [key, value]) => {
+          attrs[`data-tag-${key}`] = value;
+          return attrs;
+        },
+        {},
+      );
+
+      return (
+        <li
+          id={item.data.id}
+          class="ring-theme group hover:border-theme w-full border-separate border-b py-2 transition-all duration-200 hover:ring sm:border-s-4 sm:border-b-0 sm:pl-3 md:py-3"
+          data-category={itemCategory}
+          data-tags={itemTagsValues}
+          {...itemDataAttr}
+        >
+          <a class="group-hover:text-theme" href={`/${subRoute}/${item.id}`}>
+            {item.data.title}
+          </a>
+          <Tags path={subRoute} tags={item.data.tags} size="sm" />
+          <p class="text-sm">{item.data?.description}</p>
+        </li>
+      );
+    })
+  }
+</ol>
