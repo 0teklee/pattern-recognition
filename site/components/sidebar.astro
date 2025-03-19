@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import { Routes } from "site/types/routes";
 
 const currentPathname = Astro.url.pathname;
 
@@ -9,11 +10,11 @@ const algorithmPosts =
 
 // UI/UX 콘텐츠 가져오기 - 스크립트 분기
 const uiuxPosts =
-  process.env.ALGO_BUILD === "true" ? [] : await getCollection("uiux");
+  process.env.ALGO_BUILD === "false" ? [] : await getCollection("uiux");
 
 function groupContentByFolder(posts) {
   if (posts.length === 0) {
-    return {};
+    return [];
   }
   // 폴더별 게시물 그룹화
   const folderGroups = {};
@@ -30,12 +31,11 @@ function groupContentByFolder(posts) {
       folderGroups[folder].push({
         id: post.id,
         title: post.data.title || post.id,
-        slug: post.id,
       });
     }
   });
 
-  return folderGroups;
+  return Object.entries(folderGroups);
 }
 
 const algoFolders = groupContentByFolder(algorithmPosts);
@@ -58,8 +58,11 @@ const uiuxFolders = groupContentByFolder(uiuxPosts);
         <span class="group-open:rotate-90">▶</span>
       </summary>
       <div class="mt-2 ml-4 flex flex-col gap-1">
+        <a href={Routes.algorithms} class="hover:text-secondary font-semibold"
+          >Index</a
+        >
         {
-          Object.entries(algoFolders).map(([folder, files]) => (
+          algoFolders.map(([folder, files]) => (
             <details class="group" open>
               <summary class="hover:text-secondary flex cursor-pointer items-center justify-between">
                 📁 {folder}
@@ -68,8 +71,8 @@ const uiuxFolders = groupContentByFolder(uiuxPosts);
               <div class="mt-1 ml-4 flex flex-col gap-1">
                 {files.map((file) => (
                   <a
-                    href={`/algorithms/${file.slug}`}
-                    class={`hover:text-secondary text-sm ${`/algorithms/${file.slug}` === currentPathname ? "text-theme" : ""} `}
+                    href={`/algorithms/${file.id}`}
+                    class={`hover:text-secondary text-sm ${`/algorithms/${file.id}` === currentPathname ? "text-theme" : ""} `}
                   >
                     📄 {file.title}
                   </a>
@@ -90,8 +93,11 @@ const uiuxFolders = groupContentByFolder(uiuxPosts);
         <span class="group-open:rotate-90">▶</span>
       </summary>
       <div class="mt-2 ml-4 flex flex-col gap-1">
+        <a href={Routes.uiux} class="hover:text-secondary font-semibold"
+          >Index</a
+        >
         {
-          Object.entries(uiuxFolders).map(([folder, files]) => (
+          uiuxFolders.map(([folder, files]) => (
             <details class="group">
               <summary class="hover:text-secondary flex cursor-pointer items-center justify-between">
                 📁 {folder}
@@ -100,10 +106,10 @@ const uiuxFolders = groupContentByFolder(uiuxPosts);
               <div class="mt-1 ml-4 flex flex-col gap-1">
                 {files.map((file) => (
                   <a
-                    href={`/uiux/${file.slug}`}
+                    href={`/uiux/${file.id}`}
                     class="hover:text-secondary text-sm"
                   >
-                    📄 {file.title}
+                    📄 {file.id}
                   </a>
                 ))}
               </div>
