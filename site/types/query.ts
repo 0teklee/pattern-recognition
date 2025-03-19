@@ -4,6 +4,7 @@ import type { KeysOf, SubsetOfKeys } from "@site/types/utility.ts";
 /**@see QueryKeyTypes **/
 export const Queries = {
   category: "category",
+  path: "path",
   lang: "lang",
   component: "component",
   framework: "framework",
@@ -35,7 +36,7 @@ type AlgoParam = Partial<Record<AlgorithmQueryKeys, string>>;
 type UIUXParam = Partial<Record<UISQueryKeys, string>>;
 
 // searchParam 타입: path에 따라 달라짐
-type SearchParam<T> = T extends RouteType["algorithms"]
+type SearchParam<T = "index"> = T extends RouteType["algorithms"]
   ? AlgoParam
   : T extends RouteType["uiux"]
     ? UIUXParam
@@ -47,4 +48,5 @@ export type {
   SearchParam,
   AlgoParam,
   UIUXParam,
+  QueryKeys,
 };
