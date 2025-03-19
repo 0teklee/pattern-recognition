@@ -1,0 +1,37 @@
+---
+import BaseLayout from "@site-ui/root-layout.astro";
+import PostLayout from "@site-ui/post-layout.astro";
+
+import PostLayout from "@site-ui/post-layout.astro";
+import BaseLayout from "@site-ui/root-layout.astro";
+import { GetStaticPaths, InferGetStaticPropsType } from "astro";
+import { getCollection, render } from "astro:content";
+import PostHeader from "site/components/post-header.astro";
+
+export const getStaticPaths = (async () => {
+  const posts =
+    process.env.ALGO_BUILD === "true" ? [] : await getCollection("uiux");
+
+  return posts.map((post) => ({
+    params: { id: post.id },
+    props: post,
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props extends InferGetStaticPropsType<typeof getStaticPaths> {}
+const props = Astro.props;
+const { Content } = await render(props);
+---
+
+<!--TODO 타입 추론 개선-->
+<BaseLayout title="UI/UX" description="Pattern Recognition - UI/UX">
+  <PostLayout>
+    <PostHeader
+      title={props?.data.title}
+      createdAt={props?.data.createdAt}
+      tags={props?.data.tags}
+      slot="header"
+    />
+    <Content />
+  </PostLayout>
+</BaseLayout>
