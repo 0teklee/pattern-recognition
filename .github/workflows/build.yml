@@ -1,0 +1,83 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "site/content/**"
+      - "site/config/**"
+      - "site/components/**"
+      - "site/layouts/**"
+      - "site/pages/**"
+      - "package.json"
+      - "package-lock.json"
+  workflow_dispatch:
+env:
+  PRODUCTION_BUILD_PATH: dist/production
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      algorithms: ${{ steps.filter.outputs.algorithms }}
+      uiux: ${{ steps.filter.outputs.uiux }}
+      configs: ${{ steps.filter.outputs.configs }}
+      deps: ${{ steps.filter.outputs.deps }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Check for changes
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: "algorithms:\n- 'site/content/algorithms/**'\n- 'site/pages/algorithms/**'\n- 'site/components/**/!(uiux-*).astro'\nuiux:\n- 'site/content/uiux/**'\n- 'site/pages/uiux/**'\n- 'site/components/**/uiux-*.astro'\nconfigs:\n- 'site/config/**'\n- 'site/layouts/**'\ndeps:\n- 'package.json'\n- 'package-lock.json'  \n\"\n"
+  build:
+    needs: detect-changes
+    runs-on: ubuntu-latest
+    if: ${{ needs.detect-changes.outputs.algorithms == 'true' || needs.detect-changes.outputs.uiux == 'true' || needs.detect-changes.outputs.configs == 'true' || needs.detect-changes.outputs.deps == 'true' || github.event_name == 'workflow_dispatch' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Build production
+        run: npm run build:prod
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-build
+          path: ${{ env.PRODUCTION_BUILD_PATH }}
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout production branch
+        uses: actions/checkout@v4
+        with:
+          ref: production
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: production-build
+          path: ${{ env.PRODUCTION_BUILD_PATH }}
+      - name: Configure Git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Commit and push to production
+        run: |
+          git add ${{ env.PRODUCTION_BUILD_PATH }}
+          git commit -m "chore: update production build from main branch"
+          git push origin production
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: patterns-leetekwoo
+          directory: ${{ env.PRODUCTION_BUILD_PATH }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
