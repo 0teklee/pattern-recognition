@@ -24,6 +24,7 @@ IS TO LEARN PATTERNS OF
 6. **PR-6** : [Common Statuc UI : Dynamic Contents Layouts](https://github.com/0teklee/pattern-recognition/pull/6)
 7. **PR-7** : [Content Schema & Type definition](https://github.com/0teklee/pattern-recognition/pull/7)
 8. **PR-8** : [Refactoring Contents Directions](https://github.com/0teklee/pattern-recognition/pull/8)
+9. **PR-9** : [Get contents: getCollection + Dynamic static route with getStaticPaths](https://github.com/0teklee/pattern-recognition/pull/9)
 
 ## VERSIONS
 
