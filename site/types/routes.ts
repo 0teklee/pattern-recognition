@@ -11,4 +11,6 @@ type RouteKeys = KeysOf<RouteType>;
 
 type SubRoutes = SubsetOfKeys<RouteType, "algorithms" | "uiux">;
 
-export type { Routes, SubRoutes, RouteKeys, RouteType };
+export { Routes };
+
+export type { SubRoutes, RouteKeys, RouteType };
