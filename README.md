@@ -27,6 +27,8 @@ IS TO LEARN PATTERNS OF
 9. **PR-9** : [Get contents: getCollection + Dynamic static route with getStaticPaths](https://github.com/0teklee/pattern-recognition/pull/9)
 10. **PR-10** : [Dynamic Content Reusable Components](https://github.com/0teklee/pattern-recognition/pull/10)
 11. **PR-11** : [Add Common Filtering UI & Event Handle logic for List](https://github.com/0teklee/pattern-recognition/pull/11)
+12. **PR-12** : [Apply changes from previous PR(9~12)]([https://github.com/0teklee/pattern-recognition/pull/11](https://github.com/0teklee/pattern-recognition/pull/12)
+
 
 ## VERSIONS
 
