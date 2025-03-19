@@ -22,18 +22,21 @@ const UIUXZodSchema = baseSchema.extend({
 });
 
 /** @see AlgorithmContentSchema **/
-const algorithms = defineCollection({
-  loader: glob({ base: "/algorithms", pattern: "**/*.mdx" }),
+export const algorithms = defineCollection({
+  loader: glob({ base: "site/content/algorithms", pattern: "**/*.mdx" }),
   schema: AlgorithmsZodSchema,
 });
 
 /** @see UIUXContentSchema **/
-const uiux = defineCollection({
+export const uiux = defineCollection({
   loader: glob({
-    base: "./uiux",
+    base: "site/content/uiux",
     pattern: "**/*.mdx",
   }),
   schema: UIUXZodSchema,
 });
 
-export const collections = { algorithms, uiux };
+export const collections =
+  process.env.SCOPE === "algo" || process.env.SCOPE === "prd"
+    ? { algorithms }
+    : { algorithms, uiux };

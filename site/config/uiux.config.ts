@@ -1,6 +1,7 @@
-import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
-import { baseConfig } from "./base.config.mjs";
+import type { AstroUserConfig } from "astro";
+import { defineConfig } from "astro/config";
+import { baseConfig } from "./base.config.ts";
 
 /**
  * @type {Object}
@@ -13,10 +14,11 @@ import { baseConfig } from "./base.config.mjs";
 const uiuxConfig = {
   ...baseConfig,
   integrations: [...(baseConfig.integrations || []), react()],
-  outDir: "../dist/uiux",
+  outDir: "dist/dev/build-uiux",
   build: {
     format: "directory",
+    assets: "asset",
   },
-};
+} satisfies AstroUserConfig;
 
 export default defineConfig(uiuxConfig);

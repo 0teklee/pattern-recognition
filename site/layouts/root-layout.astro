@@ -4,7 +4,7 @@ import type { MetaTagProps } from "@site-types/props";
 import Footer from "@site-ui/footer.astro";
 import Sidebar from "@site-ui/sidebar.astro";
 import Header from "@site-ui/header.astro";
-import "../global.css";
+import "@globalStyle";
 
 interface Props extends MetaTagProps {}
 
@@ -18,7 +18,6 @@ const descriptionString = description ? `${description}` : "";
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!--<link rel="stylesheet" href={`/site/global.css`} />-->
     <title>{titleString} Pattern Recognition</title>
     <meta name="description" content={descriptionString} />
   </head>

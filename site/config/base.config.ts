@@ -1,5 +1,6 @@
 import mdx from "@astrojs/mdx";
 import tailwindcss from "@tailwindcss/vite";
+import type { AstroUserConfig } from "astro";
 import { defineConfig } from "astro/config";
 
 /**
@@ -11,24 +12,44 @@ import { defineConfig } from "astro/config";
  * @property {string} outputDir - 빌드 결과물이 저장될 디렉토리 (출력 경로)
  * @property {Array} integrations - Astro에서 사용할 통합 플러그인 목록
  *     @property {Function} mdx - MDX(Markdown + Astro) 플러그인
- *     @property {Function} tailwind - TailwindCSS 설정
- *     @property {string} configFile - TailwindCSS 설정 파일 경로
- *     @property {string} postcssConfig - PostCSS 설정 파일 경로
  */
+
+const pathAlias = {
+  "@": "/",
+  "@scripts": "/.github",
+  "@settings": "/",
+  "@doc": "/doc",
+  "@site": "/site",
+  "@site-config": "/site/config",
+  "@site-types": "/site/types",
+  "@site-ui/layouts": "/site/layouts",
+  "@site-ui/components": "/site/components",
+  "@content": "/site/content",
+  "@content:algorithms": "/site/content/algorithms",
+  "@content:uiux": "/site/content/uiux",
+  "@globalStyle": "/site/global.css",
+};
+
 export const baseConfig = {
   site: "https://patterns.leetekwoo.com",
   srcDir: "./site",
-  outputDir: "../../dist",
-  contentDir: "./site/content",
-  integrations: [mdx()],
+  outDir: "dist/main",
+  scopedStyleStrategy: "class",
+  integrations: [
+    mdx({
+      smartypants: true,
+      syntaxHighlight: "shiki",
+      shikiConfig: { theme: "dracula-soft", wrap: true },
+      remarkRehype: { footnoteLabel: "Footnotes" },
+      gfm: false,
+    }),
+  ],
   vite: {
     resolve: {
-      alias: {
-        node_modules: "../../node_modules",
-      },
+      alias: pathAlias,
     },
     plugins: [tailwindcss()],
   },
-};
+} satisfies AstroUserConfig<never, never>;
 
 export default defineConfig(baseConfig);
