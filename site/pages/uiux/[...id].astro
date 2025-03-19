@@ -10,7 +10,9 @@ import PostHeader from "site/components/post-header.astro";
 
 export const getStaticPaths = (async () => {
   const posts =
-    process.env.ALGO_BUILD === "true" ? [] : await getCollection("uiux");
+    process.env.SCOPE === "algo" || process.env.SCOPE === "prd"
+      ? []
+      : await getCollection("uiux");
 
   return posts.map((post) => ({
     params: { id: post.id },

@@ -1,7 +1,6 @@
-@import "tailwindcss";
-
 /* NOTE: @config will be replaced*/
-@config "./config/tailwind.config.ts";
+@import "tailwindcss";
+@config "./config/tailwind.config";
 
 @theme {
   --color-theme: hsl(221 90% 55%);
@@ -26,7 +25,7 @@
   --color-secondary: hsl(0 0% 80%);
   --color-secondary-bg: hsl(0 0% 22%);
   --color-muted: hsl(0 0% 78%);
-  --color-accent: hsl(74 91% 80%);
+  --color-accent: hsl(7, 94%, 65%);
   --color-destructive: hsl(0 52% 53%);
   --color-input: hsl(0 0% 14.9%);
   --color-border: hsl(0 1% 83%);
@@ -63,4 +62,83 @@
 }
 
 @layer components {
+}
+
+@layer content {
+  .prose {
+    @apply **:text-primary container;
+  }
+  .prose h1 {
+    @apply mt-10 mb-6 text-3xl font-bold;
+  }
+  .prose h2 {
+    @apply mt-5 mb-3 text-2xl font-bold;
+  }
+  .prose h3 {
+    @apply my-1 text-xl font-bold;
+  }
+  .prose p {
+    @apply mb-0.5;
+  }
+  .prose a {
+    @apply hover:text-theme text-blue-300 transition-colors duration-200;
+  }
+  .prose ul {
+    @apply list-inside list-disc leading-6;
+  }
+  .prose ol {
+    @apply list-inside list-decimal leading-6;
+  }
+
+  .prose code:not(pre code) {
+    @apply bg-muted text-accent mx-0.5 rounded px-1 py-0.5;
+  }
+}
+
+@layer tags {
+  .category,
+  .lang,
+  .pattern,
+  .path,
+  .component,
+  .framework,
+  .platform,
+  .level,
+  .style {
+    @apply font-semibold hover:opacity-80;
+  }
+
+  .category {
+    @apply bg-orange-100 text-orange-600;
+  }
+  .lang {
+    @apply bg-blue-100 text-blue-600;
+  }
+  .platform {
+    @apply bg-lime-100 text-lime-600;
+  }
+  .level easy {
+    @apply bg-green-100 text-green-600;
+  }
+  .level mid {
+    @apply bg-purple-100 text-purple-600;
+  }
+  .level hard {
+    @apply bg-red-100 text-red-600;
+  }
+  .pattern {
+    @apply bg-cyan-100 text-cyan-600;
+  }
+  .framework {
+    @apply bg-stone-100 text-stone-600;
+  }
+  .component {
+    @apply bg-sky-100 text-sky-600;
+  }
+  .style {
+    @apply bg-emerald-100 text-emerald-600;
+  }
+  .path {
+    @apply bg-emerald-100 text-emerald-600;
+  }
 }

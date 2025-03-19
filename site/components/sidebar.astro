@@ -6,11 +6,15 @@ const currentPathname = Astro.url.pathname;
 
 // 알고리즘 콘텐츠 가져오기
 const algorithmPosts =
-  process.env.ALGO_BUILD === "true" ? await getCollection("algorithms") : [];
+  process.env.SCOPE === "algo" || process.env.SCOPE === "prd"
+    ? await getCollection("algorithms")
+    : [];
 
 // UI/UX 콘텐츠 가져오기 - 스크립트 분기
 const uiuxPosts =
-  process.env.ALGO_BUILD === "false" ? [] : await getCollection("uiux");
+  process.env.SCOPE === "uiux" || process.env.SCOPE === "prd"
+    ? await getCollection("uiux")
+    : [];
 
 function groupContentByFolder(posts) {
   if (posts.length === 0) {
