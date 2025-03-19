@@ -28,6 +28,7 @@ IS TO LEARN PATTERNS OF
 10. **PR-10** : [Dynamic Content Reusable Components](https://github.com/0teklee/pattern-recognition/pull/10)
 11. **PR-11** : [Add Common Filtering UI & Event Handle logic for List](https://github.com/0teklee/pattern-recognition/pull/11)
 12. **PR-12** : [Apply changes from previous PR-9~12](https://github.com/0teklee/pattern-recognition/pull/12)
+13. **PR-13** : [GitHub Actions CI + Astro Build Setting](https://github.com/0teklee/pattern-recognition/pull/13)
 
 
 ## VERSIONS
