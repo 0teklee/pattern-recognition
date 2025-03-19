@@ -1,0 +1,35 @@
+---
+title: "Stack"
+description: "Stack"
+createdAt: "2025-03-19"
+path: ["algorithms", "core"]
+tags:
+  pattern: ""
+  category: "core"
+---
+
+> 📌 **Source Code:** [core/stack.js](https://github.com/0teklee/pattern-recognition/tree/main/site/content/core/stack.js)
+
+```js
+class Stack {
+  constructor() {
+    this.items = [];
+    this.size = 0;
+  }
+  push(item) {
+    this.items.push(item);
+    this.size++;
+  }
+  pop() {
+    if (this.isEmpty()) {
+      return null;
+    }
+
+    this.size--;
+    return this.items.pop();
+  }
+  isEmpty() {
+    return this.size === 0;
+  }
+}
+```

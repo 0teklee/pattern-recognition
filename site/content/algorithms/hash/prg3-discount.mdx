@@ -1,0 +1,80 @@
+---
+title: "Discount"
+description: "Prg3 Discount"
+createdAt: "2025-03-19"
+path: ["algorithms", "hash"]
+tags:
+  pattern: "hash"
+  category: "hash"
+  platform: "programmers"
+---
+
+> 📌 **Source Code:** [hash/prg3-discount.js](https://github.com/0teklee/pattern-recognition/tree/main/site/content/hash/prg3-discount.js)
+
+```js
+function solution(want, number, discount) {
+  const max = 10;
+  let result = 0;
+  let obj = {};
+
+  for (let i = 0; i < want.length; i++) {
+    obj[want[i]] = !!obj[want[i]] ? obj[want[i]] + number[i] : number[i];
+  }
+
+  for (let i = 0; i < discount.length; i++) {
+    let cart = { ...obj };
+    console.log("outer i", i);
+    console.log("discount i", discount[i]);
+    for (j = i; j < max + i; j++) {
+      console.log(`
+      inner j : ${j}
+      ${discount[j]} :  ${cart[discount[j]]} left
+      `);
+
+      if (!cart[discount[j]]) {
+        continue;
+      }
+      cart[discount[j]] = cart[discount[j]] - 1;
+      console.log(`
+      inner j after
+      ${discount[j]} :  ${cart[discount[j]]}
+      cart: ${Object.entries(cart)}
+      `);
+    }
+    let cartResult = Object.values(cart);
+    let cartAllZero = cartResult.every((item) => item <= 0);
+    console.log(`
+    ${i} index
+    ====================
+    cartResult : ${JSON.stringify(cartResult)} 
+    cartAllZero : ${cartAllZero}
+    `);
+    if (cartAllZero) {
+      result++;
+    }
+  }
+
+  return result;
+}
+
+let test1W = ["banana", "apple", "rice", "pork", "pot"];
+let test1N = [3, 2, 2, 2, 1];
+let test1D = [
+  "chicken",
+  "apple",
+  "apple",
+  "banana",
+  "rice",
+  "apple",
+  "pork",
+  "banana",
+  "pork",
+  "rice",
+  "pot",
+  "banana",
+  "apple",
+  "banana",
+];
+
+console.log("result : ", solution(test1W, test1N, test1D));
+```

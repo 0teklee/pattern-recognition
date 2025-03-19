@@ -1,6 +1,12 @@
-# LeetCode 130. Surrounded Regions
-
-[문제 링크](https://leetcode.com/problems/surrounded-regions)
+---
+title: "LeetCode 3. Longest Substring Without Repeating Characters"
+description: "LeetCode problem"
+createdAt: "2025-03-17"
+path: ["algorithms", "leetcode", "sliding-window"]
+tags:
+  pattern: "sliding-window"
+  category: "leetcode"
+---
 
 # Topics
 
@@ -8,7 +14,9 @@
 - String
 - Sliding Window
 
-# 문제 포인트
+## 문제 포인트
+
+[문제 링크](https://leetcode.com/problems/surrounded-regions)
 
 1. 연결 리스트의 현재, 다음 포인터 연결
 2. **반복문**에서 다음 포인터 연결 로직
@@ -73,24 +81,21 @@ join("") * 1 대신 Number(join("")) 또는 BigInt(join("")) 사용해야 큰 �
 ```
 
 ```js
-/**
- * @param {string} s
- * @return {number}
- */
 var lengthOfLongestSubstring = function (s) {
-    let set = new Set();
-    let start = 0;
-    let longest = -1;
-    for (let end = 0; end < s.length; end++) {
-        let char = s[end];
-        if (!set.has(char)) {
-            set.add(char)
-        } else {
-            longest = Math.max(longest, end - start + 1)
-            start++
-            // set 초기화? 업데이트? 어떻게 해야하지.
-        }
+  let set = new Set();
+  let start = 0;
+  let longest = -1;
+  for (let end = 0; end < s.length; end++) {
+    let char = s[end];
+    if (!set.has(char)) {
+      set.add(char);
+    } else {
+      longest = Math.max(longest, end - start + 1);
+      start++;
+      // set 초기화? 업데이트? 어떻게 해야하지.
     }
+  }
 
-    return longest
+  return longest;
+};
 ```
