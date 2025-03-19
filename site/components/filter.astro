@@ -1,0 +1,259 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { SubRoutes } from "site/types/routes";
+import { RefreshCw } from "lucide-astro";
+
+// site/components/FilterDropdown.astro
+interface Props {
+  items: Array<CollectionEntry<SubRoutes>>;
+}
+
+const { items } = Astro.props;
+
+// 경로와 태그 추출
+const paths = [...new Set(items.map((item) => item.id.split("/")[0]))];
+
+// category를 제외한 모든 태그 키 추출
+const tagKeys = [
+  ...new Set(
+    items.flatMap((item) =>
+      Object.keys(item.data.tags || {}).filter((key) => key !== "category"),
+    ),
+  ),
+];
+
+// 각 태그 키별로 유니크한 값 추출
+const tagValues = {};
+tagKeys.forEach((key) => {
+  tagValues[key] = [
+    ...new Set(
+      items.flatMap((item) =>
+        item.data.tags && item.data.tags[key] ? [item.data.tags[key]] : [],
+      ),
+    ),
+  ];
+});
+---
+
+<div class="container mb-6">
+  <search id="filter-count" class="text-secondary mb-2 text-sm">
+    Result : {items.length} Posts
+  </search>
+  <div class="flex flex-col flex-wrap items-start gap-4 sm:flex-row">
+    <div class="relative">
+      <label class="mb-1 block text-sm font-medium" for="category-filter"
+        >Category</label
+      >
+      <select
+        id="category-filter"
+        class="bg-primary-bg text-primary border-border min-w-[200px] rounded border px-3 py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+      >
+        <option value="">All</option>
+        <optgroup label="Category">
+          {paths.map((path) => <option value={path}>{path}</option>)}
+        </optgroup>
+      </select>
+    </div>
+
+    <!-- 각 태그 타입별 필터 -->
+    {
+      tagKeys.length > 0 && (
+        <div class="tag-filters flex flex-col gap-1">
+          <label class="mb-1 block text-sm font-medium">Tags</label>
+          <div class="flex flex-wrap sm:flex-row">
+            {tagKeys.map((tagKey) => (
+              <details class="tag-filter-group group">
+                <summary
+                  class={`${tagKey} mb-1 block w-fit cursor-pointer rounded px-1 py-0.5 text-sm font-medium`}
+                >
+                  {tagKey}
+                </summary>
+                <div class="tag-options border-border bg-background absolute z-10 flex max-w-64 flex-col flex-wrap gap-2 overflow-y-auto rounded border p-2 opacity-0 transition-opacity duration-150 group-open:opacity-100">
+                  {tagValues[tagKey].map((value) => (
+                    <label class="tag-option flex cursor-pointer items-center gap-1">
+                      <input
+                        type="checkbox"
+                        name={`tag-${tagKey}`}
+                        value={value}
+                        class="tag-checkbox bg-theme"
+                        data-tag-key={tagKey}
+                      />
+                      <span class="text-sm">{value}</span>
+                    </label>
+                  ))}
+                </div>
+              </details>
+            ))}
+          </div>
+        </div>
+      )
+    }
+
+    <button
+      id="reset-filter"
+      class="text-theme mt-6 hidden text-xs hover:underline"
+    >
+      <div class="flex items-center gap-1">
+        <RefreshCw size={16} />
+        <span>Reset</span>
+      </div>
+    </button>
+  </div>
+</div>
+
+<script>
+  /** TODO : Refactor  **/
+  // DOM 요소 선택
+  const categoryFilter = document.getElementById(
+    "category-filter",
+  ) as HTMLSelectElement;
+  const tagCheckboxes = document.querySelectorAll(
+    ".tag-checkbox",
+  ) as NodeListOf<HTMLInputElement>;
+  const resetButton = document.getElementById(
+    "reset-filter",
+  ) as HTMLButtonElement;
+  const filterCount = document.getElementById("filter-count") as HTMLDivElement;
+
+  // URL 파라미터에서 초기 필터 값 가져오기
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialPath = urlParams.get("category") || "";
+
+  // 초기 태그 값 설정 (URL에서 가져옴)
+  const initialTagValues = {};
+  tagCheckboxes.forEach((checkbox) => {
+    const tagKey = checkbox.getAttribute("data-tag-key");
+    const tagValue = checkbox.value;
+
+    if (tagKey && urlParams.get(tagKey) === tagValue) {
+      checkbox.checked = true;
+      initialTagValues[tagKey] = tagValue;
+    }
+  });
+
+  // 초기 필터 값 설정
+  if (initialPath) categoryFilter.value = initialPath;
+  if (Object.keys(initialTagValues).length > 0 || initialPath) {
+    resetButton.classList.remove("hidden");
+  }
+
+  // 필터링 함수
+  function applyFilters() {
+    const selectedPath = categoryFilter.value;
+
+    // 선택된 태그 수집
+    const selectedTags = {};
+    tagCheckboxes.forEach((checkbox) => {
+      if (checkbox.checked) {
+        const tagKey = checkbox.getAttribute("data-tag-key");
+        if (tagKey) {
+          if (!selectedTags[tagKey]) {
+            selectedTags[tagKey] = [];
+          }
+          selectedTags[tagKey].push(checkbox.value);
+        }
+      }
+    });
+
+    const items = document.querySelectorAll("ol > li");
+    let visibleCount = 0;
+
+    items.forEach((item) => {
+      const itemPath = item.getAttribute("data-category");
+      let shouldShow =
+        (!itemPath && !selectedPath) ||
+        (itemPath && itemPath.startsWith(selectedPath));
+
+      // 태그 필터링 적용
+      if (shouldShow && Object.keys(selectedTags).length > 0) {
+        for (const tagKey in selectedTags) {
+          const itemTagValue = item.getAttribute(`data-tag-${tagKey}`);
+
+          // 해당 태그 키에 대한 모든 값 중 하나라도 일치하는지 확인
+          const tagMatches = selectedTags[tagKey].some(
+            (value) => itemTagValue === value,
+          );
+
+          // 선택된 태그가 있으나 항목이 일치하지 않으면 숨김
+          if (selectedTags[tagKey].length > 0 && !tagMatches) {
+            shouldShow = false;
+            break;
+          }
+        }
+      }
+
+      if (shouldShow) {
+        item.classList.remove("hidden");
+        visibleCount++;
+      } else {
+        item.classList.add("hidden");
+      }
+    });
+
+    // 필터링된 항목 수 업데이트
+    filterCount.textContent = `Result : ${visibleCount} Posts`;
+
+    // URL 업데이트
+    const url = new URL(window.location.href);
+
+    // 경로 파라미터 업데이트
+    if (selectedPath) url.searchParams.set("category", selectedPath);
+    else url.searchParams.delete("category");
+
+    // 태그 파라미터 업데이트 (선택된 것만)
+    const allTagKeys = new Set(
+      Array.from(tagCheckboxes).map((checkbox) =>
+        checkbox.getAttribute("data-tag-key"),
+      ),
+    );
+
+    // 모든 태그 키에 대해 파라미터 초기화
+    allTagKeys.forEach((tagKey) => {
+      if (tagKey) url.searchParams.delete(tagKey);
+    });
+
+    // 선택된 태그만 파라미터에 추가
+    for (const tagKey in selectedTags) {
+      if (selectedTags[tagKey].length > 0) {
+        // 다중 선택인 경우 쉼표로 구분하여 하나의 파라미터로 추가
+        url.searchParams.set(tagKey, selectedTags[tagKey].join(","));
+      }
+    }
+
+    window.history.pushState({}, "", url);
+
+    // 리셋 버튼 표시/숨김
+    if (
+      selectedPath ||
+      Object.keys(selectedTags).some((key) => selectedTags[key].length > 0)
+    ) {
+      resetButton.classList.remove("hidden");
+    } else {
+      resetButton.classList.add("hidden");
+    }
+  }
+
+  // 이벤트 리스너 등록
+  categoryFilter.addEventListener("change", applyFilters);
+
+  tagCheckboxes.forEach((checkbox) => {
+    checkbox.addEventListener("change", applyFilters);
+  });
+
+  resetButton.addEventListener("click", () => {
+    // 경로 필터 초기화
+    categoryFilter.value = "";
+    filterCount.textContent = "";
+
+    // 태그 체크박스 모두 해제
+    tagCheckboxes.forEach((checkbox) => {
+      checkbox.checked = false;
+    });
+
+    // 필터 적용
+    applyFilters();
+  });
+
+  // 초기 로딩 시 필터 적용
+  window.addEventListener("load", applyFilters);
+</script>
