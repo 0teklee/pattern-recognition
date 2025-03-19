@@ -1,13 +1,21 @@
 ---
 import BaseLayout from "@site-ui/root-layout.astro";
 import ListLayout from "@site-ui/list-layout.astro";
+import Filter from "@site-ui/filter.astro";
+import List from "@site-ui/list.astro";
+import { getCollection } from "astro:content";
+
+export const prerender = true;
+
+const posts = await getCollection("algorithms");
 ---
 
 <BaseLayout title="Algorithms" description="Pattern Recognition - Algorithms">
   <ListLayout>
     <Fragment slot="title"> Algorithms Patterns</Fragment>
     <Fragment slot="list">
-      <!-- 여기에 동적으로 리스트 삽입해야함 -->
+      <Filter items={posts} />
+      <List items={posts} />
     </Fragment>
   </ListLayout>
 </BaseLayout>
