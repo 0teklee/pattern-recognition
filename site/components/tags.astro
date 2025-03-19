@@ -1,0 +1,64 @@
+---
+import { SearchParam } from "site/types/query";
+import { RouteType } from "site/types/routes";
+
+interface Props {
+  tags: SearchParam<"index">;
+  path: RouteType;
+  size?: "sm" | "base";
+}
+
+const { tags, size = "base", path } = Astro.props;
+const arrTags = Object.entries(tags).filter(([key, val]) => !!key && !!val);
+---
+
+<div
+  id="tags-container"
+  class={`flex flex-wrap items-center mt-1 mb-2 gap-x-4 ${size === "sm" ? "text-xs" : "text-sm"}`}
+>
+  {
+    arrTags.map(([key, val]) =>
+      !!val
+        ? () => {
+            return (
+              <button
+                id={`${key}=${val}`}
+                class={`tag-button ${key} cursor-pointer rounded-sm ${size === "sm" ? "px-1 py-0" : "px-2 py-1"} `}
+                aria-description={`link to tag: ${key}`}
+                data-key={key}
+                data-value={val}
+              >
+                {val}
+              </button>
+            );
+          }
+        : null,
+    )
+  }
+</div>
+
+<script define:vars={{ path }}>
+  const buttonContainer = document.getElementById("tags-container");
+
+  const eventClick = (e) => {
+    const button = e.target.closest(".tag-button");
+    if (!button) return;
+
+    const key = button?.dataset.key;
+    const value = button?.dataset.value;
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get(key) === value) {
+      params.delete(key);
+    } else {
+      params.set(key, value);
+    }
+
+    window.location.replace(`/${path}?${params.toString()}`);
+  };
+
+  buttonContainer.addEventListener("click", (e) => eventClick(e));
+  window.addEventListener("popstate", (e) => {
+    console.log("tag popstate", e);
+  });
+</script>
