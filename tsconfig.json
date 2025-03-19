@@ -1,6 +1,8 @@
 {
   "extends": "astro/tsconfigs/base",
   "compilerOptions": {
+    "strictNullChecks": true,
+    "allowJs": true,
     "baseUrl": ".",
     "paths": {
       /** INFO @ as project root - global configs, build-deploy scripts **/
@@ -21,7 +23,6 @@
       "@content:algorithms": ["site/content/algorithms"],
       "@content:uiux": ["site/content/uiux"]
     },
-    "allowJs": true,
     "moduleResolution": "bundler",
     "module": "ESNext",
     "types": ["astro/client"],
@@ -34,6 +35,6 @@
     ],
     "verbatimModuleSyntax": true
   },
-  "include": [".astro/types.d.ts", "**/*"],
+  "include": [".astro/types.d.ts", "**/*" ],
   "exclude": ["node_modules", ".astro", "dist"]
 }
