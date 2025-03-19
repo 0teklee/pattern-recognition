@@ -64,20 +64,18 @@ jobs:
         with:
           name: production-build
           path: ${{ env.PRODUCTION_BUILD_PATH }}
-      - name: Configure Git
+      - name: Get main branch commit info
         run: |
-          git config user.name "GitHub Actions"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          COMMIT_MSG=$(git log -1 --pretty=format:"%s" ${{ github.sha }})
+          COMMIT_SHA=$(git rev-parse --short ${{ github.sha }})
+          TAG=$(git describe --tags --exact-match ${{ github.sha }} 2>/dev/null || echo "")
+          if [ -n "$TAG" ]; then
+            echo "COMMIT_MSG=Release $TAG: $COMMIT_MSG" >> $GITHUB_ENV
+          else
+            echo "COMMIT_MSG=build: $COMMIT_MSG ($COMMIT_SHA)" >> $GITHUB_ENV
+          fi
       - name: Commit and push to production
         run: |
           git add ${{ env.PRODUCTION_BUILD_PATH }}
-          git commit -m "chore: update production build from main branch"
+          git commit -m "${{ env.COMMIT_MSG }}"
           git push origin production
-      - name: Deploy to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: patterns-leetekwoo
-          directory: ${{ env.PRODUCTION_BUILD_PATH }}
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
