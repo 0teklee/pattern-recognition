@@ -1,0 +1,38 @@
+---
+title: "Queue"
+description: "Queue"
+createdAt: "2025-03-19"
+path: ["algorithms", "core"]
+tags:
+  pattern: ""
+  category: "core"
+---
+
+> 📌 **Source Code:** [core/queue.js](https://github.com/0teklee/pattern-recognition/tree/main/site/content/core/queue.js)
+
+```js
+class Queue {
+  constructor() {
+    this.items = [];
+    this.front = 0;
+    this.rear = 0;
+  }
+
+  push(data) {
+    this.items.push(data);
+    this.rear++;
+  }
+  pop() {
+    if (this.isEmpty()) {
+      return null;
+    }
+    const head = this.items[this.front];
+    delete this.items[this.front];
+    this.front++;
+    return head;
+  }
+  isEmpty() {
+    return this.front === this.rear;
+  }
+}
+```
