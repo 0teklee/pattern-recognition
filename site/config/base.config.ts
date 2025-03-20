@@ -33,7 +33,7 @@ const pathAlias = {
 export const baseConfig = {
   site: "https://patterns.leetekwoo.com",
   srcDir: "./site",
-  outDir: "dist/main",
+  outDir: "dist/production",
   scopedStyleStrategy: "class",
   integrations: [
     mdx({
