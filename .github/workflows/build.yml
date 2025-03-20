@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Build in GA and Deploy in CF
 on:
   push:
     branches:
@@ -29,8 +29,8 @@ jobs:
         uses: dorny/paths-filter@v3
         id: filter
         with:
-          filters: "algorithms:\n- 'site/content/algorithms/**'\n- 'site/pages/algorithms/**'\n- 'site/components/**/!(uiux-*).astro'\nuiux:\n- 'site/content/uiux/**'\n- 'site/pages/uiux/**'\n- 'site/components/**/uiux-*.astro'\nconfigs:\n- 'site/config/**'\n- 'site/layouts/**'\ndeps:\n- 'package.json'\n- 'package-lock.json'  \n\"\n"
-  build:
+          filters: "algorithms:\n- 'site/content/algorithms/**'\n- 'site/pages/algorithms/**'\n- 'site/components/**/!(uiux-*).astro'\nuiux:\n- 'site/content/uiux/**'\n- 'site/pages/uiux/**'\n- 'site/components/**/uiux-*.astro'\nconfigs:\n- 'site/config/**'\n- 'site/layouts/**'\ndeps:\n- 'package.json'\n- 'package-lock.json'"
+  ga-build:
     needs: detect-changes
     runs-on: ubuntu-latest
     if: ${{ needs.detect-changes.outputs.algorithms == 'true' || needs.detect-changes.outputs.uiux == 'true' || needs.detect-changes.outputs.configs == 'true' || needs.detect-changes.outputs.deps == 'true' || github.event_name == 'workflow_dispatch' }}
@@ -45,37 +45,72 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build production
-        run: npm run build:prod
-      - name: Upload build artifacts
+        run: |
+          mkdir -p ${{ env.PRODUCTION_BUILD_PATH }}
+          echo "Setting ${{env.PRODUCTION_BUILD_PATH}}"
+          ls
+          echo "[BUILD]: PRD"
+          npm run build:prod
+          echo "[BUILD]: DONE. Scanning dist"
+          ls -R $PRODUCTION_BUILD_PATH
+
+      - name: Debug Artifact Path
+        run: |
+          echo "Checking production build path..."
+          ls -R ${{ env.PRODUCTION_BUILD_PATH }}
+
+      - name: Upload build artifacts - FINAL BLD STEP
         uses: actions/upload-artifact@v4
         with:
           name: production-build
           path: ${{ env.PRODUCTION_BUILD_PATH }}
-  deploy:
-    needs: build
+
+  push-prd-deploy-cf:
+    needs: ga-build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
     steps:
-      - name: Checkout production branch
+      - name: Checkout to production
         uses: actions/checkout@v4
         with:
           ref: production
+          fetch-depth: 0
+
+      - name: Check artifact before download
+        id: check-artifact
+        run: |
+          if [ -d "${{ env.PRODUCTION_BUILD_PATH }}" ]; then
+            echo "Artifact directory exists."
+          else
+            echo "[FAILED]:Artifact directory does not exist. Creating mkdir -p PRODUCTION_BUILD_PATH"
+            mkdir -p ${{ env.PRODUCTION_BUILD_PATH }}
+          fi
+
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
           name: production-build
           path: ${{ env.PRODUCTION_BUILD_PATH }}
-      - name: Get main branch commit info
+
+      - name: Verify downloaded artifacts
         run: |
-          COMMIT_MSG=$(git log -1 --pretty=format:"%s" ${{ github.sha }})
-          COMMIT_SHA=$(git rev-parse --short ${{ github.sha }})
-          TAG=$(git describe --tags --exact-match ${{ github.sha }} 2>/dev/null || echo "")
-          if [ -n "$TAG" ]; then
-            echo "COMMIT_MSG=Release $TAG: $COMMIT_MSG" >> $GITHUB_ENV
-          else
-            echo "COMMIT_MSG=build: $COMMIT_MSG ($COMMIT_SHA)" >> $GITHUB_ENV
+          ls -la ${{ env.PRODUCTION_BUILD_PATH }}
+          if [ -z "$(ls -A ${{ env.PRODUCTION_BUILD_PATH }})" ]; then
+            echo "WARN: build directory is empty. Creating new"
+            mkdir -p ${{ env.PRODUCTION_BUILD_PATH }}
+            echo "dist/production" > ${{ env.PRODUCTION_BUILD_PATH }}/placeholder.txt
           fi
-      - name: Commit and push to production
+
+      - name: Commit and push to production [FIN]
         run: |
+          git branch --show-current
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add ${{ env.PRODUCTION_BUILD_PATH }}
-          git commit -m "${{ env.COMMIT_MSG }}"
+          git commit -m "PRD: update production build from main branch" 
           git push origin production
+          echo "[DEPLOY]: GA Jobs Done"
+        env:
+          ACTIONS_PAT: ${{ secrets.ACTIONS_PAT }}

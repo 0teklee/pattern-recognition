@@ -6,7 +6,7 @@
     "build:dev": "SCOPE=algo dotenv -e .env.build -- astro build --config site/config/base.config.ts --mode development --verbose",
     "build:algo": "SCOPE=algo dotenv -e .env.build -- astro build --config site/config/algorithms.config.ts --mode development --verbose",
     "build:uiux": "SCOPE=uiux dotenv -e .env.build -- astro build --config site/config/uiux.config.ts --mode development --verbose",
-    "build:prod": "SCOPE=prd algo dotenv -e .env.prod -- npm run build:algo:prod && npm run build:uiux:prod && npm run merge:builds",
+    "build:prod": "SCOPE=prd dotenv -e .env.prod -- astro build --config site/config/base.config.ts",
     "build:algo:prod": "SCOPE=algo dotenv -e .env.prod -- astro build --config site/config/algorithms.config.ts --mode production",
     "build:uiux:prod": "SCOPE=uiux dotenv -e .env.prod -- astro build --config site/config/uiux.config.ts --mode production",
     "merge:builds": "mkdir -p dist/production && cp -r dist/dev/build-algo/* dist/production/ && cp -r dist/dev/build-uiux/* dist/production/",
