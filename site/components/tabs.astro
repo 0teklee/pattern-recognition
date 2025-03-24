@@ -1,0 +1,64 @@
+---
+interface Props {
+  tabs: string[];
+  defaultTab?: number;
+}
+
+const { tabs = [] } = Astro.props;
+---
+
+<div class="tab-root not-prose">
+  <div
+    class:list={[
+      "flex flex-wrap items-center",
+      "rounded-t",
+      "border border-secondary-bg bg-secondary-bg",
+      "divide-x divide-muted",
+    ]}
+  >
+    {
+      tabs.map((tab, index) => (
+        <div
+          class:list={[
+            `${tab}-tab-${index}`,
+            "py-1 border-b-muted",
+            "has-checked:bg-theme/20",
+            "transition-colors duration-700",
+          ]}
+        >
+          <input
+            id={tab}
+            name={`tab-group`}
+            type="radio"
+            class={`tab-input-${index} peer hidden`}
+            checked={index === 0}
+          />
+          <label
+            for={tab}
+            class:list={[
+              "px-3 py-1 lg:px-4 lg:py-2",
+              "hover:text-theme text-secondary",
+              "transition-all duration-300",
+              "first:rounded-tl",
+              "peer-checked:text-theme cursor-pointer",
+            ]}
+          >
+            {tab}
+          </label>
+        </div>
+      ))
+    }
+  </div>
+  <div
+    class:list={[
+      "relative",
+      "w-full h-full min-h-64 md:min-h-80",
+      "border-b border-x border-secondary-bg rounded-b",
+      "not-prose",
+      "overflow-y-hidden",
+      "grid",
+    ]}
+  >
+    <slot />
+  </div>
+</div>
