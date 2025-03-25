@@ -10,8 +10,8 @@ const { tabs = [] } = Astro.props;
 <div class="tab-root not-prose">
   <div
     class:list={[
-      "grid grid-flow-col auto-cols-fr",
-      "bg-secondary-bg rounded-t",
+      "grid grid-flow-col grid-cols-[repeat(minmax(8rem,1fr))]",
+      "justify-stretch bg-secondary-bg rounded-t",
       "border-b border-secondary",
     ]}
   >
@@ -21,7 +21,7 @@ const { tabs = [] } = Astro.props;
           class:list={[
             `${tab}-tab-${index}`,
             "relative group",
-            "w-full max-w-40 truncate",
+            "max-w-32 truncate",
             "has-checked:bg-theme/20 text-center",
             "transition-colors duration-300",
             "has-checked:border-b border-theme",
