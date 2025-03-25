@@ -1,10 +1,11 @@
 ---
 interface Props {
   tabIndex: number;
+  tabName: string;
   isDefault?: boolean;
 }
 
-const { tabIndex } = Astro.props;
+const { tabIndex, tabName } = Astro.props;
 const animatePanel = `
       #panel-${tabIndex} {
         grid-row: 1;
@@ -26,6 +27,7 @@ const animatePanel = `
 ---
 
 <style is:global set:html={animatePanel}></style>
+
 <div
   id={`panel-${tabIndex}`}
   class:list={[
@@ -36,5 +38,17 @@ const animatePanel = `
     "flex flex-col items-stretch justify-center",
   ]}
 >
+  <div
+    id={`${tabName} title`}
+    class:list={[
+      "absolute top-0",
+      "inline-block w-full p-2",
+      "text-xs font-mono italic break-after-all",
+      "bg-background/50 border-b border-dashed",
+      "opacity-20 hover:opacity-100 transition-opacity duration-200",
+    ]}
+  >
+    {tabName}
+  </div>
   <slot />
 </div>

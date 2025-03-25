@@ -10,10 +10,9 @@ const { tabs = [] } = Astro.props;
 <div class="tab-root not-prose">
   <div
     class:list={[
-      "flex flex-wrap items-center justify-stretch",
-      "rounded-t",
-      "border border-secondary-bg bg-secondary-bg",
-      "divide-x-0 divide-y sm:divide-x sm:divide-y-0 divide-muted/50",
+      "grid grid-flow-col auto-cols-fr",
+      "bg-secondary-bg rounded-t",
+      "border-b border-secondary",
     ]}
   >
     {
@@ -21,11 +20,11 @@ const { tabs = [] } = Astro.props;
         <div
           class:list={[
             `${tab}-tab-${index}`,
-            "grow",
-            "w-full sm:w-fit py-1",
+            "relative group",
+            "w-full max-w-40 truncate",
             "has-checked:bg-theme/20 text-center",
             "transition-colors duration-300",
-            "text-xs sm:text-sm",
+            "has-checked:border-b border-theme",
           ]}
         >
           <input
@@ -38,11 +37,11 @@ const { tabs = [] } = Astro.props;
           <label
             for={tab}
             class:list={[
-              "px-3 py-1 lg:px-4 lg:py-2",
-              "text-secondary hover:text-theme",
-              "transition-all duration-300",
-              "first:rounded-tl last:rounded-tr",
+              "px-2 py-1",
+              "text-start text-xs text-secondary",
+              "sm:text-sm hover:text-theme",
               "peer-checked:text-theme cursor-pointer",
+              "group-first:rounded-tl group-last:rounded-tr",
             ]}
           >
             {tab}
