@@ -1,11 +1,11 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { SubRoutes } from "site/types/routes";
+import { SubRouteType } from "site/types/routes";
 import { RefreshCw } from "lucide-astro";
 
 // site/components/FilterDropdown.astro
 interface Props {
-  items: Array<CollectionEntry<SubRoutes>>;
+  items: Array<CollectionEntry<SubRouteType>>;
 }
 
 const { items } = Astro.props;
@@ -60,7 +60,7 @@ tagKeys.forEach((key) => {
       tagKeys.length > 0 && (
         <div class="tag-filters flex flex-col gap-1">
           <label class="mb-1 block text-sm font-medium">Tags</label>
-          <div class="flex flex-wrap sm:flex-row">
+          <div class="flex flex-wrap sm:flex-row gap-x-4">
             {tagKeys.map((tagKey) => (
               <details class="tag-filter-group group">
                 <summary
@@ -91,10 +91,10 @@ tagKeys.forEach((key) => {
 
     <button
       id="reset-filter"
-      class="text-theme mt-6 hidden text-xs hover:underline"
+      class="text-theme group mt-6 hidden text-xs hover:underline cursor-pointer"
     >
       <div class="flex items-center gap-1">
-        <RefreshCw size={16} />
+        <RefreshCw class="group-hover:animate-spin" size={16} />
         <span>Reset</span>
       </div>
     </button>
