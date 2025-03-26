@@ -59,11 +59,19 @@ function groupContentByFolder(posts) {
 
 <aside
   class:list={[
-    "hidden max-w-64 grow p-4 md:block",
+    "hidden md:block",
+    "max-w-64 grow p-4 pr-1.5",
     "text-primary border-border border-r",
+    "",
   ]}
 >
-  <nav class="flex max-h-dvh flex-col gap-y-4 overflow-y-auto">
+  <nav
+    class:list={[
+      "flex flex-col gap-y-4",
+      "h-full max-h-dvh w-full",
+      "overflow-x-hidden overflow-y-auto",
+    ]}
+  >
     <!-- Algorithms 섹션 -->
 
     <SidebarTree
