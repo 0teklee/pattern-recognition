@@ -1,9 +1,94 @@
 ---
 import BaseLayout from "@site-ui/root-layout.astro";
+import { CollectionEntry, getCollection } from "astro:content";
+import { getEnv } from "@site/utils";
+import { RouteKeyMap, RouteKeyType } from "@site-types/routes";
+import Tabs from "@site-ui/tabs.astro";
+import TabPanel from "@site-ui/tab-panel.astro";
+import index from "eslint-plugin-jsdoc";
+import { collections } from "../content/config";
+
+const { isPrd, isAlgo, isUIUX } = getEnv();
+
+const [algoCollection, uiuxCollection] = await Promise.all([
+  isAlgo || isPrd
+    ? getCollection(RouteKeyMap.algorithms)
+    : ([] as CollectionEntry<RouteKeyMap.algorithms>),
+  isUIUX || isPrd ? getCollection(RouteKeyMap.uiux) : ([] as unknown[]),
+]);
+
+console.log("Algo Collection", algoCollection);
 ---
 
 <BaseLayout title="HOME" description="Pattern Recognition Index">
-  <h1 class="text-theme text-2xl font-bold text-pretty sm:text-3xl">
-    UNDER CONSTRUCTION
-  </h1>
+  <div class="container mx-auto px-4 py-8">
+    <!-- Hero Section -->
+    <section class="mb-16 space-y-6 text-center">
+      <blockquote
+        class:list={[
+          "relative",
+          `before:caption-top before:content-start before:text-xl before:content-["“"]`,
+          `after:caption-top after:content-end after:text-xl after:content-["”"]`,
+          "animate-dissolve italic",
+        ]}
+      >
+        <span
+          >We have no future because our present is too volatile. We have only
+          risk management. The spinning of the given moment's scenarios.
+        </span>
+        <br />
+        <b class="bg-gradient-to-b from-transparent">Pattern recognition.</b>
+      </blockquote>
+      <a
+        class:list={[
+          "text-sm",
+          "hover:text-theme transition-colors",
+          "duration-1000",
+        ]}
+        href="https://www.amazon.com/Pattern-Recognition-William-Gibson-2005-02-01/dp/B01I26MLHS"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Inspired by William Gibson , Pattern Recognition, 2003
+      </a>
+    </section>
+
+    <!-- Latest Content -->
+    <div class="container mx-auto px-4 py-8">
+      <Tabs tabs={["Algorithms", "UIUX"]}>
+        <TabPanel tabName="Algorithms Patterns" tabIndex={0} isDefault={true}>
+          <ul class="list-inside py-4 pl-5">
+            {
+              algoCollection.map((post) => (
+                <li>
+                  <a
+                    href={`/${post.data.path[0]}/${post.id}`}
+                    class="hover:text-theme"
+                  >
+                    {post.data.title}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </TabPanel>
+        <TabPanel tabName="UIUX Patterns" tabIndex={1}>
+          <ul class="list-inside py-4 pl-5">
+            {
+              uiuxCollection.map((post) => (
+                <li>
+                  <a
+                    href={`/${post.data.path[0]}/${post.id}`}
+                    class="hover:text-theme"
+                  >
+                    {post.data.title}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </TabPanel>
+      </Tabs>
+    </div>
+  </div>
 </BaseLayout>
