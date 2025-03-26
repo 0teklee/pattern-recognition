@@ -53,9 +53,8 @@ const { tabs = [] } = Astro.props;
   <div
     class:list={[
       "relative",
-      "grid",
-      "grid-cols-1",
       "w-full px-2 pb-2",
+      "max-h-60 min-h-60", // Info Panel 컨테이너 고정 사이즈
       "border-secondary-bg rounded-b border-x border-b",
       "overflow-y-hidden",
     ]}

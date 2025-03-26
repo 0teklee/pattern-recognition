@@ -7,46 +7,53 @@ interface Props {
 
 const { tabIndex, tabName } = Astro.props;
 const animatePanel = `
+  
       #panel-${tabIndex} {
-        opacity: 0;
-        max-height: 0;
-        overflow: hidden;
-        transition: 
-          max-height 0.9s ease-in-out forwards alternate, 
-          opacity 1s ease-in-out forwards alternate,
-          transform 1.5s ease-in-out forwards alternate;
-        pointer-events: none;
-        transform: translateY(-100%);
+      transform: translateY(100dvh);
+      max-height: 0;
+      opacity: 0;
+       transition: 
+          max-height 0.7s ease-in-out, 
+          opacity 1s ease-in-out,
+          z-index 0.1s ease-in-out,
+          transform 1s ease-in-out;
       }
   
       .tab-root:has(.tab-input-${tabIndex}:checked) #panel-${tabIndex} {
         opacity: 1;
-        max-height: max-content; 
         transform: translateY(0);
         pointer-events: auto;
-        transform: translateY(0%);
-        z-index:-1 forwards alternate;
-      }`;
+        max-height: 20rem;
+        z-index: 0;
+        transition: 
+          max-height 0.1s ease-in, 
+          opacity 0.5s ease-in-out,
+          z-index 1s ease-in-out,
+          transform 0.5s ease-in-out;
+      }
+      
+      @media (minx-width: 768px) {
+        .tab-root:has(.tab-input-${tabIndex}:checked) #panel-${tabIndex} {
+          max-height: 20rem;
+        }
+      
+      `;
 ---
 
-<style is:global set:html={animatePanel}></style>
+<style set:html={animatePanel}></style>
 
 <div
   id={`panel-${tabIndex}`}
-  class:list={[
-    `tab-content-${tabIndex}`,
-    "w-full h-fit max-h-fit",
-    "transition-all",
-  ]}
+  class:list={[`tab-content-${tabIndex}`, "overflow-y-auto", "relative"]}
 >
   <div
     id={`${tabName} title`}
     class:list={[
       "sticky top-0",
-      "inline-block w-full p-2",
-      "text-xs font-mono italic break-after-all",
+      "w-full p-2",
+      "break-after-all font-mono text-xs italic",
       "bg-background/50 border-b border-dashed",
-      "opacity-20 hover:opacity-100 transition-all",
+      "opacity-20 transition-all hover:opacity-100",
     ]}
   >
     {tabName}
