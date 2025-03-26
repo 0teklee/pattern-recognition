@@ -1,17 +1,4 @@
----
-title: "Bfs"
-description: "1,2차원 배열에 따라 다름"
-createdAt: "2025-03-19"
-path: ["algorithms", "core"]
-tags:
-  pattern: ""
-  category: "core"
----
-
-> 📌 **Source Code:** [core/bfs.js](https://github.com/0teklee/pattern-recognition/tree/main/site/content/core/bfs.js)
-
-```js
-class Queue {
+export class Queue {
   constructor() {
     this.items = [];
     this.front = 0;
@@ -29,7 +16,7 @@ class Queue {
   }
 }
 
-function bfs(start, graph, visited, answer) {
+export function bfs(start, graph, visited, answer) {
   let Q = new Queue();
   visited[start] = true; // 1,2차원 배열에 따라 다름
   /* 최소, 최단 거리 등을 계산해야한다면 param으로 받고,
@@ -66,7 +53,7 @@ const offset = [
   [-1, 0],
 ];
 
-function bfsOffset(visited, graph, [startR, startC], answer) {
+export function bfsOffset(visited, graph, [startR, startC], answer) {
   let Q = new Queue();
   visited[startR][startC] = true;
   Q.enqueue([startR, startC]);
@@ -91,4 +78,3 @@ function bfsOffset(visited, graph, [startR, startC], answer) {
   }
   return answer;
 }
-```
