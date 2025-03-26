@@ -1,64 +1,61 @@
 @config "./tailwind.config.ts";
 
-@theme static {
-  --animate-slide-in-up: slide-in-up-frame 500ms ease-in-out forwards alternate;
-  --animate-slide-in-down: slide-in-down-frame 500ms ease-in-out forwards
+@theme animate {
+  --animate-slide-y-in-up: slide-y-in-up 500ms ease-in-out forwards alternate;
+  --animate-slide-y-in-down: slide-y-in-down 500ms ease-in-out forwards
     alternate;
-  --animate-slide-out-up: slide-out-up-frame 500ms ease-in-out forwards
+  --animate-slide-y-out-up: slide-y-out-up 500ms ease-in-out forwards alternate;
+  --animate-slide-y-out-down: slide-y-out-down 500ms ease-in-out forwards
     alternate;
-  --animate-slide-out-down: slide-out-down-frame 500ms ease-in-out forwards
-    alternate;
+
   --animate-grid-expand: grid-expand-frame 500ms ease-in-out forwards alternate;
   --animate-grid-collapse: grid-collapse-frame 500ms ease-in-out forwards
     alternate;
 
-  @keyframes slide-in-down-frame {
+  --animate-dissolve: dissolve 10s cubic-bezier(0.98, -0.14, 0.58, 1) 15s
+    forwards infinite alternate;
+
+  @keyframes dissolve {
     0% {
-      opacity: 0;
-      transform: translateY(100%);
-      flood-opacity: 0;
-      transition: opacity 0.3s;
+      filter: blur(0);
     }
     100% {
-      opacity: 1;
-      transform: translateY(0);
-      flood-opacity: 1;
-      transition: opacity 0.3s;
+      filter: blur(4rem);
     }
   }
 
-  @keyframes slide-out-down-frame {
+  @keyframes slide-y-in-down {
     0% {
-      opacity: 1;
-      transform: translateY(0);
-      transition: opacity 0.3s;
+      transform: translateY(100%);
     }
     100% {
-      opacity: 0;
-      transform: translateY(100%);
-      transition: opacity 0.3s;
+      transform: translateY(0);
     }
   }
 
-  @keyframes slide-in-up-frame {
+  @keyframes slide-y-out-down {
     0% {
-      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(100%);
+    }
+  }
+
+  @keyframes slide-y-in-up {
+    0% {
       transform: translateY(-100%);
-      transition: opacity 0.3s;
     }
     100% {
-      opacity: 0;
       transform: translateY(0);
-      transition: opacity 0.3s;
     }
   }
-  @keyframes slide-out-up-frame {
+
+  @keyframes slide-y-out-up {
     0% {
-      opacity: 0;
       transform: translateY(0);
     }
     100% {
-      opacity: 1;
       transform: translateY(-100%);
     }
   }
