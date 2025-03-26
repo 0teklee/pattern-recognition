@@ -25,7 +25,7 @@ const pathAlias = {
   "@site-ui/layouts": "/site/layouts",
   "@site-ui/components": "/site/components",
   "@content": "/site/content",
-  "@content:algorithms": "/site/content/algorithms",
+  "@content:algo": "/site/content/algorithms",
   "@content:uiux": "/site/content/uiux",
   "@globalStyle": "/site/global.css",
 };

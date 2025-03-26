@@ -8,7 +8,7 @@
       /** INFO @ as project root - global configs, build-deploy scripts **/
       "@/*": ["*"],
       "@scripts/*": [".github"],
-      "@settings/*": ["*.json", "*.mjs", "*.ts"],
+      "@settings/*": ["*.json", "*.mjs", "@/*.ts"],
       "@doc/*": ["doc/*"],
 
       /** Info @site is Astro related path
@@ -18,10 +18,11 @@
       "@site-config/*": ["site/config/*"],
       "@site-types/*": ["site/types/*"],
       "@site-ui/*": ["site/layouts/*", "site/components/*"],
+
       /** Info @content is dynamic contents **/
       "@content/*": ["site/content/*"],
-      "@content:algorithms": ["site/content/algorithms"],
-      "@content:uiux": ["site/content/uiux"]
+      "@content:algo": ["site/content/algorithms/*"],
+      "@content:uiux": ["site/content/uiux/*"]
     },
     "moduleResolution": "bundler",
     "module": "ESNext",
@@ -33,8 +34,15 @@
         "name": "@astrojs/ts-plugin"
       }
     ],
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": true
   },
-  "include": [".astro/types.d.ts", "**/*" ],
-  "exclude": ["node_modules", ".astro", "dist"]
+  "include": [
+    ".astro/types.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.astro",
+    "**/*.mdx"
+  ],
+  "exclude": ["node_modules", "dist", ".astro/*"]
 }
