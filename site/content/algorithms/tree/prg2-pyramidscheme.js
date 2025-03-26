@@ -1,4 +1,4 @@
-function solution(enroll, referral, seller, amount) {
+export function solution(enroll, referral, seller, amount) {
   const sellerMap = new Map();
   const price = 100;
   let result = [];
@@ -79,4 +79,5 @@ let test1B = ["-", "-", "mary", "edward", "mary", "mary", "jaimie", "edward"];
 let test1C = ["young", "john", "tod", "emily", "mary"];
 let test1D = [12, 4, 2, 5, 10];
 
-console.log(`result : /n`, solution(test1A, test1B, test1C, test1D));
+export const log = () =>
+  console.log(`result : /n`, solution(test1A, test1B, test1C, test1D));
