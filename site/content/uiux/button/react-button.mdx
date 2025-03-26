@@ -1,5 +1,5 @@
 ---
-title: "React Button in design system"
+title: "React Button (basic)"
 description: "UIUX Patterns"
 createdAt: "2025-03-17"
 path: ["uiux", "button", "react"]
@@ -9,24 +9,18 @@ tags:
   framework: "react"
 ---
 
-import CodeDisplay from "@site-ui/code-display.astro";
-import TabPanel from "@site-ui/tab-panel.astro";
-import Tabs from "@site-ui/tabs.astro";
+import CodeDisplay from "site/components/code-display.astro";
+import TabPanel from "site/components/tab-panel.astro";
+import Tabs from "site/components/tabs.astro";
 import Button from "./button";
 
 ## React Buttons
 
-<Tabs tabs={["Component1", "button.tsx", "Component2", "Component3"]}>
-  <TabPanel isDefault={true} tabIndex={0}>
-    <Button client:load text={"1!!"} />
+<Tabs tabs={["Button Component", "button.tsx"]}>
+  <TabPanel isDefault={true} tabIndex={0} tabName={"Button Component"}>
+    <Button client:load text={"Click me"} />
   </TabPanel>
-  <TabPanel tabIndex={1}>
+  <TabPanel tabName="button.tsx" tabIndex={1}>
     <CodeDisplay file="uiux/button/button.tsx" highlightLines="{5-7}" />
-  </TabPanel>
-  <TabPanel isDefault={true} tabIndex={2}>
-    <Button client:load text={"btn2"} />
-  </TabPanel>
-  <TabPanel isDefault={true} tabIndex={3}>
-    <Button client:load text={"btn3"} />
   </TabPanel>
 </Tabs>
