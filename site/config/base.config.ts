@@ -1,7 +1,9 @@
 import mdx from "@astrojs/mdx";
+import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import type { AstroUserConfig } from "astro";
 import { defineConfig } from "astro/config";
+import { getEnv } from "../utils";
 
 /**
  * @description 루트 경로 포함 사이트 전체 설정.
@@ -25,15 +27,17 @@ const pathAlias = {
   "@site-ui/layouts": "/site/layouts",
   "@site-ui/components": "/site/components",
   "@content": "/site/content",
-  "@content:algorithms": "/site/content/algorithms",
+  "@content:algo": "/site/content/algorithms",
   "@content:uiux": "/site/content/uiux",
   "@globalStyle": "/site/global.css",
 };
 
+const { isPrd } = getEnv();
+
 export const baseConfig = {
   site: "https://patterns.leetekwoo.com",
   srcDir: "./site",
-  outDir: "dist/production",
+  outDir: isPrd ? "dist/production" : "dist/dev",
   scopedStyleStrategy: "class",
   integrations: [
     mdx({
@@ -43,6 +47,7 @@ export const baseConfig = {
       remarkRehype: { footnoteLabel: "Footnotes" },
       gfm: false,
     }),
+    ...(isPrd ? [react()] : []),
   ],
   vite: {
     resolve: {

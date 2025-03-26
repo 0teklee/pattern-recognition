@@ -1,0 +1,70 @@
+---
+import { Code } from "astro/components";
+import { twMerge } from "tailwind-merge";
+import fs from "node:fs";
+import path from "node:path";
+
+interface Props {
+  file?: string;
+  code?: string;
+  language?: string;
+  filename?: string;
+  theme?: string;
+  wrap?: boolean;
+  meta?: string;
+  highlightLines?: string;
+}
+
+const {
+  file,
+  code: propCode,
+  language = "tsx",
+  filename,
+  theme = "dracula-soft",
+  wrap = true,
+  meta,
+  highlightLines,
+} = Astro.props;
+
+let code = propCode || "";
+let displayFilename = filename || (file ? file.split("/").pop() || "" : "");
+
+// 파일이 지정되었다면 파일 내용 읽기
+if (file && !propCode) {
+  try {
+    const contentDir = "site/content";
+    const resolvedPath = path.join(process.cwd(), contentDir, file);
+
+    if (fs.existsSync(resolvedPath)) {
+      code = fs.readFileSync(resolvedPath, "utf-8");
+    } else {
+      code = `// 파일을 찾을 수 없습니다: ${file}`;
+    }
+  } catch (error: unknown) {
+    code = `// 파일 로드 오류: ${error.message}`;
+  }
+}
+
+// meta 속성 설정 (하이라이트 라인 포함)
+const finalMeta = meta || highlightLines || "";
+---
+
+<div class={twMerge("code-panel", "relative", "w-full h-full")}>
+  {
+    displayFilename && (
+      <div class="sticky top-0 pl-2 py-2 bg-background/80 border-b-muted">
+        <span class="text-sm font-mono italic text-secondary">
+          source:// {displayFilename}
+        </span>
+      </div>
+    )
+  }
+  <Code
+    code={code}
+    lang={language}
+    theme={theme}
+    wrap={wrap}
+    meta={finalMeta}
+    class="px-3 py-2 overscroll-y-auto text-sm"
+  />
+</div>

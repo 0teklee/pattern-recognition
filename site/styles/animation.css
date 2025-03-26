@@ -1,0 +1,83 @@
+@config "./tailwind.config.ts";
+
+@theme static {
+  --animate-slide-in-up: slide-in-up-frame 500ms ease-in-out forwards alternate;
+  --animate-slide-in-down: slide-in-down-frame 500ms ease-in-out forwards
+    alternate;
+  --animate-slide-out-up: slide-out-up-frame 500ms ease-in-out forwards
+    alternate;
+  --animate-slide-out-down: slide-out-down-frame 500ms ease-in-out forwards
+    alternate;
+  --animate-grid-expand: grid-expand-frame 500ms ease-in-out forwards alternate;
+  --animate-grid-collapse: grid-collapse-frame 500ms ease-in-out forwards
+    alternate;
+
+  @keyframes slide-in-down-frame {
+    0% {
+      opacity: 0;
+      transform: translateY(100%);
+      flood-opacity: 0;
+      transition: opacity 0.3s;
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+      flood-opacity: 1;
+      transition: opacity 0.3s;
+    }
+  }
+
+  @keyframes slide-out-down-frame {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.3s;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(100%);
+      transition: opacity 0.3s;
+    }
+  }
+
+  @keyframes slide-in-up-frame {
+    0% {
+      opacity: 1;
+      transform: translateY(-100%);
+      transition: opacity 0.3s;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(0);
+      transition: opacity 0.3s;
+    }
+  }
+  @keyframes slide-out-up-frame {
+    0% {
+      opacity: 0;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(-100%);
+    }
+  }
+
+  @keyframes grid-expand-frame {
+    from {
+      grid-template-rows: 0fr;
+    }
+    to {
+      grid-template-rows: 1fr;
+    }
+  }
+
+  @keyframes grid-collapse-frame {
+    from {
+      grid-template-rows: 1fr;
+    }
+    to {
+      grid-template-rows: 0fr;
+    }
+  }
+}

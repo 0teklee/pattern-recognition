@@ -1,0 +1,26 @@
+---
+title: "React Button (basic)"
+description: "UIUX Patterns"
+createdAt: "2025-03-17"
+path: ["uiux", "button", "react"]
+tags:
+  category: "UI"
+  component: "button"
+  framework: "react"
+---
+
+import CodeDisplay from "site/components/code-display.astro";
+import TabPanel from "site/components/tab-panel.astro";
+import Tabs from "site/components/tabs.astro";
+import Button from "./button";
+
+## React Buttons
+
+<Tabs tabs={["Button Component", "button.tsx"]}>
+  <TabPanel isDefault={true} tabIndex={0} tabName={"Button Component"}>
+    <Button client:load text={"Click me"} />
+  </TabPanel>
+  <TabPanel tabName="button.tsx" tabIndex={1}>
+    <CodeDisplay file="uiux/button/button.tsx" highlightLines="{5-7}" />
+  </TabPanel>
+</Tabs>

@@ -1,3 +1,4 @@
+import { RouteKeyMap } from "@site-types/routes.ts";
 import { glob } from "astro/loaders";
 import { defineCollection } from "astro:content";
 import { z } from "zod";
@@ -11,13 +12,13 @@ const baseSchema = z.object({
 
 /** @see AlgoSchema **/
 const AlgorithmsZodSchema = baseSchema.extend({
-  path: z.tuple([z.literal("algorithms")]).rest(z.string()),
+  path: z.tuple([z.literal(RouteKeyMap.algorithms)]).rest(z.string()),
   tags: z.record(z.unknown()),
 });
 
 /** @see UISchema **/
 const UIUXZodSchema = baseSchema.extend({
-  path: z.tuple([z.literal("uiux")]).rest(z.string()),
+  path: z.tuple([z.literal(RouteKeyMap.uiux)]).rest(z.string()),
   tags: z.record(z.unknown()),
 });
 
@@ -37,6 +38,4 @@ export const uiux = defineCollection({
 });
 
 export const collections =
-  process.env.SCOPE === "algo" || process.env.SCOPE === "prd"
-    ? { algorithms }
-    : { algorithms, uiux };
+  process.env.SCOPE === "algo" ? { algorithms } : { algorithms, uiux };

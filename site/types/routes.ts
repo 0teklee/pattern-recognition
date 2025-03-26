@@ -1,4 +1,4 @@
-import type { KeysOf, SubsetOfKeys } from "@site/types/utility.ts";
+import type { KeysOf, SubsetOfKeys } from "@site-types/utility";
 
 const Routes = {
   index: "/",
@@ -6,11 +6,14 @@ const Routes = {
   uiux: "/uiux",
 } as const;
 
+const RouteKeyMap = Object.keys(Routes).reduce((acc, key) => {
+  acc[key] = key;
+  return acc;
+}, {}) as Record<RouteKeyType, RouteKeyType>;
+
 type RouteType = typeof Routes;
-type RouteKeys = KeysOf<RouteType>;
+type RouteKeyType = KeysOf<RouteType>;
+type SubRouteType = SubsetOfKeys<RouteType, "algorithms" | "uiux">;
 
-type SubRoutes = SubsetOfKeys<RouteType, "algorithms" | "uiux">;
-
-export { Routes };
-
-export type { SubRoutes, RouteKeys, RouteType };
+export { Routes, RouteKeyMap };
+export type { SubRouteType, RouteKeyType, RouteType };

@@ -4,10 +4,14 @@ import ListLayout from "@site-ui/list-layout.astro";
 import Filter from "@site-ui/filter.astro";
 import List from "@site-ui/list.astro";
 import { getCollection } from "astro:content";
+import { RouteKeyMap } from "@site-types/routes";
+import { getEnv } from "@site/utils";
 
 export const prerender = true;
 
-const posts = await getCollection("algorithms");
+const { isPrd, isAlgo } = getEnv();
+const posts =
+  isPrd || isAlgo ? await getCollection(RouteKeyMap.algorithms) : [];
 ---
 
 <BaseLayout title="Algorithms" description="Pattern Recognition - Algorithms">

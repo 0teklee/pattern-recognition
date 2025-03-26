@@ -1,4 +1,4 @@
-import { type RouteKeys, type RouteType } from "@site/types/routes.ts";
+import { type RouteKeyType, type RouteType } from "@site/types/routes.ts";
 
 /* NOTE : Type Docs
  *  - jsdoc으로 타입에 주석을 추가합니다.
@@ -109,7 +109,7 @@ import { type RouteKeys, type RouteType } from "@site/types/routes.ts";
  * @prop {RouteType} path
  * @prop {Array<QueryKeyTypes>} tags
  */
-declare type BaseSchema<T extends RouteKeys> = object & {
+declare type BaseSchema<T extends RouteKeyType> = object & {
   path: [RouteType[T], string];
 };
 

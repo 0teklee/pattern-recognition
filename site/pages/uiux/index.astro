@@ -4,16 +4,19 @@ import ListLayout from "@site-ui/list-layout.astro";
 import Filter from "@site-ui/filter.astro";
 import List from "@site-ui/list.astro";
 import { getCollection } from "astro:content";
+import { getEnv } from "@site/utils";
+import { RouteKeyMap } from "../../types/routes";
 
-const posts = await getCollection("uiux");
+const { isPrd, isUIUX } = getEnv();
+const posts = isPrd || isUIUX ? await getCollection(RouteKeyMap.uiux) : [];
 ---
 
 <BaseLayout title="UIUX" description="Pattern Recognition - UI/UX">
   <ListLayout>
-    <Fragment slot="title"> Algorithms Patterns</Fragment>
+    <Fragment slot="title"> UI/UX Patterns</Fragment>
     <Fragment slot="list">
-      <Filter items={posts} route="algorithms" />
-      <List items={posts} route="algorithms" />
+      <Filter items={posts} />
+      <List items={posts} />
     </Fragment>
   </ListLayout>
 </BaseLayout>

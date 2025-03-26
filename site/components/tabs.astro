@@ -1,0 +1,65 @@
+---
+interface Props {
+  tabs: string[];
+  defaultTab?: number;
+}
+
+const { tabs = [] } = Astro.props;
+---
+
+<div class="tab-root group/root">
+  <div
+    class:list={[
+      "grid grid-flow-col grid-cols-[repeat(minmax(1fr,1fr))]",
+      "bg-secondary-bg rounded-t",
+      "border-secondary border-b",
+    ]}
+  >
+    {
+      tabs.map((tab, index) => (
+        <div
+          class:list={[
+            `${tab}-tab-${index}`,
+            "group",
+            "w-full truncate",
+            "has-checked:bg-theme/20 text-center",
+            "transition-colors duration-300",
+            "border-theme has-checked:border-b",
+          ]}
+        >
+          <input
+            id={tab}
+            name={`tab-group`}
+            type="radio"
+            class={`tab-input-${index} peer hidden`}
+            checked={index === 0}
+          />
+          <label
+            for={tab}
+            class:list={[
+              "block h-full w-full px-2 py-1",
+              "text-secondary truncate text-center align-middle text-xs",
+              "hover:text-theme sm:text-sm",
+              "peer-checked:text-theme cursor-pointer",
+              "group-first:rounded-tl group-last:rounded-tr",
+            ]}
+          >
+            {tab}
+          </label>
+        </div>
+      ))
+    }
+  </div>
+  <div
+    class:list={[
+      "relative",
+      "w-full px-2 pb-2",
+      "max-h-64 min-h-64", // Info Panel 컨테이너 고정 사이즈
+      "lg:max-h-96 lg:min-h-96", // active tabs-panel tab 에서 inherit
+      "border-secondary-bg rounded-b border-x border-b",
+      "overflow-y-hidden",
+    ]}
+  >
+    <slot />
+  </div>
+</div>
