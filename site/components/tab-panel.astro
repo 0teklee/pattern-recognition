@@ -7,7 +7,6 @@ interface Props {
 
 const { tabIndex, tabName } = Astro.props;
 const animatePanel = `
-  
       #panel-${tabIndex} {
       transform: translateY(100dvh);
       max-height: 0;
@@ -16,14 +15,14 @@ const animatePanel = `
           max-height 0.7s ease-in-out, 
           opacity 1s ease-in-out,
           z-index 0.1s ease-in-out,
-          transform 1s ease-in-out;
+          transform 0.5s ease-in-out;
       }
   
       .tab-root:has(.tab-input-${tabIndex}:checked) #panel-${tabIndex} {
         opacity: 1;
         transform: translateY(0);
         pointer-events: auto;
-        max-height: 20rem;
+        max-height: inherit;
         z-index: 0;
         transition: 
           max-height 0.1s ease-in, 
@@ -31,12 +30,6 @@ const animatePanel = `
           z-index 1s ease-in-out,
           transform 0.5s ease-in-out;
       }
-      
-      @media (minx-width: 768px) {
-        .tab-root:has(.tab-input-${tabIndex}:checked) #panel-${tabIndex} {
-          max-height: 20rem;
-        }
-      
       `;
 ---
 
@@ -50,10 +43,11 @@ const animatePanel = `
     id={`${tabName} title`}
     class:list={[
       "sticky top-0",
-      "w-full p-2",
+      "w-full p-2 py-4",
       "break-after-all font-mono text-xs italic",
       "bg-background/50 border-b border-dashed",
       "opacity-20 transition-all hover:opacity-100",
+      "[&~astro-island>*]:pb-4", // info dynamic import content
     ]}
   >
     {tabName}
