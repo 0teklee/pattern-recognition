@@ -7,12 +7,12 @@ interface Props {
 const { tabs = [] } = Astro.props;
 ---
 
-<div class="tab-root group/root not-prose overflow-y-hidden">
+<div class="tab-root group/root">
   <div
     class:list={[
       "grid grid-flow-col grid-cols-[repeat(minmax(1fr,1fr))]",
       "bg-secondary-bg rounded-t",
-      "border-b border-secondary",
+      "border-secondary border-b",
     ]}
   >
     {
@@ -20,11 +20,11 @@ const { tabs = [] } = Astro.props;
         <div
           class:list={[
             `${tab}-tab-${index}`,
-            "relative group",
+            "group",
             "w-full truncate",
             "has-checked:bg-theme/20 text-center",
             "transition-colors duration-300",
-            "has-checked:border-b border-theme",
+            "border-theme has-checked:border-b",
           ]}
         >
           <input
@@ -37,9 +37,9 @@ const { tabs = [] } = Astro.props;
           <label
             for={tab}
             class:list={[
-              "block w-full h-full px-2 py-1",
-              "truncate align-middle text-center text-xs text-secondary",
-              "sm:text-sm hover:text-theme",
+              "block h-full w-full px-2 py-1",
+              "text-secondary truncate text-center align-middle text-xs",
+              "hover:text-theme sm:text-sm",
               "peer-checked:text-theme cursor-pointer",
               "group-first:rounded-tl group-last:rounded-tr",
             ]}
@@ -55,9 +55,9 @@ const { tabs = [] } = Astro.props;
       "relative",
       "grid",
       "grid-cols-1",
-      "w-full px-2",
-      "border-b border-x border-secondary-bg rounded-b",
-      "not-prose",
+      "w-full px-2 pb-2",
+      "border-secondary-bg rounded-b border-x border-b",
+      "overflow-y-hidden",
     ]}
   >
     <slot />
