@@ -1,4 +1,4 @@
-import type { KeysOf, SubsetOfKeys } from "@site/types/utility.ts";
+import type { KeysOf, SubsetOfKeys } from "@site-types/utility";
 
 const Routes = {
   index: "/",
