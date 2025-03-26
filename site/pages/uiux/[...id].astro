@@ -1,4 +1,6 @@
 ---
+import { getEnv } from "site/utils";
+
 import BaseLayout from "@site-ui/root-layout.astro";
 import PostLayout from "@site-ui/post-layout.astro";
 
@@ -9,10 +11,9 @@ import { getCollection, render } from "astro:content";
 import PostHeader from "site/components/post-header.astro";
 
 export const getStaticPaths = (async () => {
-  const posts =
-    process.env.SCOPE === "algo" || process.env.SCOPE === "prd"
-      ? []
-      : await getCollection("uiux");
+  const { isPrd, isUIUX } = getEnv();
+
+  const posts = isPrd || isUIUX ? await getCollection("uiux") : [];
 
   return posts.map((post) => ({
     params: { id: post.id },
@@ -26,12 +27,17 @@ const { Content } = await render(props);
 ---
 
 <!--TODO 타입 추론 개선-->
-<BaseLayout title="UI/UX" description="Pattern Recognition - UI/UX">
+<BaseLayout
+  title={props.data.title}
+  description={props.data.description ||
+    `Pattern Recognition - UIUX: ${props.data.title}`}
+>
   <PostLayout>
     <PostHeader
-      title={props?.data.title}
-      createdAt={props?.data.createdAt}
-      tags={props?.data.tags}
+      title={props.data.title}
+      createdAt={props.data.createdAt}
+      tags={props.data.tags}
+      path={props.data.path}
       slot="header"
     />
     <Content />
