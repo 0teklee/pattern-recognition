@@ -1,0 +1,62 @@
+---
+interface Props {
+  tabIndex: number;
+  tabName: string;
+  isDefault?: boolean;
+}
+
+const { tabIndex, tabName } = Astro.props;
+const animatePanel = `
+  
+      #panel-${tabIndex} {
+      transform: translateY(-100%);
+      opacity: 0;
+      max-height: 0;
+       transition: 
+          max-height 0.6s ease-in-out, 
+          opacity 0.5s ease-in-out,
+          z-index 1s ease-in-out,
+          transform 0.3s ease-in-out;
+      }
+  
+      .tab-root:has(.tab-input-${tabIndex}:checked) #panel-${tabIndex} {
+        opacity: 1;
+        max-height: 70dvh;
+        transform: translateY(0);
+        pointer-events: auto;
+        z-index: 0;
+        transition: 
+          max-height 0.6s ease-in-out, 
+          opacity 0.5s ease-in-out,
+          z-index 1s ease-in-out,
+          transform 0.5s ease-in-out;
+      }
+      
+      @media (max-width: 768px) {
+        .tab-root:has(.tab-input-${tabIndex}:checked) #panel-${tabIndex} {
+          max-height: 80dvh; /* 모바일에서는 더 큰 비율 사용 */
+        }
+      
+      `;
+---
+
+<style set:html={animatePanel}></style>
+
+<div
+  id={`panel-${tabIndex}`}
+  class:list={[`tab-content-${tabIndex}`, "overflow-y-auto", "relative"]}
+>
+  <div
+    id={`${tabName} title`}
+    class:list={[
+      "sticky top-0",
+      "w-full p-2",
+      "text-xs font-mono italic break-after-all",
+      "bg-background/50 border-b border-dashed",
+      "opacity-20 hover:opacity-100 transition-all",
+    ]}
+  >
+    {tabName}
+  </div>
+  <slot />
+</div>
