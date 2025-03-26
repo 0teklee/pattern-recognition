@@ -13,7 +13,7 @@ import { baseConfig } from "./base.config.ts";
  * **/
 const uiuxConfig = {
   ...baseConfig,
-  integrations: [...(baseConfig.integrations || []), react()],
+  integrations: [...baseConfig.integrations, react()],
   outDir: "dist/dev/build-uiux",
   build: {
     format: "directory",
