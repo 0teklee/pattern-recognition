@@ -166,6 +166,14 @@ declare module 'astro:content' {
   rendered?: RenderedContent;
   filePath?: string;
 }>;
+"uiux": Record<string, {
+  id: string;
+  body?: string;
+  collection: "uiux";
+  data: InferEntrySchema<"uiux">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
 
 	};
 
