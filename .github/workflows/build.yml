@@ -29,7 +29,27 @@ jobs:
         uses: dorny/paths-filter@v3
         id: filter
         with:
-          filters: "algorithms:\n- 'site/content/algorithms/**'\n- 'site/pages/algorithms/**'\n-'site/pages/**'\n- '\n-'site/styles/**' '\n-'site/global.css' \n- 'site/components/**/!(uiux-*).astro'\nuiux:\n- 'site/content/uiux/**'\n- 'site/pages/uiux/**'\n- 'site/components/**/uiux-*.astro'\nconfigs:\n- 'site/config/**'\n- 'site/layouts/**'\ndeps:\n- 'package.json'\n- 'package-lock.json'"
+          filters: |
+            pages:
+              - 'site/pages/**'
+            styles:
+              - 'site/styles/**'
+            global:
+              - 'site/global.css'
+            algorithms:
+              - 'site/content/algorithms/**'
+              - 'site/pages/algorithms/**'
+              - 'site/components/**/!(uiux-*).astro'
+            uiux:
+              - 'site/content/uiux/**'
+              - 'site/pages/uiux/**'
+              - 'site/components/**/uiux-*.astro'
+            configs:
+              - 'site/config/**'
+              - 'site/layouts/**'
+            deps:
+              - 'package.json'
+              - 'package-lock.json'  
   ga-build:
     needs: detect-changes
     runs-on: ubuntu-latest
