@@ -23,7 +23,7 @@ const arrTags = Object.entries(tags).filter(([key, val]) => !!key && !!val);
             return (
               <button
                 id={`${key}=${val}`}
-                class={`tag-button ${key} cursor-pointer rounded-sm ${size === "sm" ? "px-1 py-0" : "px-2 py-1"} `}
+                class={`tag-button ${key} ${val} cursor-pointer rounded-sm ${size === "sm" ? "px-1 py-0" : "px-2 py-1"} `}
                 aria-description={`link to tag: ${key}`}
                 data-key={key}
                 data-value={val}

@@ -117,7 +117,7 @@
   .platform,
   .level,
   .style {
-    @apply font-semibold hover:opacity-80 capitalize;
+    @apply font-semibold capitalize hover:opacity-80;
   }
 
   .category {
@@ -129,16 +129,15 @@
   .platform {
     @apply bg-lime-100 text-lime-600;
   }
-  .level .easy {
-    & .easy {
-      @apply bg-green-100 text-green-600;
-    }
-    & .mid {
-      @apply bg-purple-100 text-purple-600;
-    }
-    & .hard {
-      @apply bg-red-100 text-red-600;
-    }
+
+  .easy {
+    @apply bg-green-100 text-green-600;
+  }
+  .mid {
+    @apply bg-purple-100 text-purple-600;
+  }
+  .hard {
+    @apply bg-red-100 text-red-600;
   }
 
   .pattern {
@@ -147,9 +146,10 @@
 
   .framework {
     @apply bg-stone-100 text-stone-600;
-    & .react {
-      @apply bg-blue-100 text-blue-600;
-    }
+  }
+
+  .react {
+    @apply bg-blue-100 text-blue-600;
   }
 
   .component {
