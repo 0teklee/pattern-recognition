@@ -30,9 +30,9 @@ const animateFolders = [
   <summary
     class:list={[
       "relative",
-      "flex items-center justify-between ",
+      "flex items-center justify-between",
       "hover:text-secondary font-semibold",
-      "transition-all duration-500 cursor-pointer",
+      "cursor-pointer transition-all duration-500",
       "capitalize",
     ]}
   >
@@ -42,13 +42,13 @@ const animateFolders = [
       <ExpandIcon
         class:list={[
           ...animateIcons,
-          "group-open:rotate-90 group-open:opacity-0 opacity-100",
+          "opacity-100 group-open:rotate-90 group-open:opacity-0",
         ]}
       />
       <CollapseIcon
         class:list={[
           ...animateIcons,
-          "-rotate-90 group-open:rotate-0 opacity-0 group-open:opacity-100",
+          "-rotate-90 opacity-0 group-open:rotate-0 group-open:opacity-100",
         ]}
       />
     </i>
@@ -66,7 +66,7 @@ const animateFolders = [
         href={indexPath}
         class:list={[
           "hover:text-secondary",
-          "flex mb-1 items-center gap-3 font-medium cursor-pointer",
+          "mb-1 flex cursor-pointer items-center gap-3 font-medium",
         ]}
       >
         <slot name="index-icon" class="inline-block h-4 w-4" />
@@ -115,15 +115,15 @@ const animateFolders = [
               >
                 {files.map((file) => (
                   <a
-                    href={`/${indexPath}/${file.id}`}
+                    href={`${indexPath}/${file.id}`}
                     class:list={[
-                      "leading-6 text-pretty break-words text-sm hover:text-theme",
-                      `/${indexPath}/${file.id}` === currentPath
+                      "hover:text-theme text-sm leading-6 text-pretty break-words",
+                      `${indexPath}/${file.id}` === currentPath
                         ? "text-theme"
                         : "",
                     ]}
                   >
-                    <i class="inline-block align-text-bottom mr-1">
+                    <i class="mr-1 inline-block align-text-bottom">
                       <slot name="file-icon" />
                     </i>
                     {file.title}
