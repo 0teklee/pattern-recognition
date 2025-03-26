@@ -53,9 +53,9 @@ const { tabs = [] } = Astro.props;
   <div
     class:list={[
       "relative",
-      "grid",
-      "grid-cols-1",
       "w-full px-2 pb-2",
+      "max-h-64 min-h-64", // Info Panel 컨테이너 고정 사이즈
+      "lg:max-h-96 lg:min-h-96", // active tabs-panel tab 에서 inherit
       "border-secondary-bg rounded-b border-x border-b",
       "overflow-y-hidden",
     ]}

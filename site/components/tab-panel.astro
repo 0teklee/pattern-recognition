@@ -7,36 +7,29 @@ interface Props {
 
 const { tabIndex, tabName } = Astro.props;
 const animatePanel = `
-  
       #panel-${tabIndex} {
-      transform: translateY(-100%);
-      opacity: 0;
+      transform: translateY(100dvh);
       max-height: 0;
+      opacity: 0;
        transition: 
-          max-height 0.6s ease-in-out, 
-          opacity 0.5s ease-in-out,
-          z-index 1s ease-in-out,
-          transform 0.3s ease-in-out;
+          max-height 0.7s ease-in-out, 
+          opacity 1s ease-in-out,
+          z-index 0.1s ease-in-out,
+          transform 0.5s ease-in-out;
       }
   
       .tab-root:has(.tab-input-${tabIndex}:checked) #panel-${tabIndex} {
         opacity: 1;
-        max-height: 70dvh;
         transform: translateY(0);
         pointer-events: auto;
+        max-height: inherit;
         z-index: 0;
         transition: 
-          max-height 0.6s ease-in-out, 
+          max-height 0.1s ease-in, 
           opacity 0.5s ease-in-out,
           z-index 1s ease-in-out,
           transform 0.5s ease-in-out;
       }
-      
-      @media (max-width: 768px) {
-        .tab-root:has(.tab-input-${tabIndex}:checked) #panel-${tabIndex} {
-          max-height: 80dvh; /* 모바일에서는 더 큰 비율 사용 */
-        }
-      
       `;
 ---
 
@@ -50,10 +43,11 @@ const animatePanel = `
     id={`${tabName} title`}
     class:list={[
       "sticky top-0",
-      "w-full p-2",
-      "text-xs font-mono italic break-after-all",
+      "w-full p-2 py-4",
+      "break-after-all font-mono text-xs italic",
       "bg-background/50 border-b border-dashed",
-      "opacity-20 hover:opacity-100 transition-all",
+      "opacity-20 transition-all hover:opacity-100",
+      "[&~astro-island>*]:pb-4", // info dynamic import content
     ]}
   >
     {tabName}

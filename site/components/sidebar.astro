@@ -59,7 +59,7 @@ function groupContentByFolder(posts) {
 
 <aside
   class:list={[
-    "grow hidden md:block max-w-64 p-4",
+    "hidden max-w-64 grow p-4 md:block",
     "text-primary border-border border-r",
   ]}
 >
@@ -74,10 +74,10 @@ function groupContentByFolder(posts) {
       <FolderGit2 class="h-5 w-5" slot="hero-icon" />
       <GitFork class="h-5 w-5" slot="index-icon" />
       <GitCommitVertical
-        class="text-secondary before:content- h-5 w-5 font-thin"
+        class="text-secondary before:content- inline h-5 w-5 font-thin"
         slot="folder-icon"
       />
-      <CodeIcon class="h-4 w-4" slot="file-icon" />
+      <CodeIcon class="inline h-4 w-4" slot="file-icon" />
     </SidebarTree>
 
     <!-- UI/UX 섹션 -->
@@ -87,9 +87,9 @@ function groupContentByFolder(posts) {
       indexPath={Routes.uiux}
     >
       <ComponentIcon class="h-5 w-5" slot="hero-icon" />
-      <GitFork class="h-5 w-5" slot="index-icon" />
+      <GitFork class="inline h-5 w-5" slot="index-icon" />
       <GitCommitVertical
-        class="text-secondary before:content- h-5 w-5 font-thin"
+        class="text-secondary before:content- inline h-5 w-5 font-thin"
         slot="folder-icon"
       />
       <UIUXItemIcon class="h-4 w-4" slot="file-icon" />
