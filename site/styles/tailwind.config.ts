@@ -1,4 +1,3 @@
-import typography from "@tailwindcss/typography";
 import type { Config } from "tailwindcss";
 
 /** NOTE
@@ -16,9 +15,9 @@ import type { Config } from "tailwindcss";
  * 추후 class 기반 다크 모드에서 @variant로 변경
  * */
 
-export default {
+const tailwindConfig: Config = {
   darkMode: "class",
-  content: ["../**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
+  content: ["/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   theme: {
     extend: {
       screens: {
@@ -55,5 +54,6 @@ export default {
       },
     },
   },
-  plugins: [typography()],
 } satisfies Config;
+
+export default tailwindConfig;
