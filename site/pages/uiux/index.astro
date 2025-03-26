@@ -5,9 +5,10 @@ import Filter from "@site-ui/filter.astro";
 import List from "@site-ui/list.astro";
 import { getCollection } from "astro:content";
 import { getEnv } from "@site/utils";
+import { RouteKeyMap } from "../../types/routes";
 
 const { isPrd, isUIUX } = getEnv();
-const posts = isPrd || isUIUX ? await getCollection("uiux") : [];
+const posts = isPrd || isUIUX ? await getCollection(RouteKeyMap.uiux) : [];
 ---
 
 <BaseLayout title="UIUX" description="Pattern Recognition - UI/UX">
