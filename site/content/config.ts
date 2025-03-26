@@ -38,6 +38,4 @@ export const uiux = defineCollection({
 });
 
 export const collections =
-  process.env.SCOPE === "algo" || process.env.SCOPE === "prd"
-    ? { algorithms }
-    : { algorithms, uiux };
+  process.env.SCOPE === "algo" ? { algorithms } : { algorithms, uiux };
