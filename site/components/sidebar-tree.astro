@@ -1,0 +1,139 @@
+---
+import {
+  ChevronsUpDown as ExpandIcon,
+  ChevronsDownUp as CollapseIcon,
+} from "lucide-astro";
+import { RouteKeyType } from "site/types/routes";
+
+interface Props {
+  indexPath: RouteKeyType;
+  folders: [string, unknown][];
+  currentPath: string;
+}
+
+const { indexPath, folders, currentPath } = Astro.props;
+const title = indexPath.slice(1);
+
+const animateIcons = [
+  "absolute top-0 right-0",
+  "transition-transform duration-300",
+];
+
+const animateFolders = [
+  "transition-all duration-300",
+  "opacity-0",
+  "scale-y-0",
+];
+---
+
+<details class="group">
+  <summary
+    class:list={[
+      "relative",
+      "flex items-center justify-between ",
+      "hover:text-secondary font-semibold",
+      "transition-all duration-500 cursor-pointer",
+      "capitalize",
+    ]}
+  >
+    <slot name="hero-icon" />
+    {title}
+    <i>
+      <ExpandIcon
+        class:list={[
+          ...animateIcons,
+          "group-open:rotate-90 group-open:opacity-0 opacity-100",
+        ]}
+      />
+      <CollapseIcon
+        class:list={[
+          ...animateIcons,
+          "-rotate-90 group-open:rotate-0 opacity-0 group-open:opacity-100",
+        ]}
+      />
+    </i>
+  </summary>
+  <!--Info 하위 경로, Index 시작-->
+  <div
+    class:list={[
+      ...animateFolders,
+      "group-open:opacity-100",
+      "group-open:scale-y-100",
+    ]}
+  >
+    <div class="mt-2 flex flex-col gap-1 pl-4">
+      <a
+        href={indexPath}
+        class:list={[
+          "hover:text-secondary",
+          "flex mb-1 items-center gap-3 font-medium cursor-pointer",
+        ]}
+      >
+        <slot name="index-icon" class="inline-block h-4 w-4" />
+        Index
+      </a>
+      <!--Info 모든 하위 경로, {folder} 시작-->
+      {
+        folders.map(([folder, files]) => {
+          return (
+            <details class:list={["relative", "group/folder"]}>
+              <summary
+                class:list={[
+                  "flex cursor-pointer items-center gap-3",
+                  "hover:text-secondary",
+                ]}
+              >
+                <slot name="folder-icon" class="inline" />
+                {folder}
+                <i>
+                  <ExpandIcon
+                    class:list={[
+                      "absolute top-0 right-0",
+                      "transition-all duration-300",
+                      "opacity-100 group-open/folder:opacity-0",
+                      "rotate-0 group-open/folder:rotate-90",
+                    ]}
+                  />
+                  <CollapseIcon
+                    class:list={[
+                      "absolute top-0 right-0",
+                      "transition-all duration-300",
+                      "opacity-0 group-open/folder:opacity-100",
+                      "-rotate-90 group-open/folder:rotate-0",
+                    ]}
+                  />
+                </i>
+              </summary>
+              <div
+                class:list={[
+                  "grid gap-y-3",
+                  "py-2 pl-4",
+                  "transition-all duration-300",
+                  "opacity-0 group-open/folder:opacity-100",
+                  "scale-y-0 group-open/folder:scale-y-100",
+                ]}
+              >
+                {files.map((file) => (
+                  <a
+                    href={`/${indexPath}/${file.id}`}
+                    class:list={[
+                      "leading-6 text-pretty break-words text-sm hover:text-theme",
+                      `/${indexPath}/${file.id}` === currentPath
+                        ? "text-theme"
+                        : "",
+                    ]}
+                  >
+                    <i class="inline-block align-text-bottom mr-1">
+                      <slot name="file-icon" />
+                    </i>
+                    {file.title}
+                  </a>
+                ))}
+              </div>
+            </details>
+          );
+        })
+      }
+    </div>
+  </div>
+</details>
