@@ -1,36 +1,8 @@
 /* NOTE: @config will be replaced*/
 @import "tailwindcss";
-@config "./config/tailwind.config";
-
-@theme {
-  --color-theme: hsl(221 90% 55%);
-  --color-background: hsl(240 100% 98%);
-  --color-primary: hsl(0 0% 9%);
-  --color-secondary: hsl(0 0% 9%);
-  --color-secondary-bg: hsl(0 0% 93%);
-  --color-muted: hsl(0 0% 45.1%);
-  --color-accent: hsl(221 100% 15%);
-  --color-destructive: hsl(0 84.2% 60.2%);
-  --color-input: hsl(240 10% 21%);
-  --color-border: hsl(0 1% 70%);
-  --color-ring: hsl(0 0% 31%);
-  --color-radius: 0.5rem;
-}
-
-/* Refactor : dark mode class -> @variant  */
-@theme .dark {
-  --color-theme: hsl(74 91% 54%);
-  --color-background: hsl(235 15% 9.5%);
-  --color-primary: hsl(0 0% 98%);
-  --color-secondary: hsl(0 0% 80%);
-  --color-secondary-bg: hsl(0 0% 22%);
-  --color-muted: hsl(0 0% 78%);
-  --color-accent: hsl(7, 94%, 65%);
-  --color-destructive: hsl(0 52% 53%);
-  --color-input: hsl(0 0% 14.9%);
-  --color-border: hsl(0 1% 83%);
-  --color-ring: hsl(0 0% 72%);
-}
+@plugin "@tailwindcss/typography";
+@import "site/styles/animation.css";
+@import "site/styles/theme.css";
 
 @layer base {
   * {
@@ -59,18 +31,58 @@
   details > summary::-webkit-details-marker {
     display: none;
   }
+
+  /* 스크롤바 스타일링 */
+  * {
+    /*scrollbar-width: thin !important;*/
+    /* Chrome, Edge, Safari 브라우저 */
+    &::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: var(--color-background);
+      border-radius: 1px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(204, 204, 204, 0.53);
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: var(--color-theme);
+    }
+  }
+
+  .hide-scrollbar {
+    /* Chrome, Safari, Edge, Opera */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Firefox */
+    scrollbar-width: none;
+
+    /* IE */
+    -ms-overflow-style: none;
+  }
 }
 
 @layer components {
 }
 
-@layer content {
+@layer prose-content {
   .prose {
-    @apply **:text-primary container;
+    @apply *:text-primary container;
   }
+
   .prose h1 {
     @apply mt-10 mb-6 text-3xl font-bold;
   }
+
   .prose h2 {
     @apply mt-5 mb-3 text-2xl font-bold;
   }
@@ -105,7 +117,7 @@
   .platform,
   .level,
   .style {
-    @apply font-semibold hover:opacity-80;
+    @apply font-semibold hover:opacity-80 capitalize;
   }
 
   .category {
@@ -117,21 +129,29 @@
   .platform {
     @apply bg-lime-100 text-lime-600;
   }
-  .level easy {
-    @apply bg-green-100 text-green-600;
+  .level .easy {
+    & .easy {
+      @apply bg-green-100 text-green-600;
+    }
+    & .mid {
+      @apply bg-purple-100 text-purple-600;
+    }
+    & .hard {
+      @apply bg-red-100 text-red-600;
+    }
   }
-  .level mid {
-    @apply bg-purple-100 text-purple-600;
-  }
-  .level hard {
-    @apply bg-red-100 text-red-600;
-  }
+
   .pattern {
     @apply bg-cyan-100 text-cyan-600;
   }
+
   .framework {
     @apply bg-stone-100 text-stone-600;
+    & .react {
+      @apply bg-blue-100 text-blue-600;
+    }
   }
+
   .component {
     @apply bg-sky-100 text-sky-600;
   }

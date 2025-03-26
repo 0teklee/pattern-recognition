@@ -58,7 +58,4 @@ const arrTags = Object.entries(tags).filter(([key, val]) => !!key && !!val);
   };
 
   buttonContainer.addEventListener("click", (e) => eventClick(e));
-  window.addEventListener("popstate", (e) => {
-    console.log("tag popstate", e);
-  });
 </script>

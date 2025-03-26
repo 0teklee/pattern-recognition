@@ -1,14 +1,14 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import Tags from "site/components/tags.astro";
-import { SubRoutes } from "site/types/routes";
+import { SubRouteType } from "site/types/routes";
 
 interface Props {
-  items: Array<CollectionEntry<SubRoutes>>;
+  items: Array<CollectionEntry<SubRouteType>>;
 }
 
 const { items } = Astro.props;
-const subRoute: SubRoutes = items[0]?.data.path[0];
+const subRoute: SubRouteType = items[0]?.data.path[0];
 ---
 
 <ol class="flex w-full flex-col gap-4 sm:gap-6">

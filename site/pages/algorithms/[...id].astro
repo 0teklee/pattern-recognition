@@ -4,9 +4,14 @@ import { getCollection, render } from "astro:content";
 import BaseLayout from "@site-ui/root-layout.astro";
 import PostLayout from "@site-ui/post-layout.astro";
 import PostHeader from "@site-ui/post-header.astro";
+import { RouteKeyMap } from "../../types/routes";
+import { getEnv } from "../../utils";
 
 export const getStaticPaths = (async () => {
-  const posts = await getCollection("algorithms");
+  const { isPrd, isAlgo } = getEnv();
+
+  const posts =
+    isPrd || isAlgo ? await getCollection(RouteKeyMap.algorithms) : [];
 
   return posts.map((post) => ({
     params: { id: post.id },
