@@ -78,17 +78,15 @@ const animateFolders = [
           return (
             <details class:list={["relative", "group/folder"]}>
               <summary
-                class:list={[
-                  "flex cursor-pointer items-center gap-3",
-                  "hover:text-secondary",
-                ]}
+                class:list={["text-sm", "hover:text-secondary capitalize"]}
               >
-                <slot name="folder-icon" class="inline" />
-                {folder}
-                <i>
+                <slot name="folder-icon" />
+                <span>{folder}</span>
+                <i class="align-middle">
                   <ExpandIcon
                     class:list={[
                       "absolute top-0 right-0",
+                      "stroke-1",
                       "transition-all duration-300",
                       "opacity-100 group-open/folder:opacity-0",
                       "rotate-0 group-open/folder:rotate-90",
@@ -97,6 +95,7 @@ const animateFolders = [
                   <CollapseIcon
                     class:list={[
                       "absolute top-0 right-0",
+                      "stroke-1",
                       "transition-all duration-300",
                       "opacity-0 group-open/folder:opacity-100",
                       "-rotate-90 group-open/folder:rotate-0",
