@@ -1,18 +1,18 @@
 {
   "scripts": {
-    "dev": "SCOPE=prd dotenv -e .env.dev -- astro dev --config site/config/base.config.ts",
-    "dev:algo": "SCOPE=algo dotenv -e .env.dev -- astro dev --config site/config/algorithms.config.ts  --force --mode development",
-    "dev:uiux": "SCOPE=uiux dotenv -e .env.dev -- astro dev --config site/config/uiux.config.ts  --force --mode development",
-    "build:dev": "SCOPE=prd dotenv -e .env.build -- astro build --config site/config/base.config.ts --mode development --verbose",
-    "build:algo": "SCOPE=algo dotenv -e .env.build -- astro build --config site/config/algorithms.config.ts --mode development --verbose",
-    "build:uiux": "SCOPE=uiux dotenv -e .env.build -- astro build --config site/config/uiux.config.ts --mode development --verbose",
-    "build:prod": "SCOPE=prd dotenv -e .env.prod -- astro build --config site/config/base.config.ts",
-    "build:algo:prod": "SCOPE=algo dotenv -e .env.prod -- astro build --config site/config/algorithms.config.ts --mode production",
-    "build:uiux:prod": "SCOPE=uiux dotenv -e .env.prod -- astro build --config site/config/uiux.config.ts --mode production",
-    "merge:builds": "mkdir -p dist/production && cp -r dist/dev/build-algo/* dist/production/ && cp -r dist/dev/build-uiux/* dist/production/",
-    "preview:prd": "SCOPE=prd dotenv -e .env.build -- astro preview --config site/config/base.config.ts --site http://localhost:4321/dist/dev --force --mode development --verbose",
-    "preview:algo": "SCOPE=algo dotenv -e .env.build -- astro preview --config site/config/algorithms.config.ts --site http://localhost:4321/dist/dev/build-algo --force --mode development --verbose",
-    "preview:uiux": "SCOPE=uiux dotenv -e .env.build -- astro preview --config site/config/uiux.config.ts --site http://localhost:4321/dist/dev/build-uiux --force --mode development --verbose"
+    "dev": "dotenv -e .env.dev -- astro dev --config site/config/base.config.ts",
+    "dev:algo": "dotenv -e .env.dev.algo -- astro dev --config site/config/algorithms.config.ts  --force --mode development",
+    "dev:uiux": "dotenv -e .env.dev.uiux -- astro dev --config site/config/uiux.config.ts  --force --mode development",
+    "build:dev": "dotenv -e .env.build -- astro build --config site/config/base.config.ts --mode development --verbose",
+    "build:dev-algo": "dotenv -e .env.build -- astro build --config site/config/algorithms.config.ts --mode development --verbose",
+    "build:dev-uiux": "dotenv -e .env.build -- astro build --config site/config/uiux.config.ts --mode development --verbose",
+    "build:prod": "dotenv -e .env.prod -- astro build --config site/config/base.config.ts",
+    "build:algo-prod": "dotenv -e .env.prod -- astro build --config site/config/algorithms.config.ts --mode production",
+    "build:uiux-prod": "dotenv -e .env.prod -- astro build --config site/config/uiux.config.ts --mode production",
+    "preview:dev": "dotenv -e .env.dev -- astro preview --config site/config/base.config.ts --site $PREVIEW_PORT --force --mode development --verbose",
+    "preview:prod": "dotenv -e .env.prod -- astro preview --config site/config/base.config.ts --site $PREVIEW_PORT --force --mode production --verbose",
+    "preview:algo": "dotenv -e .env.dev.algo -- astro preview --config site/config/algorithms.config.ts --site http://localhost:$PREVIEW_PORT/dist/dev/build-algo --force --mode development --verbose",
+    "preview:uiux": "dotenv -e .env.dev.uiux -- astro preview --config site/config/uiux.config.ts --site http://localhost:$PREVIEW_PORT/dist/dev/build-uiux --force --mode development --verbose"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.1.1",
