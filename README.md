@@ -30,7 +30,10 @@ IS TO LEARN PATTERNS OF
 12. **PR-12** : [Apply changes from previous PR-9~12](https://github.com/0teklee/pattern-recognition/pull/12)
 13. **PR-13** : [GitHub Actions CI + Astro Build Setting](https://github.com/0teklee/pattern-recognition/pull/13)
 14. **PR-14** : [Convert @Contents to MDX](https://github.com/0teklee/pattern-recognition/pull/14)
-15. **PR-15~16** : [CICD Integrate Github Actions + Cloudflare Pages](https://github.com/0teklee/pattern-recognition/pull/16)
+15~6. **PR-15~16** : [CICD Integrate Github Actions + Cloudflare Pages](https://github.com/0teklee/pattern-recognition/pull/16)
+17~22. **PR-17~22** : [DEV-MERGE-1](https://github.com/0teklee/pattern-recognition/pull/22)
+23. **PR-23** : [HOTFIX-1: Build Error Fix in GA](https://github.com/0teklee/pattern-recognition/pull/23)
+24. **PR-24** : [Landing Prototype UI](https://github.com/0teklee/pattern-recognition/pull/24)
 
 ## VERSIONS
 
