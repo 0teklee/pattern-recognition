@@ -7,8 +7,8 @@ import { getCollection } from "astro:content";
 import { getEnv } from "@site/utils";
 import { RouteKeyMap } from "../../types/routes";
 
-const { isPrd, isUIUX } = getEnv();
-const posts = isPrd || isUIUX ? await getCollection(RouteKeyMap.uiux) : [];
+const { isRoot, isUIUX } = getEnv();
+const posts = isRoot || isUIUX ? await getCollection(RouteKeyMap.uiux) : [];
 ---
 
 <BaseLayout title="UIUX" description="Pattern Recognition - UI/UX">

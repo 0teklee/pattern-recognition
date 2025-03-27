@@ -11,9 +11,9 @@ import { getCollection, render } from "astro:content";
 import PostHeader from "site/components/post-header.astro";
 
 export const getStaticPaths = (async () => {
-  const { isPrd, isUIUX } = getEnv();
+  const { isRoot, isUIUX } = getEnv();
 
-  const posts = isPrd || isUIUX ? await getCollection("uiux") : [];
+  const posts = isRoot || isUIUX ? await getCollection("uiux") : [];
 
   return posts.map((post) => ({
     params: { id: post.id },

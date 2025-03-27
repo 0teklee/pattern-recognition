@@ -17,13 +17,13 @@ import { Routes } from "@site-types/routes";
 const currentPathname = Astro.url.pathname;
 
 //  콘텐츠 가져오기
-const { isPrd, isAlgo, isUIUX } = getEnv();
+const { isRoot, isAlgo, isUIUX } = getEnv();
 
 const collections = await Promise.all([
-  isAlgo || isPrd
+  isAlgo || isRoot
     ? getCollection("algorithms")
     : ([] as CollectionEntry<"algorithms">),
-  isUIUX || isPrd ? getCollection("uiux") : ([] as unknown[]),
+  isUIUX || isRoot ? getCollection("uiux") : ([] as unknown[]),
 ]);
 
 const [algoFolders, uiuxFolders] = collections.map((collection) =>

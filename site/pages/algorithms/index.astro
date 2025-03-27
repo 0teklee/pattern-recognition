@@ -9,9 +9,9 @@ import { getEnv } from "@site/utils";
 
 export const prerender = true;
 
-const { isPrd, isAlgo } = getEnv();
+const { isRoot, isAlgo } = getEnv();
 const posts =
-  isPrd || isAlgo ? await getCollection(RouteKeyMap.algorithms) : [];
+  isRoot || isAlgo ? await getCollection(RouteKeyMap.algorithms) : [];
 ---
 
 <BaseLayout title="Algorithms" description="Pattern Recognition - Algorithms">
