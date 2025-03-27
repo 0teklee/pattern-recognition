@@ -1,9 +1,11 @@
 ---
+import { file } from "astro/dist/content/loaders/index";
 import {
   ChevronsUpDown as ExpandIcon,
   ChevronsDownUp as CollapseIcon,
 } from "lucide-astro";
 import { RouteKeyType } from "site/types/routes";
+import { string } from "zod";
 
 interface Props {
   indexPath: RouteKeyType;
@@ -24,6 +26,11 @@ const animateFolders = [
   "opacity-0",
   "scale-y-0",
 ];
+
+const getCurrentPathStyle = (id: string, cls: string[] = []) => [
+  `${indexPath}/${id}` === currentPath ? "*:text-theme" : "",
+  ...cls,
+];
 ---
 
 <details class="group">
@@ -37,7 +44,7 @@ const animateFolders = [
     ]}
   >
     <slot name="hero-icon" />
-    {title}
+    <span class="uppercase">{title}</span>
     <i>
       <ExpandIcon
         class:list={[
@@ -78,7 +85,11 @@ const animateFolders = [
           return (
             <details class:list={["relative", "group/folder"]}>
               <summary
-                class:list={["text-sm", "hover:text-secondary capitalize"]}
+                class:list={[
+                  "text-sm",
+                  "hover:text-secondary capitalize",
+                  "group-open/folder:**:text-theme cursor-pointer",
+                ]}
               >
                 <slot name="folder-icon" />
                 <span>{folder}</span>
@@ -105,9 +116,9 @@ const animateFolders = [
               </summary>
               <div
                 class:list={[
-                  "grid gap-y-3",
-                  "py-2 pl-4",
-                  "transition-all duration-300",
+                  "grid gap-y-1",
+                  "py-1",
+                  "indent-1 text-sm transition-all duration-300",
                   "opacity-0 group-open/folder:opacity-100",
                   "scale-y-0 group-open/folder:scale-y-100",
                 ]}
@@ -116,16 +127,17 @@ const animateFolders = [
                   <a
                     href={`${indexPath}/${file.id}`}
                     class:list={[
-                      "hover:text-theme text-sm leading-6 text-pretty break-words",
+                      "hover:text-theme font-light whitespace-pre-wrap",
                       `${indexPath}/${file.id}` === currentPath
-                        ? "text-theme"
+                        ? "**:text-theme"
                         : "",
+                      files.length > 3 ? "text-xs" : "text-sm",
                     ]}
                   >
-                    <i class="mr-1 inline-block align-text-bottom">
+                    <i class:list={["mr-1 inline-block align-middle"]}>
                       <slot name="file-icon" />
                     </i>
-                    {file.title}
+                    <span>{file.title}</span>
                   </a>
                 ))}
               </div>

@@ -1,0 +1,59 @@
+@layer tags {
+  .category,
+  .lang,
+  .pattern,
+  .path,
+  .component,
+  .framework,
+  .platform,
+  .level,
+  .style {
+    @apply font-semibold capitalize hover:opacity-80;
+  }
+
+  .category {
+    @apply bg-orange-100 text-orange-600;
+  }
+
+  .lang {
+    @apply bg-blue-100 text-blue-600;
+  }
+  .platform {
+    @apply bg-lime-100 text-lime-600;
+  }
+
+  /* level */
+  .easy {
+    @apply bg-green-100 text-green-600;
+  }
+  .mid {
+    @apply bg-purple-100 text-purple-600;
+  }
+  .hard {
+    @apply bg-red-100 text-red-600;
+  }
+
+  .pattern {
+    @apply bg-cyan-100 text-cyan-600;
+  }
+
+  /* framework */
+  .framework {
+    @apply bg-stone-100 text-stone-600;
+  }
+  .react {
+    @apply bg-blue-100 text-blue-600;
+  }
+
+  .component {
+    @apply bg-sky-100 text-sky-600;
+  }
+
+  .style {
+    @apply bg-emerald-100 text-emerald-600;
+  }
+
+  .path {
+    @apply bg-emerald-100 text-emerald-600;
+  }
+}
