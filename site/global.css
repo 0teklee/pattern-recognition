@@ -9,7 +9,7 @@
 
 @layer base {
   body {
-    @apply bg-background text-primary;
+    @apply bg-background text-primary box-border;
   }
 
   span:empty,
