@@ -32,12 +32,12 @@ const pathAlias = {
   "@globalStyle": "/site/global.css",
 };
 
-const { isRoot } = getEnv();
+const { isRoot, isDev } = getEnv();
 
 export const baseConfig = {
   site: "https://patterns.leetekwoo.com",
   srcDir: "./site",
-  outDir: isRoot ? "dist/production" : "dist/dev",
+  outDir: isDev ? "dist/dev" : "dist/production",
   scopedStyleStrategy: "class",
   integrations: [
     mdx({
