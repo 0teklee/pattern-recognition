@@ -35,6 +35,7 @@ IS TO LEARN PATTERNS OF
 - **PR-17-22** : [DEV-MERGE-1](https://github.com/0teklee/pattern-recognition/pull/22)
 - **PR-23** : [HOTFIX-1: Build Error Fix in GA](https://github.com/0teklee/pattern-recognition/pull/23)
 - **PR-24** : [Landing Prototype UI](https://github.com/0teklee/pattern-recognition/pull/24)
+- **PR-25-27** : [Page Transitions & env refactor](https://github.com/0teklee/pattern-recognition/pull/28) 
 
 
 ## VERSIONS
