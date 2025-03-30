@@ -32,12 +32,12 @@ const pathAlias = {
   "@globalStyle": "/site/global.css",
 };
 
-const { isPrd } = getEnv();
+const { isRoot, isDev } = getEnv();
 
 export const baseConfig = {
   site: "https://patterns.leetekwoo.com",
   srcDir: "./site",
-  outDir: isPrd ? "dist/production" : "dist/dev",
+  outDir: isDev ? "dist/dev" : "dist/production",
   scopedStyleStrategy: "class",
   integrations: [
     mdx({
@@ -47,7 +47,7 @@ export const baseConfig = {
       remarkRehype: { footnoteLabel: "Footnotes" },
       gfm: false,
     }),
-    ...(isPrd ? [react()] : []),
+    ...(isRoot ? [react()] : []),
   ],
   vite: {
     resolve: {

@@ -1,0 +1,38 @@
+/* Info Detail Page common styling   */
+@layer prose-content {
+  .prose {
+    @apply *:text-primary container;
+  }
+
+  .prose h1 {
+    @apply mt-10 mb-6 text-3xl font-bold;
+  }
+
+  .prose h2 {
+    @apply mt-5 mb-3 text-2xl font-bold;
+  }
+
+  .prose h3 {
+    @apply my-1 text-xl font-bold;
+  }
+
+  .prose p {
+    @apply mb-0.5;
+  }
+
+  .prose a {
+    @apply hover:text-theme text-blue-300 transition-colors duration-200;
+  }
+
+  .prose ul {
+    @apply list-inside list-disc leading-6;
+  }
+
+  .prose ol {
+    @apply list-inside list-decimal leading-6;
+  }
+
+  .prose code:not(pre code) {
+    @apply bg-muted text-accent mx-0.5 rounded px-1 py-0.5;
+  }
+}

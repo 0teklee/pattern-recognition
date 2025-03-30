@@ -8,10 +8,10 @@ import { RouteKeyMap } from "../../types/routes";
 import { getEnv } from "../../utils";
 
 export const getStaticPaths = (async () => {
-  const { isPrd, isAlgo } = getEnv();
+  const { isRoot, isAlgo } = getEnv();
 
   const posts =
-    isPrd || isAlgo ? await getCollection(RouteKeyMap.algorithms) : [];
+    isRoot || isAlgo ? await getCollection(RouteKeyMap.algorithms) : [];
 
   return posts.map((post) => ({
     params: { id: post.id },

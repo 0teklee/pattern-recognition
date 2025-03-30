@@ -1,8 +1,9 @@
 ---
+import { ClientRouter } from "astro:transitions";
 import type { MetaTagProps } from "@site-types/props";
 
 import Footer from "@site-ui/footer.astro";
-import Sidebar from "@site-ui/sidebar.astro";
+import Sidebar from "./sidebar/sidebar.astro";
 import Header from "@site-ui/header.astro";
 import "@globalStyle";
 
@@ -11,6 +12,22 @@ interface Props extends MetaTagProps {}
 const { title, description } = Astro.props;
 const titleString = `Pattern Recognition${title ? ` - ${title}` : ""}`;
 const descriptionString = description ? `${description}` : "";
+const anim = {
+  old: {
+    name: "slide-x-out",
+    duration: "0.3s",
+    easing: "linear",
+  },
+  new: {
+    name: "slide-x",
+    duration: "0.5s",
+    easing: "ease-in-out",
+  },
+};
+const customTransition = {
+  forwards: anim,
+  backwards: anim,
+};
 ---
 
 <!doctype html>
@@ -20,14 +37,26 @@ const descriptionString = description ? `${description}` : "";
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{titleString} Pattern Recognition</title>
     <meta name="description" content={descriptionString} />
+    <slot name="head" />
+    <ClientRouter />
+    <!--Refactor : improve cohesion : scattered transition -->
+    <script>
+      document.addEventListener("astro:after-swap", () =>
+        window.scrollTo({ left: 0, top: 0, behavior: "instant" }),
+      );
+    </script>
   </head>
+
   <body class="bg-background text-primary flex h-full min-h-dvh flex-col">
     <Header />
     <div class="flex w-full grow">
       <!-- info Side Nav -->
       <Sidebar />
       <!-- info 페이지 컨텐츠 컨테이너 -->
-      <main class="flex-1 p-4 sm:p-6">
+      <main
+        transition:animate={customTransition}
+        class="border-border flex-1 border-dashed p-4 sm:p-6 lg:border-l"
+      >
         <!-- info 개별 페이지 동적 컨텐츠 주입 dynamic contents injection-->
         <slot />
       </main>

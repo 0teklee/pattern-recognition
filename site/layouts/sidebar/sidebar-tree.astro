@@ -1,19 +1,16 @@
 ---
-import { file } from "astro/dist/content/loaders/index";
 import {
   ChevronsUpDown as ExpandIcon,
   ChevronsDownUp as CollapseIcon,
 } from "lucide-astro";
-import { RouteKeyType } from "site/types/routes";
-import { string } from "zod";
+import type { RouteKeyType } from "@site-types/routes";
 
 interface Props {
   indexPath: RouteKeyType;
   folders: [string, unknown][];
-  currentPath: string;
 }
 
-const { indexPath, folders, currentPath } = Astro.props;
+const { indexPath, folders } = Astro.props;
 const title = indexPath.slice(1);
 
 const animateIcons = [
@@ -26,14 +23,24 @@ const animateFolders = [
   "opacity-0",
   "scale-y-0",
 ];
-
-const getCurrentPathStyle = (id: string, cls: string[] = []) => [
-  `${indexPath}/${id}` === currentPath ? "*:text-theme" : "",
-  ...cls,
-];
 ---
 
-<details class="group">
+<!--Refactor : Make this script declarative while keeping persist transition-->
+<script is:inline>
+  document.addEventListener("astro:page-load", () => {
+    const item = document.getElementById(
+      decodeURIComponent(window.location.pathname),
+    );
+    item?.classList.add("text-theme");
+  });
+
+  document.addEventListener("astro:before-swap", (e) => {
+    const item = document.getElementById(decodeURIComponent(e.from.pathname));
+    item?.classList.remove("text-theme");
+  });
+</script>
+
+<details class="group" transition:persist>
   <summary
     class:list={[
       "relative",
@@ -123,23 +130,24 @@ const getCurrentPathStyle = (id: string, cls: string[] = []) => [
                   "scale-y-0 group-open/folder:scale-y-100",
                 ]}
               >
-                {files.map((file) => (
-                  <a
-                    href={`${indexPath}/${file.id}`}
-                    class:list={[
-                      "hover:text-theme font-light whitespace-pre-wrap",
-                      `${indexPath}/${file.id}` === currentPath
-                        ? "**:text-theme"
-                        : "",
-                      files.length > 3 ? "text-xs" : "text-sm",
-                    ]}
-                  >
-                    <i class:list={["mr-1 inline-block align-middle"]}>
-                      <slot name="file-icon" />
-                    </i>
-                    <span>{file.title}</span>
-                  </a>
-                ))}
+                {files.map((file) => {
+                  const fileLink = `${indexPath}/${file.id}`;
+                  return (
+                    <a
+                      id={fileLink}
+                      href={fileLink}
+                      class:list={[
+                        "hover:text-theme font-light whitespace-pre-wrap",
+                        files.length > 3 ? "text-xs" : "text-sm",
+                      ]}
+                    >
+                      <i class:list={["mr-1 inline-block align-middle"]}>
+                        <slot name="file-icon" />
+                      </i>
+                      <span>{file.title}</span>
+                    </a>
+                  );
+                })}
               </div>
             </details>
           );

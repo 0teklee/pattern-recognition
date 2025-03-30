@@ -1,6 +1,5 @@
 ---
 import { CollectionEntry, getCollection } from "astro:content";
-
 import {
   FolderGit2,
   Component as ComponentIcon,
@@ -10,20 +9,18 @@ import {
   CurlyBraces as CodeIcon,
 } from "lucide-astro";
 
-import SidebarTree from "@site-ui/sidebar-tree.astro";
+import SidebarTree from "./sidebar-tree.astro";
 import { getEnv } from "@site/utils";
-import { Routes } from "@site-types/routes";
-
-const currentPathname = Astro.url.pathname;
+import { Routes } from "@site/types/routes";
 
 //  콘텐츠 가져오기
-const { isPrd, isAlgo, isUIUX } = getEnv();
+const { isRoot, isAlgo, isUIUX } = getEnv();
 
 const collections = await Promise.all([
-  isAlgo || isPrd
+  isAlgo || isRoot
     ? getCollection("algorithms")
     : ([] as CollectionEntry<"algorithms">),
-  isUIUX || isPrd ? getCollection("uiux") : ([] as unknown[]),
+  isUIUX || isRoot ? getCollection("uiux") : ([] as unknown[]),
 ]);
 
 const [algoFolders, uiuxFolders] = collections.map((collection) =>
@@ -59,26 +56,15 @@ function groupContentByFolder(posts) {
 
 <aside
   class:list={[
-    "hidden md:block",
-    "max-w-64 grow p-4 pr-1.5",
-    "text-primary border-border border-r",
-    "",
+    "hidden flex-1 self-stretch md:block",
+    "max-h-dvh max-w-64",
+    "overflow-x-hidden overflow-y-auto",
+    "bg-background z-20",
   ]}
 >
-  <nav
-    class:list={[
-      "flex flex-col gap-y-4",
-      "h-full max-h-dvh w-full",
-      "overflow-x-hidden overflow-y-auto",
-    ]}
-  >
+  <nav class:list={["min-h-dvh w-full", "px-2 pt-8", "space-y-4"]}>
     <!-- Algorithms 섹션 -->
-
-    <SidebarTree
-      folders={algoFolders}
-      currentPath={currentPathname}
-      indexPath={Routes.algorithms}
-    >
+    <SidebarTree folders={algoFolders} indexPath={Routes.algorithms}>
       <FolderGit2 class="h-5 w-5" slot="hero-icon" />
       <GitFork class="h-5 w-5" slot="index-icon" />
       <GitCommitVertical
@@ -89,11 +75,7 @@ function groupContentByFolder(posts) {
     </SidebarTree>
 
     <!-- UI/UX 섹션 -->
-    <SidebarTree
-      folders={uiuxFolders}
-      currentPath={currentPathname}
-      indexPath={Routes.uiux}
-    >
+    <SidebarTree folders={uiuxFolders} indexPath={Routes.uiux}>
       <ComponentIcon class="h-5 w-5" slot="hero-icon" />
       <GitFork class="inline h-5 w-5" slot="index-icon" />
       <GitCommitVertical

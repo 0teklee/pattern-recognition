@@ -1,12 +1,15 @@
-@config "./tailwind.config.ts";
-
 @theme animate {
-  --animate-slide-y-in-up: slide-y-in-up 500ms ease-in-out forwards alternate;
-  --animate-slide-y-in-down: slide-y-in-down 500ms ease-in-out forwards
-    alternate;
-  --animate-slide-y-out-up: slide-y-out-up 500ms ease-in-out forwards alternate;
-  --animate-slide-y-out-down: slide-y-out-down 500ms ease-in-out forwards
-    alternate;
+  /* Y축 애니메이션 */
+  --animate-slide-y-in-up: slide-y 500ms ease-in-out forwards;
+  --animate-slide-y-in-down: slide-y 500ms reverse ease-in-out forwards;
+  --animate-slide-y-out-up: slide-y-out 500ms ease-in-out forwards;
+  --animate-slide-y-out-down: slide-y-out 500ms reverse ease-in-out forwards;
+
+  /* X축 애니메이션 */
+  --animate-slide-x-in-left: slide-x 500ms ease-in-out forwards;
+  --animate-slide-x-in-right: slide-x 500ms reverse ease-in-out forwards;
+  --animate-slide-x-out-left: slide-x-out 500ms ease-in-out forwards;
+  --animate-slide-x-out-right: slide-x-out 500ms reverse ease-in-out forwards;
 
   --animate-grid-expand: grid-expand-frame 500ms ease-in-out forwards alternate;
   --animate-grid-collapse: grid-collapse-frame 500ms ease-in-out forwards
@@ -14,67 +17,95 @@
 
   --animate-dissolve: dissolve 10s cubic-bezier(0.98, -0.14, 0.58, 1) 15s
     forwards infinite alternate;
+}
 
-  @keyframes dissolve {
-    0% {
-      filter: blur(0);
-    }
-    100% {
-      filter: blur(4rem);
-    }
+/* 진입 애니메이션 */
+@keyframes slide-x {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+    z-index: -10;
   }
-
-  @keyframes slide-y-in-down {
-    0% {
-      transform: translateY(100%);
-    }
-    100% {
-      transform: translateY(0);
-    }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+    z-index: 0;
   }
+}
 
-  @keyframes slide-y-out-down {
-    0% {
-      transform: translateY(0);
-    }
-    100% {
-      transform: translateY(100%);
-    }
+@keyframes slide-y {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+    z-index: -10;
   }
-
-  @keyframes slide-y-in-up {
-    0% {
-      transform: translateY(-100%);
-    }
-    100% {
-      transform: translateY(0);
-    }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+    z-index: 0;
   }
+}
 
-  @keyframes slide-y-out-up {
-    0% {
-      transform: translateY(0);
-    }
-    100% {
-      transform: translateY(-100%);
-    }
+/* 퇴장 애니메이션 */
+@keyframes slide-x-out {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+    z-index: -10;
   }
-
-  @keyframes grid-expand-frame {
-    from {
-      grid-template-rows: 0fr;
-    }
-    to {
-      grid-template-rows: 1fr;
-    }
+  10% {
+    transform: translateX(-5%);
+    opacity: 70%;
+    z-index: -10;
   }
+  100% {
+    transform: translateX(-100%);
+    opacity: 0;
+    z-index: -10;
+  }
+}
 
-  @keyframes grid-collapse-frame {
-    from {
-      grid-template-rows: 1fr;
-    }
-    to {
-      grid-template-rows: 0fr;
-    }
+@keyframes slide-y-out {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+    z-index: -10;
+  }
+  10% {
+    transform: translateY(-5%);
+    opacity: 70%;
+    z-index: -10;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+    z-index: -10;
+  }
+}
+
+@keyframes dissolve {
+  0% {
+    filter: blur(0);
+  }
+  100% {
+    filter: blur(4rem);
+  }
+}
+
+@keyframes grid-expand-frame {
+  from {
+    grid-template-rows: 0fr;
+  }
+  to {
+    grid-template-rows: 1fr;
+  }
+}
+
+@keyframes grid-collapse-frame {
+  from {
+    grid-template-rows: 1fr;
+  }
+  to {
+    grid-template-rows: 0fr;
   }
 }

@@ -2,22 +2,18 @@
 import BaseLayout from "@site-ui/root-layout.astro";
 import { CollectionEntry, getCollection } from "astro:content";
 import { getEnv } from "@site/utils";
-import { RouteKeyMap, RouteKeyType } from "@site-types/routes";
+import { RouteKeyMap } from "@site-types/routes";
 import Tabs from "@site-ui/tabs.astro";
 import TabPanel from "@site-ui/tab-panel.astro";
-import index from "eslint-plugin-jsdoc";
-import { collections } from "../content/config";
 
-const { isPrd, isAlgo, isUIUX } = getEnv();
+const { isRoot, isAlgo, isUIUX } = getEnv();
 
 const [algoCollection, uiuxCollection] = await Promise.all([
-  isAlgo || isPrd
+  isAlgo || isRoot
     ? getCollection(RouteKeyMap.algorithms)
     : ([] as CollectionEntry<RouteKeyMap.algorithms>),
-  isUIUX || isPrd ? getCollection(RouteKeyMap.uiux) : ([] as unknown[]),
+  isUIUX || isRoot ? getCollection(RouteKeyMap.uiux) : ([] as unknown[]),
 ]);
-
-console.log("Algo Collection", algoCollection);
 ---
 
 <BaseLayout title="HOME" description="Pattern Recognition Index">
