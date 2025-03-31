@@ -1,24 +1,20 @@
 ---
 import BaseLayout from "@site-ui/root-layout.astro";
-import { CollectionEntry, getCollection } from "astro:content";
-import { getEnv } from "@site/utils";
-import { RouteKeyMap } from "@site-types/routes";
-import Tabs from "@site-ui/tabs.astro";
-import TabPanel from "@site-ui/tab-panel.astro";
 
-const { isRoot, isAlgo, isUIUX } = getEnv();
-
-const [algoCollection, uiuxCollection] = await Promise.all([
-  isAlgo || isRoot
-    ? getCollection(RouteKeyMap.algorithms)
-    : ([] as CollectionEntry<RouteKeyMap.algorithms>),
-  isUIUX || isRoot ? getCollection(RouteKeyMap.uiux) : ([] as unknown[]),
-]);
+// TBA - replace with animation
+// const { isRoot, isAlgo, isUIUX } = getEnv();
+//
+// const [algoCollection, uiuxCollection] = await Promise.all([
+//   isAlgo || isRoot
+//     ? getCollection(RouteKeyMap.algorithms)
+//     : ([] as CollectionEntry<RouteKeyMap.algorithms>),
+//   isUIUX || isRoot ? getCollection(RouteKeyMap.uiux) : ([] as unknown[]),
+// ]);
 ---
 
 <BaseLayout title="HOME" description="Pattern Recognition Index">
   <div class="container mx-auto px-4 py-8">
-    <!-- Hero Section -->
+    <!-- Hero Section  TBA : Animation-->
     <section class="mb-16 space-y-6 text-center">
       <blockquote
         class:list={[
@@ -48,43 +44,5 @@ const [algoCollection, uiuxCollection] = await Promise.all([
         Inspired by William Gibson , Pattern Recognition, 2003
       </a>
     </section>
-
-    <!-- Latest Content -->
-    <div class="container mx-auto px-4 py-8">
-      <Tabs tabs={["Algorithms", "UIUX"]}>
-        <TabPanel tabName="Algorithms Patterns" tabIndex={0} isDefault={true}>
-          <ul class="list-inside py-4 pl-5">
-            {
-              algoCollection.map((post) => (
-                <li>
-                  <a
-                    href={`/${post.data.path[0]}/${post.id}`}
-                    class="hover:text-theme"
-                  >
-                    {post.data.title}
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </TabPanel>
-        <TabPanel tabName="UIUX Patterns" tabIndex={1}>
-          <ul class="list-inside py-4 pl-5">
-            {
-              uiuxCollection.map((post) => (
-                <li>
-                  <a
-                    href={`/${post.data.path[0]}/${post.id}`}
-                    class="hover:text-theme"
-                  >
-                    {post.data.title}
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </TabPanel>
-      </Tabs>
-    </div>
   </div>
 </BaseLayout>
