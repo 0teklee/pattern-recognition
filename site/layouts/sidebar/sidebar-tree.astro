@@ -26,11 +26,12 @@ const animateFolders = [
 ---
 
 <!--Refactor : Make this script declarative while keeping persist transition-->
-<script is:inline>
-  document.addEventListener("astro:page-load", () => {
+<script>
+  document.addEventListener("astro:page-load", (e) => {
     const item = document.getElementById(
-      decodeURIComponent(window.location.pathname),
+      decodeURIComponent(e.target.location.pathname),
     );
+
     item?.classList.add("text-theme");
   });
 

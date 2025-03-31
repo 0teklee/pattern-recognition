@@ -35,7 +35,7 @@ const pathAlias = {
 const { isRoot, isDev } = getEnv();
 
 export const baseConfig = {
-  site: "https://patterns.leetekwoo.com",
+  site: process.env.BASE_URL as string,
   srcDir: "./site",
   outDir: isDev ? "dist/dev" : "dist/production",
   scopedStyleStrategy: "class",
