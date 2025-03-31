@@ -1,15 +1,21 @@
 ---
-import { SearchParam } from "site/types/query";
-import { RouteType } from "site/types/routes";
+import type { SearchParam } from "site/types/query";
+import type { RouteType, SubRouteType } from "site/types/routes";
 
 interface Props {
-  tags: SearchParam<"index">;
+  tags: Record<string, string>;
   path: RouteType;
   size?: "sm" | "base";
+  itemId?: string;
 }
 
 const { tags, size = "base", path } = Astro.props;
-const arrTags = Object.entries(tags).filter(([key, val]) => !!key && !!val);
+const arrTags = Object.entries(tags)
+  .filter(([key, val]) => !!key && !!val)
+  .filter(
+    ([key, val], index, self) =>
+      self.findIndex((pair) => pair[1] === val) === index,
+  );
 ---
 
 <div

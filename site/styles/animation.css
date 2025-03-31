@@ -1,7 +1,8 @@
 @theme animate {
   /* Y축 애니메이션 */
-  --animate-slide-y-in-up: slide-y 500ms ease-in-out forwards;
-  --animate-slide-y-in-down: slide-y 500ms reverse ease-in-out forwards;
+  --animate-slide-y-in-up: slide-y-up 500ms ease-in-out forwards;
+  --animate-slide-y-in-down: slide-y-down 500ms ease-in-out forwards;
+
   --animate-slide-y-out-up: slide-y-out 500ms ease-in-out forwards;
   --animate-slide-y-out-down: slide-y-out 500ms reverse ease-in-out forwards;
 
@@ -33,10 +34,23 @@
   }
 }
 
-@keyframes slide-y {
+@keyframes slide-y-up {
   0% {
-    transform: translateY(100%);
-    opacity: 0;
+    transform: translateY(10%);
+    opacity: 0.2;
+    z-index: -10;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+    z-index: 0;
+  }
+}
+
+@keyframes slide-y-down {
+  0% {
+    transform: translateY(-10%);
+    opacity: 0.2;
     z-index: -10;
   }
   100% {
