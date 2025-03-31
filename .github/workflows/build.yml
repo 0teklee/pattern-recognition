@@ -14,6 +14,7 @@ on:
   workflow_dispatch:
 env:
   PRODUCTION_BUILD_PATH: dist/production
+  BASE_URL: "https://patterns.leetekwoo.com"
 jobs:
   detect-changes:
     runs-on: ubuntu-latest
