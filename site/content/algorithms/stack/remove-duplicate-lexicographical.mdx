@@ -1,0 +1,113 @@
+---
+title: "[LeetCode] 316. Remove Duplicate Letters (중복 문자 제거)"
+date: 2025-04-01
+tags: ["leetcode", "stack", "greedy"]
+---
+
+## LeetCode 316. Remove Duplicate Letters (중복 문자 제거)
+
+[문제 링크](https://leetcode.com/problems/remove-duplicate-letters/)
+
+**제한시간: 15분**
+
+### 문제 설명
+
+문자열 `s`가 주어졌을 때,
+
+- 중복된 문자를 제거하여 각 문자가 한 번만 나타나도록 하고
+- 문자의 가능한 모든 결과 중에서 사전순으로 가장 작은 문자열이어야 한다
+
+**제약 조건:**
+
+- `1 <= s.length <= 10^4`
+
+**중요 단서 (예시)**
+
+```
+입력: s = "cbacdcbc"
+출력: "acdb"
+```
+
+문제는 중복없는 문자를 "**Lexicographical**"로 정렬하라고 한다. <br/>
+사전 알파벳 순서로 정렬하라는 뜻으로 이해했지만 함정이 있었다. <br/>
+사전 순 정렬이면 왜 "abcd"가 아닌 "acdb"인가? <br/>
+이는 `s`를 중복 없는 부분을 조각으로 나누고, 사전 순으로 정렬하기 때문이다. <br/>
+
+### 풀이
+
+```js
+var removeDuplicateLetters = function (s) {
+  const lastIndex = {}; // 각 문자의 마지막 등장 인덱스 저장
+  const visited = new Set(); // 이미 스택에 추가된 문자 추적
+  const stack = []; // 결과 문자열 구성을 위한 스택
+
+  // 각 문자의 마지막 등장 인덱스 계산
+  for (let i = 0; i < s.length; i++) {
+    lastIndex[s[i]] = i;
+  }
+
+  for (let i = 0; i < s.length; i++) {
+    const char = s[i];
+
+    // 이미 방문한 문자는 건너뜀
+    if (visited.has(char)) continue;
+
+    // 스택의 top 문자가 현재 문자보다 사전순으로 크고,
+    // 해당 문자가 나중에 다시 등장할 경우 스택에서 제거
+    while (
+      stack.length > 0 &&
+      stack[stack.length - 1] > char &&
+      lastIndex[stack[stack.length - 1]] > i
+    ) {
+      const removedChar = stack.pop();
+      visited.delete(removedChar); // 제거된 문자는 방문 표시 해제
+    }
+
+    // 현재 문자를 스택에 추가하고 방문 표시
+    stack.push(char);
+    visited.add(char);
+  }
+
+  return stack.join("");
+};
+```
+
+### 오답 풀이
+
+[문자 압축 문제](https://school.programmers.co.kr/learn/courses/30/lessons/60057)의 풀이를 떠올리며 풀었다.
+하지만 문자를 반복 없는 순서로 조각내는 것이 문제였다.
+
+1. 문자열 시작 인덱스를 0으로 초기화한다.
+2. 시작 인덱스에서 중복 글자가 나올 때까지 문자를 Set에 저장한다.
+3. 중복 글자가 나오면 저장된 Set을 배열에 저장한다.
+4. 시작 인덱스를 중복 글자의 인덱스로 업데이트하고 반복한다.
+5. 반복이 끝나면 배열에 저장된 Set을 정렬한다.
+6. 정렬된 Set을 하나의 문자열로 합친다.
+7. 결과 문자열을 반환한다.
+
+하지만 이 방법은 "문자를 조각내어 저장"하는 방식에서 2중 포문으로 탐색하는 방식으로 변환해야 한다.
+앞선 "문자 압축" 문제와 유사하게 느꼈지만, 사실 이 문제는 스택을 사용해야 했다.
+
+```js
+var removeDuplicateLetters = function (s) {
+  const N = s.length;
+  let start = 0,
+    setArr = [];
+
+  // 2중 포문 없이 탐색하는 방법을 못떠올림
+  while (start < N - 1) {
+    let set = new Set(),
+      next = start + 1;
+    set.add(s[start]);
+
+    while (!set.has(s[next])) {
+      // next가 아니라 s[next]로 접근해야 함
+      set.add(s[next]);
+      next++;
+    }
+    // set을 배열에 저장 후 포인터 업데이트
+    setArr.push(set);
+    start++;
+  }
+};
+```

@@ -1,0 +1,120 @@
+---
+  title: "최소값 스택 구현하기"
+  description: "O(1) 시간 복잡도로 최소값을 조회할 수 있는 스택 구현"
+  createdAt: "2023-11-24"
+  path: ["algorithms", "stack"] 
+  tags:
+    category: "stack"
+    platform: "leetcode"
+    pattern: "data-design"
+---
+
+## LeetCode 155. Min Stack (최소값 스택)
+
+[문제 링크](https://leetcode.com/problems/min-stack/)
+
+**제한시간: 15분**
+
+# 문제 설명
+
+스택을 설계하되, 일반적인 스택 연산(push, pop, top)과 함께 최소값을 `O(1)` 시간 복잡도로 검색할 수 있는 `getMin` 메서드를 지원한다.
+
+다음 기능을 가진 `MinStack` 클래스를 구현한다:
+
+- `MinStack()`: 스택 객체를 초기화한다.
+- `void push(int val)`: 요소 val을 스택에 추가한다.
+- `void pop()`: 스택 맨 위의 요소를 제거한다.
+- `int top()`: 스택 맨 위의 요소를 가져온다.
+- `int getMin()`: 스택에서 최소 요소를 검색한다.
+
+모든 함수에 대해 O(1) 시간 복잡도의 솔루션을 구현해야 한다.
+
+# 정답
+
+```js
+var MinStack = function () {
+  this.stack = [];
+  this.min = null;
+};
+
+MinStack.prototype.push = function (val) {
+  this.stack.push(val);
+  this.min = Math.min(...this.stack); // push 후 최소값 업데이트
+};
+
+MinStack.prototype.pop = function () {
+  this.stack.pop();
+  this.min = Math.min(...this.stack); // pop 후 최소값 업데이트
+};
+
+MinStack.prototype.top = function () {
+  return this.stack[this.stack.length - 1];
+};
+
+MinStack.prototype.getMin = function () {
+  return this.min;
+};
+```
+
+# 오답 사고 과정
+
+최소 `Heap`을 생각하며 풀었지만 15분 내로 풀지 못했다. <pr/>
+너무 어렵게 생각했다! 그냥 this.min과 스택만 있으면 된다. <br/>
+
+> 기본 컨셉:
+
+- 클로저를 사용해 인스턴스 내부의 저장소를 만든다.
+  - this.stack, this.sorted, this.size
+- `this`를 통해 메서드 내부에서 저장소에 접근할 수 있도록 한다.
+- 메서드 내부에서 메서드를 호출할 수 있도록 한다.
+  - this.sort() // `sorted`랑 변수명이 헷갈렸다 센스 부족
+  - this.top() // 스택의 마지막 요소를 반환
+  - this.getMin() // 정렬된 배열의 첫 번째 요소를 반환
+  - this.pop() // 스택의 마지막 요소를 제거
+  - this.push() // 스택의 마지막에 요소를 추가
+
+```js
+var MinStack = function () {
+  function getTop() {
+    return this.stack[this.size - 1];
+  }
+  function getSort() {
+    this.sorted.sort((a, b) => a - b);
+  }
+  this.stack = [];
+  this.sorted = [...this.stack];
+  this.size = this.stack.length;
+  this.top = getTop;
+  this.sort = getSort;
+};
+
+MinStack.prototype.push = function (val) {
+  console.log("this");
+  this.stack.push(val);
+  this.sorted.push(val);
+  this.size++;
+  if (!this.sort.length > 0) {
+    this.sort();
+    this.min = this.sort[0];
+  }
+};
+
+MinStack.prototype.pop = function () {
+  this.size--;
+  if (!this.sort.length > 0) {
+    this.sorted = this.sorted.filter((item) => this.top());
+    this.min = this.sorted[0];
+  } else {
+    this.min = null;
+  }
+  return this.stack.pop();
+};
+
+MinStack.prototype.top = function () {
+  return this.stack[stack.length - 1];
+};
+
+MinStack.prototype.getMin = function () {
+  return this.sorted[0];
+};
+```
