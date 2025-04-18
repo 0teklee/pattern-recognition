@@ -1,16 +1,6 @@
 ---
 import BaseLayout from "@site-ui/root-layout.astro";
 import RorschachAnimation from "../components/landing/animation.astro";
-
-// TBA - replace with animation
-// const { isRoot, isAlgo, isUIUX } = getEnv();
-//
-// const [algoCollection, uiuxCollection] = await Promise.all([
-//   isAlgo || isRoot
-//     ? getCollection(RouteKeyMap.algorithms)
-//     : ([] as CollectionEntry<RouteKeyMap.algorithms>),
-//   isUIUX || isRoot ? getCollection(RouteKeyMap.uiux) : ([] as unknown[]),
-// ]);
 ---
 
 <BaseLayout title="HOME" description="Pattern Recognition Index">
@@ -21,17 +11,27 @@ import RorschachAnimation from "../components/landing/animation.astro";
       <blockquote
         class:list={[
           "relative",
-          `before:caption-top before:content-start before:text-xl before:content-["“"]`,
-          `after:caption-top after:content-end after:text-xl after:content-["”"]`,
+          `before:caption-top before:content-start before:font-serif before:text-3xl before:content-["“"]`,
+          `after:caption-top after:content-end after:font-serif after:text-3xl after:content-["”"]`,
           "italic",
         ]}
       >
         <blockquote>
-          We have no future because our present is too volatile. <br />
-          We have only risk management.
-          <br />
-          The spinning of the given moment's scenarios. <br />
-          <b class="bg-gradient-to-b from-transparent">Pattern recognition.</b>
+          We have<br />
+          no future<br />
+          because <br />
+          our present is<br />
+          too volatile.<br />
+          We have only<br />
+          risk management:<br />
+          The spinning of<br />
+          the given moment's<br />
+          scenarios. <br />
+          <b
+            class="from-primary bg-gradient-to-b to-transparent bg-clip-text text-transparent"
+            >pattern recognition.</b
+          ><br />
+          ⠗⠠
         </blockquote>
         <br />
       </blockquote>
@@ -45,7 +45,7 @@ import RorschachAnimation from "../components/landing/animation.astro";
         target="_blank"
         rel="noopener noreferrer"
       >
-        Inspired by William Gibson , Pattern Recognition, 2003
+        From <cite>Pattern Recognition</cite>, William Gibson, 2003
       </a>
     </section>
   </div>
