@@ -23,6 +23,10 @@
     display: none;
   }
 
+  strong {
+    color: var(--color-theme) !important;
+  }
+
   details > summary {
     list-style: none;
   }
