@@ -37,6 +37,8 @@ jobs:
               - 'site/styles/**'
             global:
               - 'site/global.css'
+            components:
+              - 'site/components/**'
             algorithms:
               - 'site/content/algorithms/**'
               - 'site/pages/algorithms/**'
