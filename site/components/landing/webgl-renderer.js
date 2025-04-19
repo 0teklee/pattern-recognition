@@ -61,9 +61,9 @@ export function initializeRorschach(canvas) {
   // 5. Animation state
   let currentPatternIndex = 0;
   let lastPatternChangeTime = 0;
-  const patternChangeInterval = 5000; // ms
+  const patternChangeInterval = 3000; // ms
   const totalPatterns = 5;
-  const transitionDuration = 0.5; // seconds
+  const transitionDuration = 3; // seconds
   let lastPattern = 0;
   let animationFrameId = null;
 
