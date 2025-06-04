@@ -1,0 +1,91 @@
+---
+  title: "Zigzag Conversion"
+  description: "행렬 기반의 문자 데이터 처리하기"
+  createdAt: "2023-11-24"
+  path: ["algorithms", "string", "matrix"] 
+  tags:
+    category: "string"
+    platform: "leetcode"
+    pattern: "data-design"
+---
+
+## LeetCode 6. Zigzag Conversion
+
+[문제 링크](https://leetcode.com/problems/zigzag-conversion/description/)
+
+**제한시간: 15분**
+
+# 문제 접근
+
+<pre>
+  문제 설명이 단순하여 약간 당황했다. 그러나 numRows를 n * n 행렬로 이해하니
+  실마리가 보였다. 글자를 위에서부터 아래로 내려간 뒤, 마지막 행에서 오른쪽으로
+  +1 하며 올라온다. 행렬에 고정된 크기의 글자를 배치한 뒤, 마지막엔 왼쪽부터
+  오른쪽으로 0번째 행부터 n-1행까지 단어를 재조합한다. 재밌는 애너그램 암호화
+  방식으로 생각했다. 하지만 코딩 테스트의 답변으론 지나치게 코드가 장황했다.
+  결국 시간 안에 풀지 못하고 답안을 확인했다. 오랜만에 다시 풀어보려니 쉽지
+  않았으나, 확실히 재밌다.
+</pre>
+
+# 풀이
+
+```js
+/**
+ * @param {string} s
+ * @param {number} numRows
+ * @return {string}
+ */
+var convert = function (s, numRows) {
+  const matrix = Array.from({ length: numRows }, () => Array(numRows)); // 글자 저장 행렬
+  const maxSizeIndex = numRows - 1; // 인덱스와 매트릭스 사이즈가 헷갈려 변수 할당했다
+  let pointer = 0,
+    dir = 1; // 위 * 아래 방향 결정과 글자 포인터.
+  const stack = []; // 일반적인 dfs 방식으로 접근하고자 했다.
+  stack.push([0, 0]);
+  // matrix fill
+  while (stack.length > 0 && pointer < s.length) {
+    const [cr, cc] = stack.pop();
+    // 인덱스 or 크기
+    if (cc === maxSizeIndex) {
+      dir = -1; // 반대 방향으로.
+      // .. 여기서 시간이 초과되었다.
+    }
+  }
+};
+```
+
+# 정답
+
+배울 게 많은 문제여서 답안 코드에 주석으로 추가했다. <br/>
+gpt 무료 모델을 사용했는데, 사실 더 좋은 답안들도 많다. <br/>
+그러나 내겐 이정도 답안도 배울 게 많다.
+
+```js
+var convert = function (s, numRows) {
+  if (numRows === 1 || s.length <= numRows) return s; // 글자가 row보다 작으면 원래 순서대로 나온다.
+
+  /** @desc 이 부분이 현명하다. 행렬을 만들면서 출력될 결과를 문자열로 곧바로 저장한다.
+   * 이어지는 부분의 반복문에서 로직이 훨씬 간소화된다.
+   */
+  const rows = Array.from({ length: numRows }, () => "");
+  let currentRow = 0; // 포인터
+  let goingDown = false; // 방향 - 기존의 접근도 1, -1을 생각했으나 이 방법이 나은 것 같다.
+
+  /** @desc  이 부분이 인상깊다. s에 반복문을 건다. */
+  for (let char of s) {
+    // 바로 이 부분이 아직 내 능력으론 떠올릴 수 없는 한계다.
+    // 자료 구조의 중요성을 느낀다.
+    rows[currentRow] += char;
+    // rows ["", "", "", "", ..., ""] 1차원 배열 + 문자열(사실상 이 문제의 핵심인 연속된 데이터)을 구성한다.
+    // 시공간 효율이 좋은 접근이다.
+    // 방향 전환: 따라서 불필요하게 x좌표 + 1을 구현하는 로직이 추가될 필요가 없다.
+    if (currentRow === 0 || currentRow === numRows - 1) {
+      goingDown = !goingDown;
+    }
+    // 내려가거나 올라간다.
+    currentRow += goingDown ? 1 : -1;
+  }
+  // 마지막엔 1차원 배열을 하나로 합쳐주기만 하면 끝.
+  return rows.join("");
+};
+```

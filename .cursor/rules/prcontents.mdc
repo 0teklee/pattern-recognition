@@ -1,0 +1,36 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Your rule content
+
+- You can @ files here
+- You can use markdown but dont have to
+
+0. pattern-recognition/site/content/algorithms/*, pattern-recognition/site/content/uiux/*의 주석 및 mdx 문서에는 ~다, ~한다로 종결어미를 유지한다.
+1. pattern-recognition/site/content/algorithms/**/*.mdx 문서 포맷 양식은 [remove-duplicate-lexicographical.mdx](mdc:site/content/algorithms/stack/remove-duplicate-lexicographical.mdx)을 따른다. 
+2. ~content/algorithms/**/*.mdx 파일의 frontmatter는 아래 양식을 따른다.
+```mdx
+---
+  title: "title" // 글 제목
+  description: "description" // 간략한 한문장 설명
+  createdAt: "YYYY-MM-DD" // 오늘 날짜
+  path: ["algorithms", "path"] // 첫요소는 반드시 "algorithms", 두번째부터 현재 mdx 파일의 폴더 위치. mdx 파일명은 표시하지 않는다.
+  tags:
+    pattern: "" // pattern
+    category: "core"
+---
+```
+3. frontmatter의 tag는 [docs.ts](mdc:site/types/docs.ts)를 참조하여 필요한 내용만 넣는다.
+4. tag에 category는 반드시 포함한다.
+
+
+
+
+
+
+
+
+
