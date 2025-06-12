@@ -1,0 +1,133 @@
+---
+  title: "Reverse Integer"
+  description: "10진수 뒤집기. 수학적 접근"
+  createdAt: "2025-06-12"
+  path: ["algorithms", "math", "numbers"] 
+  tags:
+    category: "math"
+    platform: "leetcode"
+    pattern: "data-design"
+---
+
+## LeetCode 7. Reverse Integer
+
+[문제 링크](https://leetcode.com/problems/reverse-integer/)
+
+**제한시간: 10분**
+
+- 5분 노트 풀이
+- 5분 코드 작성
+
+# 문제 접근
+
+<pre>
+  문자열로 변환한 뒤, 조건절로 가공하거나 스택 등의 방법을 떠올렸다. 익숙한
+  방법이지만, 사실 그보다 수학적인 접근이 더 궁금해서 고민이 길어졌다. 시간 압박
+  속에서 결국 떠올리지 못하고 실패했다. 하지만 n번째 자릿수를 가공을 number
+  타입만으로 능숙하게 가공하는 스킬이 필요하다. 문자열 중심의 가공은 코드의
+  조건절 및 복잡성 증가가 높아지기 때문이다. 이 문제의 목표는 숫자 타입의 가공.
+  1회차에는 시간이 부족하여 결국 문자 가공을 택했지만, 역시나 생각하지 못한
+  테스트 케이스에서 막혔다.
+</pre>
+
+# 풀이
+
+## 1회차
+
+```js
+/**
+ * @param {number} x
+ * @return {number}
+ */
+var reverse = function (x) {
+  const dir = x < 0 ? -1 : 1;
+  let char = Math.abs(x).toString(),
+    store = "";
+  /**@desc 10진법의 자릿수를 뒤집고, 예외처리를 추가하는 문제.
+   * 수학적 접근 (문자열 변환X)을 고민하다가, 떠오르지 않아
+   * 급한대로 문자열로 풀었다. 제한시간 10분. 고민 5분.
+   */
+  for (let i = char.length - 1; i >= 0; i--) {
+    store += char[i];
+  }
+
+  if (store[0] === 0) {
+    store = store.slice(1);
+  }
+
+  /**@desc 테스트 케이스 실패
+   * Wrong Answer: 1036 / 1045 testcases passed
+   * Output 9646324351 Expected 0
+   * 문제를 잘못 이해했던 것 같다.
+   */
+  return Number(store) * dir;
+};
+```
+
+# 정답
+
+# 1회차
+
+기대했던 방식에 가까운 답안을 grok3가 작성했다. <br/>
+넘버 타입만으로 접근하는 것. 설명 또한 유용해서, 2회차 때 다시 읽어봐야겠다.
+
+```js
+function reverse(x) {
+  // 32비트 정수 범위 상수 정의
+  const MAX_INT = 2 ** 31 - 1; // 2147483647
+  const MIN_INT = -(2 ** 31); // -2147483648
+
+  // 부호 저장 및 절대값 취하기
+  const sign = x >= 0 ? 1 : -1;
+  let num = Math.abs(x);
+
+  // 뒤집힌 숫자를 저장할 변수
+  let reversed = 0;
+
+  // 숫자를 한 자릿수씩 처리
+  while (num > 0) {
+    // 마지막 자릿수 추출
+    const digit = num % 10;
+    // 결과 숫자에 자릿수 추가 (이전 결과를 10배하고 새 자릿수 추가)
+    reversed = reversed * 10 + digit;
+    // 입력 숫자에서 마지막 자릿수 제거
+    num = Math.floor(num / 10);
+  }
+
+  // 부호 적용
+  reversed = reversed * sign;
+
+  // 32비트 정수 범위 체크
+  if (reversed > MAX_INT || reversed < MIN_INT) {
+    return 0;
+  }
+
+  // 최종 결과 반환
+  return reversed;
+}
+```
+
+## 해설
+
+<pre>
+  부호 처리: sign: x가 양수면 1, 음수면 -1. num: x의 절대값으로 변환 (예: -123 →
+  123). 숫자 뒤집기: num % 10으로 마지막 자릿수 추출 (예: 123 → 3). reversed를
+  10배하고 추출한 자릿수 추가 (예: 0 → 3, 다음은 3\*10 + 2 = 32). num을 10으로
+  나눠 다음 자릿수 준비 (123 → 12). 반복하여 321 생성. 오버플로우 체크: 뒤집힌
+  숫자에 부호 적용 후, MAX_INT(2^31 - 1)와 MIN_INT(-2^31) 범위 확인. 범위를
+  벗어나면 0 반환. 예시 동작 (단계별) 예시 1: x = 123 초기: sign = 1, num = 123,
+  reversed = 0 1단계: digit = 3, reversed = 0\*10 + 3 = 3, num = 12 2단계: digit
+  = 2, reversed = 3\*10 + 2 = 32, num = 1 3단계: digit = 1, reversed = 32\*10 +
+  1 = 321, num = 0 부호 적용: 321 \* 1 = 321 범위 체크: 321은 [-2^31, 2^31 - 1]
+  내, 반환: 321 예시 2: x = -123 초기: sign = -1, num = 123, reversed = 0 1단계:
+  digit = 3, reversed = 3, num = 12 2단계: digit = 2, reversed = 32, num = 1
+  3단계: digit = 1, reversed = 321, num = 0 부호 적용: 321 \* -1 = -321 범위
+  체크: -321은 범위 내, 반환: -321 예시 3: x = 120 초기: sign = 1, num = 120,
+  reversed = 0 1단계: digit = 0, reversed = 0, num = 12 2단계: digit = 2,
+  reversed = 2, num = 1 3단계: digit = 1, reversed = 21, num = 0 부호 적용: 21
+  \* 1 = 21 범위 체크: 21은 범위 내, 반환: 21 예시 4: x = 1534236469 뒤집으면
+  9646324351, 이는 2^31 - 1(2147483647) 초과. 범위 체크에서 0 반환. 검증 정확성:
+  부호 처리로 양수/음수 모두 처리. 수학적 연산으로 문자열 변환 없이 효율적.
+  오버플로우 체크로 32비트 범위 준수. 효율성: - 시간 복잡도: O(log x),
+  자릿수만큼 반복. - 공간 복잡도: O(1), 상수 메모리 사용.
+</pre>

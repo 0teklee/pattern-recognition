@@ -1,0 +1,132 @@
+---
+  title: "Longest Common Prefix"
+  description: "가장 긴 접두사. 행렬의 수직 탐색과 최적화에 대한 고민"
+  createdAt: "2025-06-12"
+  path: ["algorithms", "strins", ] 
+  tags:
+    category: "string"
+    platform: "leetcode"
+    pattern: "LCS"
+---
+
+## LeetCode 14. Longest Common Prefix
+
+[문제 링크](https://leetcode.com/problems/longest-common-prefix/)
+
+**1회차 제한시간: 15분 (타임오버 및 실패)**
+
+### 1회차
+
+- 5분 노트에 설계 작성
+- 5분 코드 작성
+- 5분 코드 에디터로 작성하면서, 문제 전환
+
+# 문제 접근
+
+일반적인 LCS 문제. <br/>
+수 없이 풀어본 문제임에도 외운 답을 기억하려는 느낌을 받아서 사고에 방해가 됐다. <br/>
+외운 답으론 학습이 일어나지 않은 것 같아 다시 직접 생각해보았고, 그 과정에서 시간이 초과되었다. <br/>
+실전이라면 가차없이 버려야할 태도이지만, 그래도 흥미로운 사고 과정이어서 기록한다.<br/>
+[이전 문제]('/algorithms/string/6-zigzag-conversion/')에서 배운 방법이 떠올랐고, 이를 활용하고 싶었기 때문이다. <br/>
+O(n) 탐색을 효율적으로 하기 위해 인덱스 기반으로 비교한다. 문자열을 모두 쪼개어 1차원 배열을 만들고,<br/>
+각 단어의 인덱스만을 가지고 1차원 배열을 탐색한다. <br/>
+이는 2차원 배열을 생성하지 않으면서 그것을 가정하는 것과 같다. <br/>
+이런 방법이 궁금했는데, 노트에 매트릭스를 손으로 직접 그린 뒤, 인덱스와 각 글자를 채워넣으면서 아이디어가 떠올랐다. <br/>
+가장 긴 prefix를 확인하는 것이기 때문에 O(n)은 효율적이지 않다고 생각했고, 행렬에 채워진 글자들을 칼럼으로만 비교하면 된다고 생각했다.<br/>
+자세한 사고과정은 코드에 주석으로 남겼다.<br/>
+잘못된 부분도 있었지만, 추론 과정이 재밌었다.<br/>
+충분히 잊혀진 뒤 다시 풀어볼 2회차가 기대된다.
+
+# 풀이
+
+## 1회차
+
+```js
+/**
+ * @param {string[]} strs
+ * @return {string}
+ */
+var longestCommonPrefix = function (strs) {
+  if (strs.length <= 0) return "";
+  if (strs.length <= 1) return strs[0];
+  let smallest = strs.sort((a, b) => a.length - b.length)[0].length;
+  let pointer = 0,
+    result = "";
+
+  // 반복문은 가장 짧은 단어 길이만큼만 순회해도 된다.
+  while (pointer < smallest) {
+    let target = result[pointer],
+      pass = false;
+
+    // pointer 0일 때 초기화.
+    if (target.length === 0) {
+      target = strs[0][0];
+    }
+    // 뭔가 intersection, obj, 등 O(1)로 문자열 검증하는 쉬운 방법이 있을텐데.
+    /** @desc 15분 시간 초과 - 문제 접근 사고 방향을 바꿔보면서 시간 초과.
+     * 아이디어 메모:
+     * - 각 글자들의 길이들을 저장함
+     * - strs의 개별 문자열을 모두 쪼개어 1차배열로 만듬
+     * - 1차원 배열에 나열된 1글자들을 사실상 행렬처럼 취급함 (그러나 자료 구조는 1차임)
+     * - 각 단어들의 길이를 저장하면 0, strs[0].length, strs[1].length로 인덱스 기반 비교 가능
+     * @example
+     * param: ["flower","flow","flight"]
+     * => [6, 4, 6]
+     * => 1차원 맵 : 0, 6, 10 인덱스 비교
+     *  3개가 다 일치하면?
+     *  - result에 1차원 맵[0] 저장
+     *  - 다음 순회: 1, 7, 11 인덱스 기반 비교 (1차원 맵에서)
+     *  3개가 다 일치하지 않으면?
+     *  - result에 이미 저장된 것을 반환.
+     */
+    //
+    // 각 길이를 저장하여
+    // O(n)으로 각 레이어 글자 비교
+    for (let i = 0; i < strs.length; i++) {
+      const curChar = strs[i][pointer];
+
+      /** @desc
+       * n행의 n번째 글자가 맞으면
+       * 1. 포인터 이동
+       * 2. result에 글자 저장
+       */
+    }
+  }
+};
+```
+
+# 정답
+
+생각이 너무 깊었다. <br/>
+정해진 답을 따라 O(n\*m)으로 2중 반복을 하는 것이 효율적이다. <br/>
+짧고 간결한 코드를 보고, 역시 문제의 의도에 충실하는 것이 맞겠다 싶다. <br/>
+gpt가 내가 생각한 방식을 `vertical scan`이라고 알려줬는데, 제대로 된 문서를 찾을 수 없다. 환각일까? <br/>
+그래도 이 아이디어는 2회차 때 다시 봐야겠다.
+
+```js
+/**
+ * @param {string[]} strs
+ * @return {string}
+ */
+var longestCommonPrefix = function (strs) {
+  if (strs.length === 0) return "";
+  if (strs.length === 1) return strs[0];
+
+  let minLength = Math.min(...strs.map((str) => str.length));
+  let result = "";
+
+  for (let i = 0; i < minLength; i++) {
+    const currentChar = strs[0][i]; // 기준 문자
+
+    for (let j = 1; j < strs.length; j++) {
+      if (strs[j][i] !== currentChar) {
+        return result; // 일치하지 않으면 종료
+      }
+    }
+
+    result += currentChar;
+  }
+
+  return result;
+};
+```

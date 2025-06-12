@@ -1,0 +1,89 @@
+---
+  title: "Container With Most Water"
+  description: "두 노드 간의 거리와 노드 데이터로 가장 큰 사각형 넓이 구하기."
+  createdAt: "2025-06-12"
+  path: ["algorithms", "greedy"] 
+  tags:
+    category: "greedy"
+    platform: "leetcode"
+    pattern: "two-pointers"
+---
+
+## LeetCode 11. Longest Common Prefix
+
+[문제 링크](https://leetcode.com/problems/container-with-most-water/description/)
+
+**1회차 제한시간: 10분 (타임오버 및 실패)**
+
+### 1회차
+
+- 5분 노트에 설계 작성
+- 5분 코드 작성
+
+# 문제 접근
+
+일반적인 Two Pointer 문제. <br/>
+올해 초에 특히 약하다 생각해서 암기한 패턴인데, 투 포인터부터 슬라이딩 윈도우까지 다시 숙달해야겠다. <br/>
+실망스럽지만 그래도 다시 머리에 세겨질 때까지 "빠르게", "많이" 풀 필요성을 느낀다.
+
+# 풀이
+
+## 1회차
+
+```js
+/**
+ * @param {number[]} height
+ * @return {number}
+ */
+var maxArea = function (height) {
+  let left = 0,
+    right = 1,
+    max = 0;
+  // 가장 넓이가 큰 사각형을 그릴 수 있는 탐색으로 이해했다.
+  // i = 0 , 1 시작점 설정에서 고민했다. right < height.length while문이 맞았을까?
+  for (let i = 0; i < height.length; i++) {
+    let curH = Math.min(height[i], height[right]);
+    let x = right - left;
+    let curW = curH * x;
+    // 두개의 포인터, 반복문의 현재 넓이와 이전까지 넓이, 현재 넓이가 클 시 left를 움직인다.
+    if (curW > max) {
+      // 조건이 여러 개. 노트 풀이 5분, 5분 코드 작성 이후 시간 초과.
+      // 생각이 짧은 상태로 코드를 치면 길을 잃는다.
+    }
+    max = Math.max(max, curW);
+  }
+};
+```
+
+# 정답
+
+```js
+function maxArea(height) {
+  // 최대 면적을 저장하는 변수
+  let maxWater = 0;
+  // 두 포인터: 왼쪽과 오른쪽 끝
+  let left = 0;
+  let right = height.length - 1;
+
+  // 포인터가 교차할 때까지 반복
+  while (left < right) {
+    // 현재 면적 계산: 높이의 최소값 * 너비
+    const width = right - left;
+    const h = Math.min(height[left], height[right]);
+    const area = h * width;
+
+    // 최대 면적 갱신
+    maxWater = Math.max(maxWater, area);
+
+    // 더 작은 높이의 포인터를 이동
+    if (height[left] < height[right]) {
+      left++;
+    } else {
+      right--;
+    }
+  }
+
+  // 최대 면적 반환
+  return maxWater;
+}
+```
