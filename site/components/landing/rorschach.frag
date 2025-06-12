@@ -63,6 +63,7 @@ float rorschach(vec2 st, int patternType, float time) {
     pattern = smoothstep(0.35, 0.65, pattern); // 밀도 임계값 조정
     pattern += smoothstep(0.1, 0.0, abs(st.x)) * 0.15; // 중앙선 약간 강조
   }
+  
   // 패턴 1: 수평/마스크 (참고 이미지 2)
   else if (patternType == 1) {
     vec2 p = symmetricSt * vec2(2.0 + cos(t*10.5)*0.1, 1.6) - vec2(0.0, 0.4); // 수평 스트레치 강화

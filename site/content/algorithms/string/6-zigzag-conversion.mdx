@@ -1,7 +1,7 @@
 ---
   title: "Zigzag Conversion"
-  description: "행렬 기반의 문자 데이터 처리하기"
-  createdAt: "2023-11-24"
+  description: "행렬 기반의 문자 데이터 처리하기. 2회차 완료"
+  createdAt: "2025-06-10"
   path: ["algorithms", "string", "matrix"] 
   tags:
     category: "string"
@@ -14,6 +14,7 @@
 [문제 링크](https://leetcode.com/problems/zigzag-conversion/description/)
 
 **제한시간: 15분**
+**2회차 제한시간: 10분**
 
 # 문제 접근
 
@@ -29,12 +30,60 @@
 
 # 풀이
 
+## 2회차
+
+5분 동안 제한시간을 두고 기억나는 대로 풀었다. 시간 차를 두고 다시 풀면 느낌이 다르다. <br/>
+답이 떠오르지 않아 5분 이후 틀린 코드를 물어본 뒤 해설을 참조했다. 그 이후 다시 5분의 제한 시간동안 풀었다.<br/>
+해설을 그대로 복사-붙여넣거나 암기하려 하지 않고, 읽은 것을 이해한 대로 단기 기억에 의존하여 풀었다. <br/>
+조금 더 핵심적인 로직에 집중할 수 있게 된다. 역시 자료 형태가 모든 걸 결정한다는 생각이 들었다.
+
 ```js
 /**
  * @param {string} s
  * @param {number} numRows
  * @return {string}
  */
+
+var convert = function (s, numRows) {
+  if (numRows === 1) return s;
+  /** @desc 맵. 사실상 2차 배열같지만 원칙적으로 1차 배열이다. 문자열의 성질을 배열처럼 활용한다. */
+  const map = Array.from({ length: numRows }, () => "");
+  let goingUp = -1, // 아주 중요한 변수명과 값이다. -1, 디폴트로 row의 움직임 방향은 '올라가지 않는다'.
+    rowCur = 0; // goingUp을 row 내려가는 방향. 이 문제에서 꼭 필요한 것은 goingUp과 행번호를 가리키는 인덱스이다.
+
+  for (let i = 0; i < s.length; i++) {
+    /**@desc
+     *  글자 할당 부분에서 2차 배열, 행렬을 직접 사용하려던 게 착오였다. 그래서 시간 안에 못풀었다.
+     *  map[rowCur][colCur] = s[i] 이렇게 할당하면 메모리에 아무것도 추가되지 않는다.
+     *  map[rowCur] 자체가 원시값이 할당되어 있기 때문이고, 이것은 빈 문자열이기 때문이다.
+     */
+    map[rowCur] += s[i]; // 따라서 행 번호에 문자만 추가해주어야 한다.
+
+    /** @desc 이전 답안에서 boolean 할당을 없애고 goingUp에 1, -1을 할당해 방향을 제어한다.
+     * 이를 통해 공간 효율을 약간 높일 수 있다.
+     * gpt 답안의 변수명 또한 혼동되어 "방향이 올라가는 지의 여부"를 나타내기 위해 goingUp으로 바꿨다.
+     * 이는 기본적으로 row의 인덱는 '증가한다', '행렬의 아래로 내려간다'를 가정하는 변수명이며,
+     * 행을 거슬러 올라가는 것을 나타내는 플래그로 'goingUp'이라는 변수명을 작성했다.
+     * 행을 '거슬러 올라갈 때'는 rowCur이 감소한다.
+     * 사실 여전히 혼동되는 감이 있다.
+     */
+    if (rowCur == 0 || rowCur === numRows - 1) {
+      goingUp = goingUp * -1;
+    }
+    // s가 순차적으로 배열에 저장됨에 따라 row가 증가하거나 감소한다.
+    rowCur += goingUp;
+  }
+  /**@example
+   * numRows = 3
+   * map [ 'PAHN', 'APLSIIG', 'YIR' ]
+   */
+  return map.join("");
+};
+```
+
+## 1회차
+
+```js
 var convert = function (s, numRows) {
   const matrix = Array.from({ length: numRows }, () => Array(numRows)); // 글자 저장 행렬
   const maxSizeIndex = numRows - 1; // 인덱스와 매트릭스 사이즈가 헷갈려 변수 할당했다
