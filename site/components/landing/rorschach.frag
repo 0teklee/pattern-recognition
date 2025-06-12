@@ -84,7 +84,7 @@ float rorschach(vec2 st, int patternType, float time) {
     // 턱/입 영역 (노이즈 더하기)
     vec2 jawCoords = symmetricSt * vec2(1.8, 2.5);
     jawCoords.y += 0.6 + sin(t*10.8)*0.1;
-    float jaw = fbm(jawCoords + t*0.3, 6);
+    float jaw = fbm(jawCoords + t*10.3, 6);
     pattern = mix(mainShape, jaw, smoothstep(0.3, 0.7, st.y + 0.5)); // 아래쪽에 턱 혼합
 
 
@@ -111,12 +111,11 @@ float rorschach(vec2 st, int patternType, float time) {
     p.y += cos(p.x * 3.0 + t * 0.6) * 0.1; // 수직 왜곡 추가
     p.x += sin(p.y * 2.5 + t * 0.5) * 0.08; // 수평 왜곡 추가
 
-    float blotNoise = fbm(p * 1.8 + t * 0.08, 16); // 얼룩 모양을 위한 단일 노이즈 함수
+    float blotNoise = fbm(p * 1.8 + t * 0.08, 6); // 얼룩 모양을 위한 단일 노이즈 함수
 
     // 명확한 윤곽선을 위한 더 날카로운 가장자리 -> 부드러운 경계로 변경
-    // pattern = step(0.55, blotNoise); // 하드 엣지를 위해 step 함수 사용
+    pattern = step(0.55, blotNoise); // 하드 엣지를 위해 step 함수 사용
     pattern = smoothstep(0.54, 0.56, blotNoise); // 약간 부드러운 경계를 위해 smoothstep 사용
-
     // 뷰박스 경계 내에서 명확한 윤곽선을 보장하기 위해 패턴 3의 특정 수직 페이드 제거
   }
   // 패턴 4: 조각난/점박이 (참고 이미지 5)
@@ -151,12 +150,17 @@ void main() {
   st.x *= uResolution.x / uResolution.y;
 
   // 보간 기반 패턴 계산
+  // uBlend 값을 재매핑하여 패턴 유지 시간을 늘리고 트랜지션을 점진적으로 만듭니다.
+  // uBlend가 0.0에서 0.3까지는 첫 번째 패턴을 유지하고,
+  // 0.3에서 0.7까지는 두 패턴 사이를 부드럽게 전환하며,
+  // 0.7에서 1.0까지는 두 번째 패턴을 유지합니다.
+  float effectiveBlend = smoothstep(0.3, 0.7, uBlend);
   float pattern1 = rorschach(st, uLastPatternIndex, uTime);
   float pattern2 = rorschach(st, uPatternIndex, uTime);
-  float interpolatedPattern = mix(pattern1, pattern2, uBlend);
+  float interpolatedPattern = mix(pattern1, pattern2, effectiveBlend);
 
   // 최종 임계값 및 색상
-  float result = step(0.4, interpolatedPattern); // 보간 *후에* 임계값 적용
+  float result = smoothstep(0.35, 0.55, interpolatedPattern); // 보간 *후에* 임계값 적용
   vec3 color = uColor * result;
 
   fragColor = vec4(color, result); // 결과 기반 알파 설정

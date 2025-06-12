@@ -1,6 +1,4 @@
-<div
-  class="relative mx-auto mb-20 aspect-square w-11/12 max-w-full sm:max-w-lg lg:max-w-2xl"
->
+<div class="relative mx-auto mb-20 aspect-square max-w-md">
   <canvas
     class:list={["absolute top-0 left-0 z-10", "h-full w-full px-2"]}
     id="animation-canvas"></canvas>
@@ -16,7 +14,6 @@
       "animation-canvas",
     ) as HTMLCanvasElement | null;
     if (canvas) {
-      // Initialize and store the cleanup function
       cleanupAnimation = initializeRorschach(canvas) || (() => {});
     } else {
       console.error("Rorschach canvas element not found for initialization.");
