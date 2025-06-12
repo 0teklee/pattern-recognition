@@ -10,7 +10,7 @@
     "build:algo-prod": "dotenv -e .env.prod -- astro build --config site/config/algorithms.config.ts --mode production",
     "build:uiux-prod": "dotenv -e .env.prod -- astro build --config site/config/uiux.config.ts --mode production",
     "preview:dev": "dotenv -e .env.dev -- astro preview --config site/config/base.config.ts  --force --mode development --verbose",
-    "preview:prod": "dotenv -e .env.prod -- astro preview --config site/config/base.config.ts --site $PREVIEW_PORT --force --mode production --verbose",
+    "preview:prod": "dotenv -e .env.prod -- astro build --config site/config/base.config.ts --site $PREVIEW_PORT --force --mode production --verbose",
     "preview:algo": "dotenv -e .env.dev.algo -- astro preview --config site/config/algorithms.config.ts --site http://localhost:$PREVIEW_PORT/dist/dev/build-algo --force --mode development --verbose",
     "preview:uiux": "dotenv -e .env.dev.uiux -- astro preview --config site/config/uiux.config.ts --site http://localhost:$PREVIEW_PORT/dist/dev/build-uiux --force --mode development --verbose"
   },
